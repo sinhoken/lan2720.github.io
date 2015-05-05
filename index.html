@@ -195,6 +195,60 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-welcome-to-my-new-home" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/05/welcome-to-my-new-home/" class="article-date">
+  	<time datetime="2015-05-05T11:42:59.000Z" itemprop="datePublished">2015-05-05</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/05/welcome-to-my-new-home/">welcome to my new home</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>hello 大家好！<br>很高兴今天与大家见面啦！！<br><em>为了表达我的心情</em><br><strong>我决定先试试</strong><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">xunlei_parser</span><span class="params">(url)</span>:</span>  <span class="comment"># 播放数与页面上显示的不符</span></span><br><span class="line">    vid_pattern = re.compile(<span class="string">r'(?&lt;=/v/)(\d+/\d+)'</span>)</span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        vid = re.search(vid_pattern, url).group()</span><br><span class="line">    <span class="keyword">except</span> AttributeError:</span><br><span class="line">        <span class="keyword">print</span> <span class="string">'error url, no vid received.'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        js_url = <span class="string">'http://api.movie.kankan.com/vodjs/moviedata/&#123;&#125;.js'</span>.format(vid)</span><br><span class="line">        vv_pattern = re.compile(<span class="string">r'(?&lt;=totle_vv=\').*(?=\';)'</span>, re.M)</span><br><span class="line">        <span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">            <span class="keyword">try</span>:</span><br><span class="line">                js_data = requests.get(url=js_url,headers=&#123;<span class="string">'Referer'</span>: url, <span class="string">'User-Agent'</span>: chrome&#125;, timeout=<span class="number">2</span>,allow_redirects=<span class="keyword">False</span>).text</span><br><span class="line">                totle_vv = re.search(vv_pattern, js_data).group()</span><br><span class="line">            <span class="keyword">except</span> (socket.timeout, requests.exceptions.Timeout):</span><br><span class="line">                <span class="keyword">print</span> <span class="string">"timeout"</span>, js_url</span><br><span class="line">            <span class="keyword">except</span> requests.exceptions.ConnectionError:</span><br><span class="line">                <span class="keyword">print</span> <span class="string">"connection error"</span>, js_url</span><br><span class="line">            <span class="keyword">except</span> AttributeError:</span><br><span class="line">                <span class="keyword">print</span> <span class="string">'page response error. try again.'</span></span><br><span class="line">                <span class="keyword">print</span> js_url</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">break</span></span><br><span class="line">        totle_vv = totle_vv.replace(<span class="string">','</span>, <span class="string">''</span>)</span><br><span class="line">        <span class="keyword">if</span> totle_vv == <span class="string">""</span>:</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            <span class="keyword">return</span> int(totle_vv)</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>你们觉得如何啊？</p>
+</blockquote>
+<p>如果有意见尽管提吧~~</p>
+<pre><code>听说，这是一个代码块
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
