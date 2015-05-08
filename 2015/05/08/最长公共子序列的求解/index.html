@@ -234,9 +234,7 @@
 <p>好了，既然有了学习的动力，就研究透彻究竟LCS是个嘛玩意吧。</p>
 <a id="more"></a>
 <h2 id="纠正观点">纠正观点</h2><p>一直以为<strong>最长公共子序列</strong>(longest common subsequence)和<strong>最长公共子串</strong>(longest common substring)是一回事，其实不然。<br><strong>最长公共子序列</strong>不要求字符在原字符串中位置上连续，只需要字符前后的相对位置不改变即可。<br>举例来说，</p>
-<blockquote>
-<p>X = “$\color{red}{a}$$b$$\color{red}f$$g$$\color{red}c$”<br>  Y = “$\color{red}a$$d$$\color{red}f$$\color{red}c$”</p>
-</blockquote>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">X = <span class="string">"<span class="variable">$\color&#123;</span>red&#125;&#123;a&#125;$<span class="variable">$b</span>$<span class="variable">$\color&#123;</span>red&#125;f$<span class="variable">$g</span>$<span class="variable">$\color&#123;</span>red&#125;c$"</span></span><br><span class="line">Y = <span class="string">"<span class="variable">$\color&#123;</span>red&#125;a$<span class="variable">$d</span>$<span class="variable">$\color&#123;</span>red&#125;f$<span class="variable">$\color&#123;</span>red&#125;c$"</span></span><br></pre></td></tr></table></figure>
 <p>X, Y的最长公共子序列为<code>afc</code><br>注意 : a、f、c在两个字串中均不连续，但这才是子序列啊！！<br>相反，最长公共子串要求字符都是连续存在于原字符串中的，所以是唯一的，最长公共子序列不唯一。</p>
 <h2 id="解法探究">解法探究</h2><ul>
 <li>若$x_m = y_n$(即最后一个字符相同)，则：$X_m$与$Y_n$的最长公共子序列$Z_k$的最后一个字符必定为$x_m$(=$y_n$)<br>即$z_k=x_m=y_n$</li>
