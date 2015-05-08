@@ -245,7 +245,7 @@
 <ul>
 <li>若$x_m \neq y_n$，则：</li>
 </ul>
-<p>\$$LCS(X<em>m,Y_n)=LCS(X</em>{m-1}, Y<em>n)$ or $LCS(X_m, Y</em>{n-1})$$</p>
+<p>$$LCS(X<em>m,Y_n)=LCS(X</em>{m-1}, Y<em>n)$ or $LCS(X_m, Y</em>{n-1})$$</p>
 <p>证明这里不再赘述，其实还是比较显而易见的。</p>
 <h3 id="分析总结">分析总结</h3><p>说了这么多，总结下来其实是个<code>动态规划</code>问题。</p>
 <p>$$LCS(X<em>m, Y_n) = \begin{cases}<br>LCS(X</em>{m-1}, Y<em>{n-1}) + 1, &amp;\text{$x_m = y_n$}\[2ex]<br>max(LCS(X</em>{m-1}, Y<em>n), LCS(X_m, Y</em>{n-1})), &amp; \text{$x_m \neq y_n$}<br>\end{cases}$$</p>
@@ -351,28 +351,36 @@
 
 
 
-<! -- mathjax config similar to math.stackexchange -->
+<!-- mathjax config similar to math.stackexchange -->
 
 <script type="text/x-mathjax-config">
-MathJax.Hub.Config({
+  MathJax.Hub.Config({
     tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      processEscapes: true
     }
-});
+  });
+</script>
 
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+</script>
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
 </script>
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
 </script>
-
 
 
   </div>
