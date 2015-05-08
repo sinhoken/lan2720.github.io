@@ -247,7 +247,7 @@
 </ul>
 <p>$$LCS(X<em>m,Y_n)=LCS(X</em>{m-1}, Y<em>n)$ or $LCS(X_m, Y</em>{n-1})$$</p>
 <p>证明这里不再赘述，其实还是比较显而易见的。</p>
-<h3 id="分析总结">分析总结</h3><p>说了这么多，总结下来其实是个<code>动态规划</code>问题。</p>
+<h2 id="分析总结">分析总结</h2><p>说了这么多，总结下来其实是个<code>动态规划</code>问题。</p>
 <p>$$LCS(X<em>m, Y_n) =<br>\begin{cases}<br>LCS(X</em>{m-1}, Y<em>{n-1}) + 1, &amp; \text{ x_m = y_n }\[2ex]<br>max(LCS(X</em>{m-1}, Y<em>n), LCS(X_m, Y</em>{n-1})), &amp; \text{ x_m \neq y_n }<br>\end{cases}$$</p>
 <blockquote>
 <p>理清了思路，接下来开始琢磨如何实现吧</p>
