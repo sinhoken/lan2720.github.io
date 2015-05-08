@@ -5,25 +5,22 @@
   
   <title>最长公共子序列的求解 | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="[TOC]
-有何用处我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。最长公共子序列有两大意义：
+  <meta name="description" content="有何用处我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。最长公共子序列有两大意义：
 
-广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此">
+广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此推测序列的结">
 <meta property="og:type" content="article">
 <meta property="og:title" content="最长公共子序列的求解">
 <meta property="og:url" content="http://lan2720.github.io/2015/05/08/最长公共子序列的求解/index.html">
 <meta property="og:site_name" content="Lan's Blog">
-<meta property="og:description" content="[TOC]
-有何用处我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。最长公共子序列有两大意义：
+<meta property="og:description" content="有何用处我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。最长公共子序列有两大意义：
 
-广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此">
+广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此推测序列的结">
 <meta property="og:image" content="http://pic002.cnblogs.com/images/2012/360827/2012111522442224.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="最长公共子序列的求解">
-<meta name="twitter:description" content="[TOC]
-有何用处我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。最长公共子序列有两大意义：
+<meta name="twitter:description" content="有何用处我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。最长公共子序列有两大意义：
 
-广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此">
+广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此推测序列的结">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -221,8 +218,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[TOC]</p>
-<h2 id="有何用处">有何用处</h2><p>我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。<br>最长公共子序列有两大<strong>意义</strong>：</p>
+        <!-- Table of Contents -->
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#有何用处"><span class="toc-number">1.</span> <span class="toc-text">有何用处</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#纠正观点"><span class="toc-number">2.</span> <span class="toc-text">纠正观点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解法探究"><span class="toc-number">3.</span> <span class="toc-text">解法探究</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分析总结"><span class="toc-number">4.</span> <span class="toc-text">分析总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法中的数据结构"><span class="toc-number">5.</span> <span class="toc-text">算法中的数据结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#初步代码"><span class="toc-number">6.</span> <span class="toc-text">初步代码</span></a></li></ol>
+          </div>
+        
+        <h2 id="有何用处">有何用处</h2><p>我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。<br>最长公共子序列有两大<strong>意义</strong>：</p>
 <ul>
 <li>广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此推测序列的结构、功能和演化过程。</li>
 </ul>
