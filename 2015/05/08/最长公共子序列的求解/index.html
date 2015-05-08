@@ -241,15 +241,11 @@
 <h2 id="解法探究">解法探究</h2><ul>
 <li>若$x_m = y_n$(即最后一个字符相同)，则：$X_m$与$Y_n$的最长公共子序列$Z_k$的最后一个字符必定为$x_m$(=$y_n$)<br>即$z_k=x_m=y_n$</li>
 </ul>
-<blockquote>
-<p>$LCS(X<em>m, Y_n) = LCS(X</em>{m-1} , Y_{n-1}) + x_m$</p>
-</blockquote>
+<p>$$LCS(X<em>m, Y_n) = LCS(X</em>{m-1} , Y_{n-1}) + x_m$$</p>
 <ul>
 <li>若$x_m \neq y_n$，则：</li>
 </ul>
-<blockquote>
-<p>$LCS(X<em>m,Y_n)=LCS(X</em>{m-1}, Y<em>n)$ or $LCS(X_m, Y</em>{n-1})$</p>
-</blockquote>
+<p>$$LCS(X<em>m,Y_n)=LCS(X</em>{m-1}, Y<em>n)$ or $LCS(X_m, Y</em>{n-1})$$</p>
 <p>证明这里不再赘述，其实还是比较显而易见的。</p>
 <h3 id="分析总结">分析总结</h3><p>说了这么多，总结下来其实是个<code>动态规划</code>问题。</p>
 <p>$$LCS(X<em>m, Y_n) = \begin{cases}<br>LCS(X</em>{m-1}, Y<em>{n-1}) + 1, &amp;\text{$x_m = y_n$}\[2ex]<br>max(LCS(X</em>{m-1}, Y<em>n), LCS(X_m, Y</em>{n-1})), &amp; \text{$x_m \neq y_n$}<br>\end{cases}$$</p>
