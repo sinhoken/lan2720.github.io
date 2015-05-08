@@ -238,19 +238,20 @@
 </blockquote>
 <p>X, Y的最长公共子序列为<code>afc</code><br>注意 : a、f、c在两个字串中均不连续，但这才是子序列啊！！<br>相反，最长公共子串要求字符都是连续存在于原字符串中的，所以是唯一的，最长公共子序列不唯一。</p>
 <h3 id="解法探究">解法探究</h3><ul>
-<li>若$x_m = y_n$(即最后一个字符相同)，则：$X_m$与$Y_n$的最长公共子序列$Z_k$的最后一个字符必定为$x_m$(=$y_n$)<br>即$z_k=x_m=y_n$<blockquote>
+<li>若$x_m = y_n$(即最后一个字符相同)，则：$X_m$与$Y_n$的最长公共子序列$Z_k$的最后一个字符必定为$x_m$(=$y_n$)<br>即$z_k=x_m=y_n$</li>
+</ul>
+<blockquote>
 <p>$LCS(X<em>m, Y_n) = LCS(X</em>{m-1} , Y_{n-1}) + x_m$</p>
 </blockquote>
-</li>
-<li>若$x_m \neq y_n$，则：<blockquote>
+<ul>
+<li>若$x_m \neq y_n$，则：</li>
+</ul>
 <blockquote>
 <p>$LCS(X<em>m,Y_n)=LCS(X</em>{m-1}, Y<em>n)$ or $LCS(X_m, Y</em>{n-1})$</p>
 </blockquote>
-</blockquote>
-</li>
-</ul>
 <p>证明这里不再赘述，其实还是比较显而易见的。</p>
-<h3 id="分析总结">分析总结</h3><p>说了这么多，总结下来其实是个<code>动态规划</code>问题。<br>$$LCS(X<em>m, Y_n) = \begin{cases}<br>LCS(X</em>{m-1}, Y<em>{n-1}) + 1, &amp;\text{$x_m = y_n$}\[2ex]<br>max(LCS(X</em>{m-1}, Y<em>n), LCS(X_m, Y</em>{n-1})), &amp; \text{$x_m \neq y_n$}<br>\end{cases}$$</p>
+<h3 id="分析总结">分析总结</h3><p>说了这么多，总结下来其实是个<code>动态规划</code>问题。</p>
+<p>$$LCS(X<em>m, Y_n) = \begin{cases}<br>LCS(X</em>{m-1}, Y<em>{n-1}) + 1, &amp;\text{$x_m = y_n$}\[2ex]<br>max(LCS(X</em>{m-1}, Y<em>n), LCS(X_m, Y</em>{n-1})), &amp; \text{$x_m \neq y_n$}<br>\end{cases}$$</p>
 <blockquote>
 <p>理清了思路，接下来开始琢磨如何实现吧</p>
 <h3 id="算法中的数据结构">算法中的数据结构</h3></blockquote>
@@ -259,8 +260,9 @@
 </ol>
 <ul>
 <li>使用二维数组$C[m,n]$</li>
-<li>$c[i,j]$记录序列$X_i$和$Y_j$的最长公共子序列的长度。<br>$$ c(i,j) =<br>\begin{cases}<br>0 ,  &amp; \text{ if $i = 0 $ or $j = 0$ } \[2ex]<br>c(i-1, j - 1) + 1 , &amp; \text{ if $i&gt; 0 , j&gt;0 $ and $x_i = y_j$} \[2ex]<br>max(c(i-1, j), c(i, j-1)), &amp; \text{ if $i &gt; 0, j&gt;0 $ and $ x_i \neq y_j $}<br>\end{cases}$$</li>
+<li>$c[i,j]$记录序列$X_i$和$Y_j$的最长公共子序列的长度。</li>
 </ul>
+<p> $$ c(i,j) =<br>\begin{cases}<br>0 ,  &amp; \text{ if $i = 0 $ or $j = 0$ } \[2ex]<br>c(i-1, j - 1) + 1 , &amp; \text{ if $i&gt; 0 , j&gt;0 $ and $x_i = y_j$} \[2ex]<br>max(c(i-1, j), c(i, j-1)), &amp; \text{ if $i &gt; 0, j&gt;0 $ and $ x_i \neq y_j $}<br>\end{cases}$$</p>
 <ol>
 <li>方向变量<br>使用二维数组$B[m,n]$<br>其中，$b[i,j]$标记$c[i,j]$的值是由哪一个子问题的解达到的。<br>即$c[i,j]$是由$c[i-1,j-1]+1$或者$c[i-1,j]$或者$c[i,j-1]$的哪一个得到的。取值范围为Left，Top，LeftTop三种情况。为了简便，分别对应数值3，2，1。<br>如下图：<br><img src="http://pic002.cnblogs.com/images/2012/360827/2012111522442224.jpg" alt="此处输入图片的描述"></li>
 </ol>
