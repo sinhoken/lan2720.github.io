@@ -5,42 +5,30 @@
   
   <title>由“哪些类型的值可以做python dict的key”所引发的血案 | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天遇到了这么一个问题，在C站得forum里小争论了一下
+  <meta name="description" content="今天遇到了这么一个问题，在C站的forum里小争论了一下
 
 list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？
 
 平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。
-什么是hashable？请看官方对hashable给出的解释，
-
-hashable
-
-An object is h">
+什么是hashable？请看官方对hashable给出的解释，">
 <meta property="og:type" content="article">
 <meta property="og:title" content="由“哪些类型的值可以做python dict的key”所引发的血案">
 <meta property="og:url" content="http://lan2720.github.io/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/index.html">
 <meta property="og:site_name" content="Lan's Blog">
-<meta property="og:description" content="今天遇到了这么一个问题，在C站得forum里小争论了一下
+<meta property="og:description" content="今天遇到了这么一个问题，在C站的forum里小争论了一下
 
 list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？
 
 平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。
-什么是hashable？请看官方对hashable给出的解释，
-
-hashable
-
-An object is h">
+什么是hashable？请看官方对hashable给出的解释，">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="由“哪些类型的值可以做python dict的key”所引发的血案">
-<meta name="twitter:description" content="今天遇到了这么一个问题，在C站得forum里小争论了一下
+<meta name="twitter:description" content="今天遇到了这么一个问题，在C站的forum里小争论了一下
 
 list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？
 
 平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。
-什么是hashable？请看官方对hashable给出的解释，
-
-hashable
-
-An object is h">
+什么是hashable？请看官方对hashable给出的解释，">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -245,12 +233,12 @@ An object is h">
             <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是hashable？"><span class="toc-number">1.</span> <span class="toc-text">什么是hashable？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#回顾问题"><span class="toc-number">2.</span> <span class="toc-text">回顾问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#附：解释一下set和tuple的区别"><span class="toc-number">3.</span> <span class="toc-text">附：解释一下set和tuple的区别</span></a></li></ol>
           </div>
         
-        <p>今天遇到了这么一个问题，在C站得forum里小争论了一下</p>
+        <p>今天遇到了这么一个问题，在C站的forum里小争论了一下</p>
 <blockquote>
 <p>list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？</p>
 </blockquote>
 <p>平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。</p>
-<h2 id="什么是hashable？">什么是hashable？</h2><p>请看官方对hashable给出的<a href="https://docs.python.org/2.7/glossary.html#term-hashable" target="_blank" rel="external">解释</a>，</p>
+<h2 id="什么是hashable？">什么是hashable？</h2><p>请看官方对hashable给出的<a href="https://docs.python.org/2.7/glossary.html#term-hashable" target="_blank" rel="external">解释</a>，<br><a id="more"></a></p>
 <blockquote>
 <p>hashable</p>
 <blockquote>
@@ -259,7 +247,6 @@ An object is h">
 <p>All of Python’s immutable built-in objects are hashable, while no mutable containers (such as lists or dictionaries) are. Objects which are instances of user-defined classes are hashable by default; they all compare unequal (except with themselves), and their hash value is their id().</p>
 </blockquote>
 </blockquote>
-<a id="more"></a>
 <p>一个object是hashable的有两点要求：</p>
 <ul>
 <li>在生命周期内不可变（实现hash()方法）</li>
