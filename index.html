@@ -108,7 +108,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/julyedu/" style="font-size: NaNpx;">julyedu</a><a href="/tags/life/" style="font-size: NaNpx;">life</a><a href="/tags/动态规划/" style="font-size: NaNpx;">动态规划</a><a href="/tags/算法/" style="font-size: NaNpx;">算法</a>
+						<a href="/tags/julyedu/" style="font-size: NaNpx;">julyedu</a><a href="/tags/life/" style="font-size: NaNpx;">life</a><a href="/tags/python/" style="font-size: NaNpx;">python</a><a href="/tags/动态规划/" style="font-size: NaNpx;">动态规划</a><a href="/tags/算法/" style="font-size: NaNpx;">算法</a>
 					</div>
 				</section>
 				
@@ -175,6 +175,76 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-由“哪些类型的值可以做python-dict的key”所引发的血案" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/" class="article-date">
+  	<time datetime="2015-05-30T15:42:24.000Z" itemprop="datePublished">2015-05-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/">由“哪些类型的值可以做python dict的key”所引发的血案</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>今天遇到了这么一个问题，在C站得forum里小争论了一下</p>
+<blockquote>
+<p>list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？</p>
+</blockquote>
+<p>平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。</p>
+<h2 id="什么是hashable？">什么是hashable？</h2><p>请看官方对hashable给出的<a href="https://docs.python.org/2.7/glossary.html#term-hashable">解释</a>，</p>
+<blockquote>
+<p>hashable</p>
+<blockquote>
+<p>An object is hashable if it has a hash value which never changes during its lifetime (it needs a <strong>hash</strong>() method), and can be compared to other objects (it needs an <strong>eq</strong>() or <strong>cmp</strong>() method). Hashable objects which compare equal must have the same hash value.</p>
+<p>Hashability makes an object usable as a dictionary key and a set member, because these data structures use the hash value internally.</p>
+<p>All of Python’s immutable built-in objects are hashable, while no mutable containers (such as lists or dictionaries) are. Objects which are instances of user-defined classes are hashable by default; they all compare unequal (except with themselves), and their hash value is their id().</p>
+</blockquote>
+</blockquote>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-最长公共子序列的求解" class="article article-type-post" itemscope itemprop="blogPost">
   
