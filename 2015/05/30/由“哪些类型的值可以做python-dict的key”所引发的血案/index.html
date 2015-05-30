@@ -268,7 +268,7 @@ list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？
 <p>tuple is an immutable sequence type</p>
 </blockquote>
 </blockquote>
-<p>翻译过来就是set存储无序的、不重复的元素。自动去重，使用方法是”set([])”。<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>只关心每个元素只能出现一次的问题，不关心元素具体出现的位置，所以不能进行索引和对某一位置赋值。</span><br></pre></td></tr></table></figure></p>
+<p>翻译过来就是set存储无序的、不重复的元素。自动去重，使用方法是”set([])”。<br><figure class="highlight actionscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">set</span>只关心每个元素只能出现一次，不关心元素具体出现的位置，所以不能进行索引和对某一位置赋值。</span><br></pre></td></tr></table></figure></p>
 <figure class="highlight nimrod"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">tuple</span>是一个常量list，只能将<span class="keyword">tuple</span>作为一个整体使用，不可变，不能进行赋值，但是可以进行索引查找。</span><br></pre></td></tr></table></figure>
 <p>可以看出，set和tuple实际上是完全不相关的两种数据类型。</p>
 
