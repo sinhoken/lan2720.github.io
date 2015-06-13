@@ -207,29 +207,6 @@
 <p>同时，可以理解为java的软件包<br>:    提供了命名空间</p>
 <p>即规定了两个类可以重名，但是是两个不同的空间内可以重名。</p>
 <h2 id="为什么要用软件包">为什么要用软件包</h2><p>举个栗子，某公司对学校的管理系统进行开发，A组人员创建了一个父类User，下面有两个子类Student和Teacher。由于是单独开发，B组人员并不知道A组人员的命名，他们也定义了一个User父类，有RegUser和UnRegUser两个子类。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">A组开发</th>
-<th style="text-align:center">B组开发</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">User</td>
-<td style="text-align:center">User</td>
-</tr>
-<tr>
-<td style="text-align:center">Student</td>
-<td style="text-align:center">RegUser</td>
-</tr>
-<tr>
-<td style="text-align:center">Teacher</td>
-<td style="text-align:center">UnRegUser</td>
-</tr>
-</tbody>
-</table>
-<p>开发完成后，各自的模块都测试正常，但是合并成完整系统时，问题出现了——存在两个User类。怎么办?<br>这个时候，Java通过<strong>软件包</strong>完美解决了这个问题。</p>
       
     </div>
     
