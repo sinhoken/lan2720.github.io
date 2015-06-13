@@ -235,11 +235,11 @@
 <ul>
 <li>可以描述两段文字之间的“相似度”，即它们的雷同程度，从而能够用来辨别抄袭。另一方面，对一段文字进行修改之后，计算改动前后文字的最长公共子序列，将除此子序列外的部分提取出来，这种方法判断修改的部分，往往十分准确。简而言之，百度知道、百度百科都用得上。</li>
 </ul>
+<a id="more"></a>
 <blockquote>
 <p>这一条显然用处很大……</p>
 </blockquote>
 <p>好了，既然有了学习的动力，就研究透彻究竟LCS是个嘛玩意吧。</p>
-<a id="more"></a>
 <h2 id="纠正观点">纠正观点</h2><p>一直以为<strong>最长公共子序列</strong>(longest common subsequence)和<strong>最长公共子串</strong>(longest common substring)是一回事，其实不然。<br><strong>最长公共子序列</strong>不要求字符在原字符串中位置上连续，只需要字符前后的相对位置不改变即可。<br>举例来说，</p>
 <blockquote>
 <p>X = “$\color{red}{a}$$b$$\color{red}f$$g$$\color{red}c$”<br>Y = “$\color{red}a$$d$$\color{red}f$$\color{red}c$”</p>
