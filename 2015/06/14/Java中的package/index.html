@@ -261,7 +261,7 @@
 <p>-d<br>:    根据包名生成文件夹(文件夹的名字为jianan)</p>
 <p>.<br>:    在当前目录生成文件夹</p>
 <p>Test.java<br>:    编译生成Test.class的类，放在jianan文件夹下</p>
-<p>这样打包后，一个类的全名是<code>&quot;包名&quot; + &quot;.&quot; + &quot;类名&quot;</code><br>因此，编译后，执行这个Test类时，应该是<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">java</span> jianan.Test</span><br></pre></td></tr></table></figure></p>
+<p>这样打包后，一个类的全名是<code>&quot;包名&quot; + &quot;.&quot; + &quot;类名&quot;</code><br>因此，编译后，执行这个Test类时，应该是<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>java jianan.<span class="constant">Test</span></span><br></pre></td></tr></table></figure></p>
 <p>因为，打包后这个类的名字就发生了改变——“jianan.Test”</p>
 <h2 id="包名的命名规范">包名的命名规范</h2><ol>
 <li>要求包名所有的字母都要小写</li>
