@@ -3,17 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>welcome to the new world | Lan&#39;s Blog</title>
+  <title>Java访问权限 | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="这是一个新的开始">
+  <meta name="description" content="权限的基本介绍public类:    当两个类不在同一个包中，public权限就显示出作用了。如果一个类不是public的话，外部包无法对这个类进行访问。
+成员变量和函数:    如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。
+总结:    可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="welcome to the new world">
-<meta property="og:url" content="http://lan2720.github.io/2015/05/06/welcome-to-the-new-world/index.html">
+<meta property="og:title" content="Java访问权限">
+<meta property="og:url" content="http://lan2720.github.io/2015/06/14/Java访问权限/index.html">
 <meta property="og:site_name" content="Lan's Blog">
-<meta property="og:description" content="这是一个新的开始">
+<meta property="og:description" content="权限的基本介绍public类:    当两个类不在同一个包中，public权限就显示出作用了。如果一个类不是public的话，外部包无法对这个类进行访问。
+成员变量和函数:    如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。
+总结:    可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="welcome to the new world">
-<meta name="twitter:description" content="这是一个新的开始">
+<meta name="twitter:title" content="Java访问权限">
+<meta name="twitter:description" content="权限的基本介绍public类:    当两个类不在同一个包中，public权限就显示出作用了。如果一个类不是public的话，外部包无法对这个类进行访问。
+成员变量和函数:    如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。
+总结:    可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -174,11 +180,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-welcome-to-the-new-world" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Java访问权限" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/05/06/welcome-to-the-new-world/" class="article-date">
-  	<time datetime="2015-05-06T07:46:34.000Z" itemprop="datePublished">2015-05-06</time>
+      <a href="/2015/06/14/Java访问权限/" class="article-date">
+  	<time datetime="2015-06-14T11:05:18.000Z" itemprop="datePublished">2015-06-14</time>
 </a>
     </div>
   
@@ -191,7 +197,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      welcome to the new world
+      Java访问权限
     </h1>
   
 
@@ -200,7 +206,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
 	</div>
 
         
@@ -213,9 +219,29 @@
       
         <!-- Table of Contents -->
         
-        <blockquote>
-<p>这是一个新的开始</p>
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#权限的基本介绍"><span class="toc-number">1.</span> <span class="toc-text">权限的基本介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#public"><span class="toc-number">1.1.</span> <span class="toc-text">public</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#default"><span class="toc-number">1.2.</span> <span class="toc-text">default</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#private"><span class="toc-number">1.3.</span> <span class="toc-text">private</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#protected"><span class="toc-number">1.4.</span> <span class="toc-text">protected</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#访问权限和继承的关系"><span class="toc-number">2.</span> <span class="toc-text">访问权限和继承的关系</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#default-1"><span class="toc-number">2.1.</span> <span class="toc-text">default</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#private-1"><span class="toc-number">2.2.</span> <span class="toc-text">private</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#protected-1"><span class="toc-number">2.3.</span> <span class="toc-text">protected</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#权限总结"><span class="toc-number">3.</span> <span class="toc-text">权限总结</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#注意事项"><span class="toc-number">4.</span> <span class="toc-text">注意事项</span></a></li></ol>
+          </div>
+        
+        <h2 id="权限的基本介绍">权限的基本介绍</h2><h3 id="public">public</h3><p>类<br>:    当两个类不在同一个包中，public权限就显示出作用了。<br>如果一个类不是public的话，<code>外部包</code>无法对这个类进行访问。</p>
+<p>成员变量和函数<br>:    如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。</p>
+<p>总结<br>:    可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。</p>
+<h3 id="default">default</h3><p>在<code>同一个package</code>中的类，变量，函数均可互相访问。但是，不在一个package中的无法访问。</p>
+<a id="more"></a>
+<p>总结<br>:    default也叫<code>包访问权限</code>。</p>
+<h3 id="private">private</h3><p>只能修饰变量、函数，不能用来修饰类。<br>表示这个变量或者这个函数只能在<code>当前类</code>中使用，而在类的外部通通无法使用，即使处于同一个包也无法访问。</p>
+<h3 id="protected">protected</h3><p>稍微复杂，主要和继承有关系。</p>
+<h2 id="访问权限和继承的关系">访问权限和继承的关系</h2><h3 id="default-1">default</h3><p>由于default权限的成员仅在同一个包内可以自由访问。<br>如果子类和父类不在同一个包当中，子类虽然可以继承到父类中default权限的成员，但是没有访问权限。</p>
+<h3 id="private-1">private</h3><p>由于private只能在类内访问。<br>如果父类的成员变量或者成员函数声明为private，其子类是无法访问该成员变量或函数的。</p>
+<h3 id="protected-1">protected</h3><p>如果子类和父类不在同一个包当中，但是又希望子类能使用父类的某些成员变量或函数，就在父类中将这些成员声明为protected。</p>
+<p>protected拥有和default一样的权限，但是该权限只能修饰成员变量和成员函数（不能修饰类）。<br>除此之外，protected允许<code>跨包继承</code>。</p>
+<blockquote>
+<p>子类可以使用父类中被声明为protected的成员变量和成员函数，即使子类和父类在不同的包当中。</p>
 </blockquote>
+<p>对比protected和public修饰的成员变量和成员函数<br>:    protected权限修饰的成员，同包内可自由访问，跨包的话只有继承了父类的子类能访问，其他的任何情况都无法访问到protected修饰的成员。<br>    public修饰的成员任何类都能访问。</p>
+<h2 id="权限总结">权限总结</h2><p> public &gt; protected &gt; default &gt; private</p>
+<h2 id="注意事项">注意事项</h2><p> 一个类或者一个成员变量或函数的权限应该尽可能的小，才能体现面向对象的封装性。</p>
 
       
     </div>
@@ -225,15 +251,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/05/08/最长公共子序列的求解/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          最长公共子序列的求解
-        
-      </div>
-    </a>
   
+    <a href="/2015/06/14/Java中的package/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java中的package</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
   
 </nav>
 
@@ -260,7 +282,7 @@
 
 <div class="duoshuo">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="welcome-to-the-new-world" data-title="welcome to the new world" data-url="http://lan2720.github.io/2015/05/06/welcome-to-the-new-world/"></div>
+    <div class="ds-thread" data-thread-key="Java访问权限" data-title="Java访问权限" data-url="http://lan2720.github.io/2015/06/14/Java访问权限/"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">
