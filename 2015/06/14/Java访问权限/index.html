@@ -6,20 +6,17 @@
   <title>Java访问权限 | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="权限的基本介绍public类当两个类不在同一个包中，public权限就显示出作用了。如果一个类不是public的话，外部包无法对这个类进行访问。
-成员变量和函数如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。
-总结可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。">
+成员变量和函数如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java访问权限">
 <meta property="og:url" content="http://lan2720.github.io/2015/06/14/Java访问权限/index.html">
 <meta property="og:site_name" content="Lan's Blog">
 <meta property="og:description" content="权限的基本介绍public类当两个类不在同一个包中，public权限就显示出作用了。如果一个类不是public的话，外部包无法对这个类进行访问。
-成员变量和函数如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。
-总结可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。">
+成员变量和函数如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java访问权限">
 <meta name="twitter:description" content="权限的基本介绍public类当两个类不在同一个包中，public权限就显示出作用了。如果一个类不是public的话，外部包无法对这个类进行访问。
-成员变量和函数如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。
-总结可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。">
+成员变量和函数如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -226,8 +223,8 @@
         
         <h2 id="权限的基本介绍">权限的基本介绍</h2><h3 id="public">public</h3><h4 id="类">类</h4><p>当两个类不在同一个包中，public权限就显示出作用了。<br>如果一个类不是public的话，<code>外部包</code>无法对这个类进行访问。</p>
 <h4 id="成员变量和函数">成员变量和函数</h4><p>如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。</p>
-<h4 id="总结">总结</h4><p>可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。</p>
 <a id="more"></a>
+<h4 id="总结">总结</h4><p>可以修饰成员函数、成员变量和类。没有任何限制，外部包也可以访问。</p>
 <h3 id="default">default</h3><p>在<code>同一个package</code>中的类，变量，函数均可互相访问。但是，不在一个package中的无法访问。</p>
 <h4 id="总结-1">总结</h4><p>default也叫<code>包访问权限</code>。</p>
 <h3 id="private">private</h3><p>只能修饰变量、函数，不能用来修饰类。<br>表示这个变量或者这个函数只能在<code>当前类</code>中使用，而在类的外部通通无法使用，即使处于同一个包也无法访问。</p>
