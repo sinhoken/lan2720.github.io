@@ -3,17 +3,23 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Lan&#39;s Blog</title>
+  <title>对Network类的代码分析 | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lan's Blog">
-<meta property="og:url" content="http://lan2720.github.io/index.html">
+  <meta name="description" content="Neural Networks and Deep Learning 第一章学习笔记
+感兴趣的请移步原文
+SGD代码解析123456789101112131415161718192021222324def SGD(self, training_data, epochs, mini_batch_size, eta,            test_data=None):        &quot;&quot;&quot;Train">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对Network类的代码分析">
+<meta property="og:url" content="http://lan2720.github.io/2015/07/13/对Network类的代码分析/index.html">
 <meta property="og:site_name" content="Lan's Blog">
-<meta property="og:description">
+<meta property="og:description" content="Neural Networks and Deep Learning 第一章学习笔记
+感兴趣的请移步原文
+SGD代码解析123456789101112131415161718192021222324def SGD(self, training_data, epochs, mini_batch_size, eta,            test_data=None):        &quot;&quot;&quot;Train">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lan's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="对Network类的代码分析">
+<meta name="twitter:description" content="Neural Networks and Deep Learning 第一章学习笔记
+感兴趣的请移步原文
+SGD代码解析123456789101112131415161718192021222324def SGD(self, training_data, epochs, mini_batch_size, eta,            test_data=None):        &quot;&quot;&quot;Train">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -176,9 +182,7 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-对Network类的代码分析" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-对Network类的代码分析" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2015/07/13/对Network类的代码分析/" class="article-date">
@@ -194,17 +198,33 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/13/对Network类的代码分析/">对Network类的代码分析</a>
+    <h1 class="article-title" itemprop="name">
+      对Network类的代码分析
     </h1>
   
 
       </header>
       
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
     
     <div class="article-entry" itemprop="articleBody">
       
         <!-- Table of Contents -->
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#SGD代码解析"><span class="toc-number">1.</span> <span class="toc-text">SGD代码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_1:_打乱"><span class="toc-number">1.1.</span> <span class="toc-text">Step 1: 打乱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_2:_生成minibatch"><span class="toc-number">1.2.</span> <span class="toc-text">Step 2: 生成minibatch</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_3:_对mini_batches依次进行GD，并update参数"><span class="toc-number">1.3.</span> <span class="toc-text">Step 3: 对mini_batches依次进行GD，并update参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#update_mini_batch代码解析"><span class="toc-number">2.</span> <span class="toc-text">update_mini_batch代码解析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_1_:_初始化存储w和b的总微分矩阵为0"><span class="toc-number">2.1.</span> <span class="toc-text">Step 1 : 初始化存储w和b的总微分矩阵为0</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_2_:_BP算法计算GD，累加"><span class="toc-number">2.2.</span> <span class="toc-text">Step 2 : BP算法计算GD，累加</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_3_:_更新weights和biases参数"><span class="toc-number">2.3.</span> <span class="toc-text">Step 3 : 更新weights和biases参数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#feedforward代码解析"><span class="toc-number">3.</span> <span class="toc-text">feedforward代码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#backprop代码解析"><span class="toc-number">4.</span> <span class="toc-text">backprop代码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sigmoid_vec代码解析"><span class="toc-number">5.</span> <span class="toc-text">sigmoid_vec代码解析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#evaluate(test_data):"><span class="toc-number">6.</span> <span class="toc-text">evaluate(test_data):</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_1_:"><span class="toc-number">6.1.</span> <span class="toc-text">Step 1 :</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Step_2_:"><span class="toc-number">6.2.</span> <span class="toc-text">Step 2 :</span></a></li></ol></li></ol>
+          </div>
         
         <p>Neural Networks and Deep Learning 第一章学习笔记</p>
 <p>感兴趣的请移步<a href="http://neuralnetworksanddeeplearning.com/chap1.html" target="_blank" rel="external">原文</a></p>
@@ -234,334 +254,61 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/06/14/Java访问权限/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Java访问权限</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
-
-
-
-
-
-  
-    <article id="post-Java访问权限" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/14/Java访问权限/" class="article-date">
-  	<time datetime="2015-06-14T11:05:18.000Z" itemprop="datePublished">2015-06-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/14/Java访问权限/">Java访问权限</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="权限的基本介绍">权限的基本介绍</h2><h3 id="public">public</h3><h4 id="类">类</h4><p>当两个类不在同一个包中，public权限就显示出作用了。<br>如果一个类不是public的话，<code>外部包</code>无法对这个类进行访问。</p>
-<h4 id="成员变量和函数">成员变量和函数</h4><p>如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/14/Java访问权限/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
 
+<div class="duoshuo">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="对Network类的代码分析" data-title="对Network类的代码分析" data-url="http://lan2720.github.io/2015/07/13/对Network类的代码分析/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan-blog"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
 
 
 
-
-  
-    <article id="post-Java中的package" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/14/Java中的package/" class="article-date">
-  	<time datetime="2015-06-13T16:09:05.000Z" itemprop="datePublished">2015-06-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/14/Java中的package/">Java中的package</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是Java当中的软件包?">什么是Java当中的软件包?</h2><p>所谓的软件包<br>:    就是把类放在不同的文件夹下</p>
-<p>相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。</p>
-<p>同时，可以理解为java的软件包<br>:    提供了命名空间</p>
-<p>即规定了两个类可以重名，但是是两个不同的空间内可以重名。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/14/Java中的package/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-由“哪些类型的值可以做python-dict的key”所引发的血案" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/" class="article-date">
-  	<time datetime="2015-05-30T15:42:24.000Z" itemprop="datePublished">2015-05-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/">由“哪些类型的值可以做python dict的key”所引发的血案</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天遇到了这么一个问题，在C站的forum里小争论了一下</p>
-<blockquote>
-<p>list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？</p>
-</blockquote>
-<p>平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。</p>
-<h2 id="什么是hashable？">什么是hashable？</h2><p>请看官方对hashable给出的<a href="https://docs.python.org/2.7/glossary.html#term-hashable">解释</a><br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-最长公共子序列的求解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/08/最长公共子序列的求解/" class="article-date">
-  	<time datetime="2015-05-08T08:52:31.000Z" itemprop="datePublished">2015-05-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/08/最长公共子序列的求解/">最长公共子序列的求解</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="有何用处">有何用处</h2><p>我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。<br>最长公共子序列有两大<strong>意义</strong>：</p>
-<ul>
-<li>广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此推测序列的结构、功能和演化过程。</li>
-</ul>
-<blockquote>
-<p>基因序列比对略显扯淡了，一般情况下很难接触到这个方面的研究</p>
-</blockquote>
-<ul>
-<li>可以描述两段文字之间的“相似度”，即它们的雷同程度，从而能够用来辨别抄袭。另一方面，对一段文字进行修改之后，计算改动前后文字的最长公共子序列，将除此子序列外的部分提取出来，这种方法判断修改的部分，往往十分准确。简而言之，百度知道、百度百科都用得上。</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/julyedu/">julyedu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/08/最长公共子序列的求解/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-welcome-to-the-new-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/06/welcome-to-the-new-world/" class="article-date">
-  	<time datetime="2015-05-06T07:46:34.000Z" itemprop="datePublished">2015-05-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/06/welcome-to-the-new-world/">welcome to the new world</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- Table of Contents -->
-        
-        <blockquote>
-<p>这是一个新的开始</p>
-</blockquote>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-  
 </div>
       <footer id="footer">
   <div class="outer">
