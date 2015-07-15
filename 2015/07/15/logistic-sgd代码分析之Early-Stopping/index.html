@@ -3,17 +3,20 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Lan&#39;s Blog</title>
+  <title>logistic_sgd代码分析之Early Stopping | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lan's Blog">
-<meta property="og:url" content="http://lan2720.github.io/index.html">
+  <meta name="description" content="暑期实习带我正式迈上了Deep Learning的道路，虽然DL目前来说“坑多路险”，还是感谢geetest的黄老板领我“入坑”。至少这半个月以来看了很多，学了很多，加入了一个新的大家庭。从刚开始的痛苦、挣扎到逐渐思路清晰，收获还是不小的。这篇是我学习Deep Learning Tutorials-Logistic Regression时对代码的理解，如果偏颇请多指正。
+Train Model-E">
+<meta property="og:type" content="article">
+<meta property="og:title" content="logistic_sgd代码分析之Early Stopping">
+<meta property="og:url" content="http://lan2720.github.io/2015/07/15/logistic-sgd代码分析之Early-Stopping/index.html">
 <meta property="og:site_name" content="Lan's Blog">
-<meta property="og:description">
+<meta property="og:description" content="暑期实习带我正式迈上了Deep Learning的道路，虽然DL目前来说“坑多路险”，还是感谢geetest的黄老板领我“入坑”。至少这半个月以来看了很多，学了很多，加入了一个新的大家庭。从刚开始的痛苦、挣扎到逐渐思路清晰，收获还是不小的。这篇是我学习Deep Learning Tutorials-Logistic Regression时对代码的理解，如果偏颇请多指正。
+Train Model-E">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lan's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="logistic_sgd代码分析之Early Stopping">
+<meta name="twitter:description" content="暑期实习带我正式迈上了Deep Learning的道路，虽然DL目前来说“坑多路险”，还是感谢geetest的黄老板领我“入坑”。至少这半个月以来看了很多，学了很多，加入了一个新的大家庭。从刚开始的痛苦、挣扎到逐渐思路清晰，收获还是不小的。这篇是我学习Deep Learning Tutorials-Logistic Regression时对代码的理解，如果偏颇请多指正。
+Train Model-E">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -176,9 +179,7 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-logistic-sgd代码分析之Early-Stopping" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-logistic-sgd代码分析之Early-Stopping" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/" class="article-date">
@@ -194,17 +195,33 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/">logistic_sgd代码分析之Early Stopping</a>
+    <h1 class="article-title" itemprop="name">
+      logistic_sgd代码分析之Early Stopping
     </h1>
   
 
       </header>
       
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deeplearningtutorials/">deeplearningtutorials</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
+      
     
     <div class="article-entry" itemprop="articleBody">
       
         <!-- Table of Contents -->
+        
+          <div id="toc" class="toc-article">
+            <strong class="toc-title">文章目录</strong>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Train_Model-Early_Stopping"><span class="toc-number">1.</span> <span class="toc-text">Train Model-Early Stopping</span></a></li></ol>
+          </div>
         
         <p>暑期实习带我正式迈上了Deep Learning的道路，虽然DL目前来说“坑多路险”，还是感谢geetest的黄老板领我“入坑”。至少这半个月以来看了很多，学了很多，加入了一个新的大家庭。从刚开始的痛苦、挣扎到逐渐思路清晰，收获还是不小的。<br>这篇是我学习<a href="http://deeplearning.net/tutorial/logreg.html" target="_blank" rel="external">Deep Learning Tutorials-Logistic Regression</a>时对代码的理解，如果偏颇请多指正。</p>
 <h2 id="Train_Model-Early_Stopping">Train Model-Early Stopping</h2><p>这一部分代码的重点是理解<a href="http://deeplearning.net/tutorial/gettingstarted.html#opt-early-stopping" target="_blank" rel="external">Early-Stopping</a>的机制。</p>
@@ -233,393 +250,61 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deeplearningtutorials/">deeplearningtutorials</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/13/对Network类的代码分析/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">对Network类的代码分析</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
-
-
-
-
-
-  
-    <article id="post-对Network类的代码分析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/13/对Network类的代码分析/" class="article-date">
-  	<time datetime="2015-07-13T05:53:05.000Z" itemprop="datePublished">2015-07-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/13/对Network类的代码分析/">对Network类的代码分析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Neural Networks and Deep Learning 第一章学习笔记</p>
-<p>感兴趣的请移步<a href="http://neuralnetworksanddeeplearning.com/chap1.html">Neural Networks and Deep Learning - Chapter 1</a></p>
-<h2 id="SGD代码解析">SGD代码解析</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SGD</span><span class="params">(self, training_data, epochs, mini_batch_size, eta,</span><br><span class="line">            test_data=None)</span>:</span></span><br><span class="line">        <span class="string">"""Train the neural network using mini-batch stochastic</span><br><span class="line">        gradient descent.  The "training_data" is a list of tuples</span><br><span class="line">        "(x, y)" representing the training inputs and the desired</span><br><span class="line">        outputs.  The other non-optional parameters are</span><br><span class="line">        self-explanatory.  If "test_data" is provided then the</span><br><span class="line">        network will be evaluated against the test data after each</span><br><span class="line">        epoch, and partial progress printed out.  This is useful for</span><br><span class="line">        tracking progress, but slows things down substantially."""</span></span><br><span class="line">        <span class="keyword">if</span> test_data: n_test = len(test_data)</span><br><span class="line">        n = len(training_data)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> xrange(epochs):</span><br><span class="line">            random.shuffle(training_data)</span><br><span class="line">            mini_batches = [</span><br><span class="line">                training_data[k:k+mini_batch_size]</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> xrange(<span class="number">0</span>, n, mini_batch_size)]</span><br><span class="line">            <span class="keyword">for</span> mini_batch <span class="keyword">in</span> mini_batches:</span><br><span class="line">                self.update_mini_batch(mini_batch, eta)</span><br><span class="line">            <span class="keyword">if</span> test_data:</span><br><span class="line">                <span class="keyword">print</span> <span class="string">"Epoch &#123;0&#125;: &#123;1&#125; / &#123;2&#125;"</span>.format(</span><br><span class="line">                    j, self.evaluate(test_data), n_test)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">print</span> <span class="string">"Epoch &#123;0&#125; complete"</span>.format(j)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/13/对Network类的代码分析/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
 
+<div class="duoshuo">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="logistic-sgd代码分析之Early-Stopping" data-title="logistic_sgd代码分析之Early Stopping" data-url="http://lan2720.github.io/2015/07/15/logistic-sgd代码分析之Early-Stopping/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan-blog"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
 
 
 
-
-  
-    <article id="post-Java访问权限" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/14/Java访问权限/" class="article-date">
-  	<time datetime="2015-06-14T11:05:18.000Z" itemprop="datePublished">2015-06-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/14/Java访问权限/">Java访问权限</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="权限的基本介绍">权限的基本介绍</h2><h3 id="public">public</h3><h4 id="类">类</h4><p>当两个类不在同一个包中，public权限就显示出作用了。<br>如果一个类不是public的话，<code>外部包</code>无法对这个类进行访问。</p>
-<h4 id="成员变量和函数">成员变量和函数</h4><p>如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/14/Java访问权限/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Java中的package" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/14/Java中的package/" class="article-date">
-  	<time datetime="2015-06-13T16:09:05.000Z" itemprop="datePublished">2015-06-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/14/Java中的package/">Java中的package</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是Java当中的软件包?">什么是Java当中的软件包?</h2><p>所谓的软件包<br>:    就是把类放在不同的文件夹下</p>
-<p>相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。</p>
-<p>同时，可以理解为java的软件包<br>:    提供了命名空间</p>
-<p>即规定了两个类可以重名，但是是两个不同的空间内可以重名。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/14/Java中的package/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-由“哪些类型的值可以做python-dict的key”所引发的血案" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/" class="article-date">
-  	<time datetime="2015-05-30T15:42:24.000Z" itemprop="datePublished">2015-05-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/">由“哪些类型的值可以做python dict的key”所引发的血案</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天遇到了这么一个问题，在C站的forum里小争论了一下</p>
-<blockquote>
-<p>list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？</p>
-</blockquote>
-<p>平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。</p>
-<h2 id="什么是hashable？">什么是hashable？</h2><p>请看官方对hashable给出的<a href="https://docs.python.org/2.7/glossary.html#term-hashable">解释</a><br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-最长公共子序列的求解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/08/最长公共子序列的求解/" class="article-date">
-  	<time datetime="2015-05-08T08:52:31.000Z" itemprop="datePublished">2015-05-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/08/最长公共子序列的求解/">最长公共子序列的求解</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="有何用处">有何用处</h2><p>我习惯在学习一个新事物前想想这玩意在实际生活中有什么用，这样既能方便今后工作中遇到相似情况时快速联想到解决方案，又能在整个学习过程中保持激情——入门时遇到困难阻力是经常有的事，但是有实际应用价值的东西，大家往往少了些畏难情绪，很愿意花时间去钻研。<br>最长公共子序列有两大<strong>意义</strong>：</p>
-<ul>
-<li>广泛的应用在图形相似处理、媒体流的相似比较、计算生物学方面。生物学家常常利用该算法进行基因序列比对，由此推测序列的结构、功能和演化过程。</li>
-</ul>
-<blockquote>
-<p>基因序列比对略显扯淡了，一般情况下很难接触到这个方面的研究</p>
-</blockquote>
-<ul>
-<li>可以描述两段文字之间的“相似度”，即它们的雷同程度，从而能够用来辨别抄袭。另一方面，对一段文字进行修改之后，计算改动前后文字的最长公共子序列，将除此子序列外的部分提取出来，这种方法判断修改的部分，往往十分准确。简而言之，百度知道、百度百科都用得上。</li>
-</ul>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/julyedu/">julyedu</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/动态规划/">动态规划</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/算法/">算法</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/08/最长公共子序列的求解/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-welcome-to-the-new-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/06/welcome-to-the-new-world/" class="article-date">
-  	<time datetime="2015-05-06T07:46:34.000Z" itemprop="datePublished">2015-05-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/06/welcome-to-the-new-world/">welcome to the new world</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <!-- Table of Contents -->
-        
-        <blockquote>
-<p>这是一个新的开始</p>
-</blockquote>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/life/">life</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-  
 </div>
       <footer id="footer">
   <div class="outer">
