@@ -3,26 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Java中的package | Lan&#39;s Blog</title>
+  <title>初识Learning Rate Schedule问题 | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="什么是Java当中的软件包?所谓的软件包:    就是把类放在不同的文件夹下
-相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。
-同时，可以理解为java的软件包:    提供了命名空间
-即规定了两个类可以重名，但是是两个不同的空间内可以重名。">
+  <meta name="description" content="背景首先，上个图来看看。这是在learning rate = 0.0025, 0.25, 2.5三种情况下cost function随着训练epoch增大的变化情况。从图中可以看出，learning rate太大时（橙色），也就是每一step太大，导致过程中有些epoch不降反升，每一步都很随机，容易跳过local minimum。当learning rate太小时（蓝色），虽然cost一直在减小">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Java中的package">
-<meta property="og:url" content="http://lan2720.github.io/2015/06/14/Java中的package/index.html">
+<meta property="og:title" content="初识Learning Rate Schedule问题">
+<meta property="og:url" content="http://lan2720.github.io/2015/07/21/初识Learning-Rate-Schedule问题/index.html">
 <meta property="og:site_name" content="Lan's Blog">
-<meta property="og:description" content="什么是Java当中的软件包?所谓的软件包:    就是把类放在不同的文件夹下
-相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。
-同时，可以理解为java的软件包:    提供了命名空间
-即规定了两个类可以重名，但是是两个不同的空间内可以重名。">
+<meta property="og:description" content="背景首先，上个图来看看。这是在learning rate = 0.0025, 0.25, 2.5三种情况下cost function随着训练epoch增大的变化情况。从图中可以看出，learning rate太大时（橙色），也就是每一step太大，导致过程中有些epoch不降反升，每一步都很随机，容易跳过local minimum。当learning rate太小时（蓝色），虽然cost一直在减小">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eua62ghcgvj20mj0g875y.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Java中的package">
-<meta name="twitter:description" content="什么是Java当中的软件包?所谓的软件包:    就是把类放在不同的文件夹下
-相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。
-同时，可以理解为java的软件包:    提供了命名空间
-即规定了两个类可以重名，但是是两个不同的空间内可以重名。">
+<meta name="twitter:title" content="初识Learning Rate Schedule问题">
+<meta name="twitter:description" content="背景首先，上个图来看看。这是在learning rate = 0.0025, 0.25, 2.5三种情况下cost function随着训练epoch增大的变化情况。从图中可以看出，learning rate太大时（橙色），也就是每一step太大，导致过程中有些epoch不降反升，每一步都很随机，容易跳过local minimum。当learning rate太小时（蓝色），虽然cost一直在减小">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -185,11 +177,11 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap"><article id="post-Java中的package" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-初识Learning-Rate-Schedule问题" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/06/14/Java中的package/" class="article-date">
-  	<time datetime="2015-06-13T16:09:05.000Z" itemprop="datePublished">2015-06-14</time>
+      <a href="/2015/07/21/初识Learning-Rate-Schedule问题/" class="article-date">
+  	<time datetime="2015-07-21T13:34:03.000Z" itemprop="datePublished">2015-07-21</time>
 </a>
     </div>
   
@@ -202,7 +194,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Java中的package
+      初识Learning Rate Schedule问题
     </h1>
   
 
@@ -211,7 +203,7 @@
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
 	</div>
 
         
@@ -224,52 +216,12 @@
       
         <!-- Table of Contents -->
         
-          <div id="toc" class="toc-article">
-            <strong class="toc-title">文章目录</strong>
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#什么是Java当中的软件包?"><span class="toc-number">1.</span> <span class="toc-text">什么是Java当中的软件包?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#为什么要用软件包"><span class="toc-number">2.</span> <span class="toc-text">为什么要用软件包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#如何给一个类打包?"><span class="toc-number">3.</span> <span class="toc-text">如何给一个类打包?</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#包名的命名规范"><span class="toc-number">4.</span> <span class="toc-text">包名的命名规范</span></a></li></ol>
-          </div>
-        
-        <h2 id="什么是Java当中的软件包?">什么是Java当中的软件包?</h2><p>所谓的软件包<br>:    就是把类放在不同的文件夹下</p>
-<p>相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。</p>
-<p>同时，可以理解为java的软件包<br>:    提供了命名空间</p>
-<p>即规定了两个类可以重名，但是是两个不同的空间内可以重名。</p>
-<a id="more"></a>
-<h2 id="为什么要用软件包">为什么要用软件包</h2><p>举个栗子，某公司对学校的管理系统进行开发，A组人员创建了一个父类User，下面有两个子类Student和Teacher。由于是单独开发，B组人员并不知道A组人员的命名，他们也定义了一个User父类，有RegUser和UnRegUser两个子类。</p>
-<table>
-<thead>
-<tr>
-<th style="text-align:center">A组开发</th>
-<th style="text-align:center">B组开发</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:center">User</td>
-<td style="text-align:center">User</td>
-</tr>
-<tr>
-<td style="text-align:center">Student</td>
-<td style="text-align:center">RegUser</td>
-</tr>
-<tr>
-<td style="text-align:center">Teacher</td>
-<td style="text-align:center">UnRegUser</td>
-</tr>
-</tbody>
-</table>
-<p>开发完成后，各自的模块都测试正常，但是合并成完整系统时，问题出现了——存在两个User类。怎么办?<br>这个时候，Java通过<strong>软件包</strong>完美解决了这个问题。</p>
-<h2 id="如何给一个类打包?">如何给一个类打包?</h2><p>package的使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> jianan;</span><br><span class="line">        </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello Package"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>编译的时候<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ javac -<span class="keyword">d</span> . <span class="keyword">Test</span>.java</span><br></pre></td></tr></table></figure></p>
-<p>-d<br>:    根据包名生成文件夹(文件夹的名字为jianan)</p>
-<p>.<br>:    在当前目录生成文件夹</p>
-<p>Test.java<br>:    编译生成Test.class的类，放在jianan文件夹下</p>
-<p>这样打包后，一个类的全名是<code>&quot;包名&quot; + &quot;.&quot; + &quot;类名&quot;</code><br>因此，编译后，执行这个Test类时，应该是<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>java jianan.<span class="constant">Test</span></span><br></pre></td></tr></table></figure></p>
-<p>因为，打包后这个类的名字就发生了改变——“jianan.Test”</p>
-<h2 id="包名的命名规范">包名的命名规范</h2><ol>
-<li>要求包名所有的字母都要小写</li>
-<li>包名一般情况下是你的域名倒过来写</li>
-<li>org.jianan 先生成org文件夹，下面有个jianan文件夹，里面有个Test.class</li>
-</ol>
+        <h2 id="背景">背景</h2><p>首先，上个图来看看。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eua62ghcgvj20mj0g875y.jpg" alt="diffrenet learning rate compare"><br>这是在learning rate = 0.0025, 0.25, 2.5三种情况下cost function随着训练epoch增大的变化情况。<br>从图中可以看出，learning rate太大时（橙色），也就是每一step太大，导致过程中有些epoch不降反升，每一步都很随机，容易跳过local minimum。当learning rate太小时（蓝色），虽然cost一直在减小，但是出现了slow down，导致全程的下降速度不快。当learning rate相对适中时（黄色），cost从一开始的几个epoch就下降的很快，但是在整个训练过程的后面几个epoch出现了小的波动。<br>因此，为了结合两者的优势。我们需要在整个训练过程中，对learning rate进行调度。</p>
+<blockquote>
+<p>it’s often advantageous to vary the learning rate. Early on during the learning process it’s likely that the weights are badly wrong. And so it’s best to use a large learning rate that causes the weights to change quickly. Later, we can reduce the learning rate as we make more fine-tuned adjustments to our weights.</p>
+</blockquote>
+<h2 id="解决">解决</h2><p>接下来的问题就是在训练过程中我们该如何调整learning rate。<br>Many approaches are possible. One natural approach is to use the same basic idea as early stopping. The idea is to hold the learning rate constant until the validation accuracy starts to get worse. Then decrease the learning rate by some amount, say a factor of two or ten. We repeat this many times, until, say, the learning rate is a factor of 1,024 (or 1,000) times lower than the initial value. Then we terminate.</p>
+<h2 id="总结">总结</h2><p>A variable learning schedule can improve performance, but it also opens up a world of possible choices for the learning schedule. Those choices can be a headache - you can spend forever trying to optimize your learning schedule. For first experiments my suggestion is to use a single, constant value for the learning rate. That’ll get you a good first approximation. Later, if you want to obtain the best performance from your network, it’s worth experimenting with a learning schedule.<br>所以学习速率的调整问题是精益求精时候要考虑的问题，对于项目刚开始的探索阶段并不适用。</p>
 
       
     </div>
@@ -279,18 +231,9 @@
     
 <nav id="article-nav">
   
-    <a href="/2015/06/14/Java访问权限/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Java访问权限
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">由“哪些类型的值可以做python dict的key”所引发的血案</div>
+    <a href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">logistic_sgd代码分析之Early Stopping</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
@@ -319,7 +262,7 @@
 
 <div class="duoshuo">
     <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="Java中的package" data-title="Java中的package" data-url="http://lan2720.github.io/2015/06/14/Java中的package/"></div>
+    <div class="ds-thread" data-thread-key="初识Learning-Rate-Schedule问题" data-title="初识Learning Rate Schedule问题" data-url="http://lan2720.github.io/2015/07/21/初识Learning-Rate-Schedule问题/"></div>
     <!-- 多说评论框 end -->
     <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
     <script type="text/javascript">
