@@ -204,7 +204,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近在看<a href="http://deeplearning.net/tutorial/dA.html#daa">Deep Learning Tutorials-Denoising Autoencoders</a>的内容，整个程序全部用theano和numpy写的，思路特别清晰。但是对于sparsity的限制没有感性的认识，一直觉得很玄幻。<br>今天就改了一下它的<a href="https://github.com/lisa-lab/DeepLearningTutorials/blob/master/code/dA.py">源码</a>，用matplotlib将hidden layer每个neuron输出的activation值用散点图的方式绘制出来，通过调节sparse_penalty参数进行对比。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eucn84hf8qj20mk0h0jxm.jpg" alt="sparse 0.01"><br>图1：当sparse限制在0.01时<br>相当于100个neurons，只有大概1个neuron被激活。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eucn90j9hoj20mk0h0ten.jpg" alt="sparse 0.05"><br>图2：当sparse限制在0.05时<br>实验的训练集是MNIST数据的50000个train_dataset，经过15次epoch训练后，利用训练好的w和b参数，再次输入500个train_dataset，得到其hidden layer的输出结果，然后绘制成图。<br>
+        <p>最近在看<a href="http://deeplearning.net/tutorial/dA.html#daa">Deep Learning Tutorials-Denoising Autoencoders</a>的内容，整个程序全部用theano和numpy写的，思路特别清晰。但是对于sparsity的限制没有感性的认识，一直觉得很玄幻。<br>今天就改了一下它的<a href="https://github.com/lisa-lab/DeepLearningTutorials/blob/master/code/dA.py">源码</a>，用matplotlib将hidden layer每个neuron输出的activation值用散点图的方式绘制出来，通过调节sparse_penalty参数进行对比。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eucn84hf8qj20mk0h0jxm.jpg" alt="sparse 0.01"><br>图1：当sparse限制在0.01时<br>
       
     </div>
     
