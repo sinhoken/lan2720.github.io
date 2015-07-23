@@ -223,7 +223,7 @@
         
           <div id="toc" class="toc-article">
             <strong class="toc-title">文章目录</strong>
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候用哪个"><span class="toc-number">2.</span> <span class="toc-text">什么时候用哪个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#activation_function"><span class="toc-number">3.</span> <span class="toc-text">activation function</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#cost_function"><span class="toc-number">4.</span> <span class="toc-text">cost function</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候用哪个"><span class="toc-number">2.</span> <span class="toc-text">什么时候用哪个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#激励方程"><span class="toc-number">3.</span> <span class="toc-text">激励方程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代价函数"><span class="toc-number">4.</span> <span class="toc-text">代价函数</span></a></li></ol>
           </div>
         
         <h2 id="基础知识">基础知识</h2><p>logistic regression是个二分类问题。比如，预测病人的肿瘤是恶性（malignant）还是良性（benign）的情况。<br>sofxmax　regression是个多分类问题，类标签$y$可以取两个以上的值。诸如MNIST手写数字分类，辨识10个不同的单个数字。</p>
@@ -231,8 +231,8 @@
 <blockquote>
 <p>如果你在开发一个音乐分类的应用，需要对k种类型的音乐进行识别，那么是选择使用 softmax 分类器呢，还是使用 logistic 回归算法建立 k 个独立的二元分类器呢？<br>这一选择取决于你的类别之间是否互斥，例如，如果你有四个类别的音乐，分别为：古典音乐、乡村音乐、摇滚乐和爵士乐，那么你可以假设每个训练样本只会被打上一个标签（即：一首歌只能属于这四种音乐类型的其中一种），此时你应该使用类别数 k = 4 的softmax回归。（如果在你的数据集中，有的歌曲不属于以上四类的其中任何一类，那么你可以添加一个“其他类”，并将类别数 k 设为5。）<br>如果你的四个类别如下：人声音乐、舞曲、影视原声、流行歌曲，那么这些类别之间并不是互斥的。例如：一首歌曲可以来源于影视原声，同时也包含人声 。这种情况下，使用4个二分类的 logistic 回归分类器更为合适。这样，对于每个新的音乐作品 ，我们的算法可以分别判断它是否属于各个类别。</p>
 </blockquote>
-<h2 id="activation_function">activation function</h2><p>一般都是sigmoid函数。<br><a id="more"></a></p>
-<h2 id="cost_function">cost function</h2><p>logistic regression一般选择cross entropy作为损失函数。<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1euctu4fxk1j20fv01ydft.jpg" alt="logistic regression-cost function"><br>softmax regression一般选择negative log likelihood作为损失函数。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1euctw1k2j6j20do026q2x.jpg" alt="softmax regression-cost function"></p>
+<h2 id="激励方程">激励方程</h2><p>一般都是sigmoid函数。<br><a id="more"></a></p>
+<h2 id="代价函数">代价函数</h2><p>logistic regression一般选择cross entropy作为损失函数。<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1euctu4fxk1j20fv01ydft.jpg" alt="logistic regression-cost function"><br>softmax regression一般选择negative log likelihood作为损失函数。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1euctw1k2j6j20do026q2x.jpg" alt="softmax regression-cost function"></p>
 <p>虽然表面上这两个函数是不同的，但是实际上cross entropy可以转化成<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eucu37nuzqj20cw025dfs.jpg" alt="crossentropy-transform"><br>所以negative log likelihood是cross entropy在多分类上的推广。</p>
 
       
