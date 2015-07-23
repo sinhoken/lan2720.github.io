@@ -106,7 +106,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/deeplearningtutorials/" style="font-size: 10px;">deeplearningtutorials</a><a href="/tags/java/" style="font-size: 15px;">java</a><a href="/tags/julyedu/" style="font-size: 10px;">julyedu</a><a href="/tags/life/" style="font-size: 10px;">life</a><a href="/tags/neuralnetworksanddeeplearning/" style="font-size: 15px;">neuralnetworksanddeeplearning</a><a href="/tags/python/" style="font-size: 10px;">python</a><a href="/tags/动态规划/" style="font-size: 10px;">动态规划</a><a href="/tags/学习笔记/" style="font-size: 20px;">学习笔记</a><a href="/tags/算法/" style="font-size: 10px;">算法</a>
+						<a href="/tags/deeplearningtutorials/" style="font-size: 15px;">deeplearningtutorials</a><a href="/tags/java/" style="font-size: 15px;">java</a><a href="/tags/julyedu/" style="font-size: 10px;">julyedu</a><a href="/tags/life/" style="font-size: 10px;">life</a><a href="/tags/neuralnetworksanddeeplearning/" style="font-size: 15px;">neuralnetworksanddeeplearning</a><a href="/tags/python/" style="font-size: 10px;">python</a><a href="/tags/动态规划/" style="font-size: 10px;">动态规划</a><a href="/tags/学习笔记/" style="font-size: 20px;">学习笔记</a><a href="/tags/算法/" style="font-size: 10px;">算法</a>
 					</div>
 				</section>
 				
@@ -177,6 +177,63 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-用matplotlib可视化来理解autoencoder中的sparse-penalty" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/" class="article-date">
+  	<time datetime="2015-07-23T13:48:50.000Z" itemprop="datePublished">2015-07-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/">用matplotlib可视化来理解autoencoder中的sparse penalty</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>最近在看<a href="http://deeplearning.net/tutorial/dA.html#daa">Deep Learning Tutorials-Denoising Autoencoders</a>的内容，整个程序全部用theano和numpy写的，思路特别清晰。但是对于sparsity的限制没有感性的认识，一直觉得很玄幻。<br>今天就改了一下它的<a href="https://github.com/lisa-lab/DeepLearningTutorials/blob/master/code/dA.py">源码</a>，用matplotlib将hidden layer每个neuron输出的activation值用散点图的方式绘制出来，通过调节sparse_penalty参数进行对比。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eucn84hf8qj20mk0h0jxm.jpg" alt="sparse 0.01"><br>图1：当sparse限制在0.01时<br>相当于100个neurons，只有大概1个neuron被激活。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eucn90j9hoj20mk0h0ten.jpg" alt="sparse 0.05"><br>图2：当sparse限制在0.05时<br>实验的训练集是MNIST数据的50000个train_dataset，经过15次epoch训练后，利用训练好的w和b参数，再次输入500个train_dataset，得到其hidden layer的输出结果，然后绘制成图。<br>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deeplearningtutorials/">deeplearningtutorials</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a  href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/#more">more >></a>
+        </p>
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-初识Learning-Rate-Schedule问题" class="article article-type-post" itemscope itemprop="blogPost">
   
