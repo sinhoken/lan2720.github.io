@@ -13,9 +13,13 @@
 <meta property="og:site_name" content="Lan's Blog">
 <meta property="og:description" content="基础知识logistic regression是个二分类问题。比如，预测病人的肿瘤是恶性（malignant）还是良性（benign）的情况。sofxmax　regression是个多分类问题，类标签$y$可以取两个以上的值。诸如MNIST手写数字分类，辨识10个不同的单个数字。
 什么时候用哪个一开始我也很疑惑什么时候用logistic regression什么时候又该用sofxmax regre">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eudmrxhruyj207c01y746.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eudmuu0hm0j208u04e74c.jpg">
 <meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1euctu4fxk1j20fv01ydft.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1euctw1k2j6j20do026q2x.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eucu37nuzqj20cw025dfs.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eudnhu97j4j20nj07pgmm.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eudp1s7gy9j20gf023aa5.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="softmax regression vs logistic regression">
 <meta name="twitter:description" content="基础知识logistic regression是个二分类问题。比如，预测病人的肿瘤是恶性（malignant）还是良性（benign）的情况。sofxmax　regression是个多分类问题，类标签$y$可以取两个以上的值。诸如MNIST手写数字分类，辨识10个不同的单个数字。
@@ -223,7 +227,7 @@
         
           <div id="toc" class="toc-article">
             <strong class="toc-title">文章目录</strong>
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候用哪个"><span class="toc-number">2.</span> <span class="toc-text">什么时候用哪个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#激励方程"><span class="toc-number">3.</span> <span class="toc-text">激励方程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代价函数"><span class="toc-number">4.</span> <span class="toc-text">代价函数</span></a></li></ol>
+            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础知识"><span class="toc-number">1.</span> <span class="toc-text">基础知识</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#什么时候用哪个"><span class="toc-number">2.</span> <span class="toc-text">什么时候用哪个</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#预测函数"><span class="toc-number">3.</span> <span class="toc-text">预测函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#代价函数"><span class="toc-number">4.</span> <span class="toc-text">代价函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#使用"><span class="toc-number">5.</span> <span class="toc-text">使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#说明"><span class="toc-number">6.</span> <span class="toc-text">说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#解决softmax冗余参数的问题"><span class="toc-number">7.</span> <span class="toc-text">解决softmax冗余参数的问题</span></a></li></ol>
           </div>
         
         <h2 id="基础知识">基础知识</h2><p>logistic regression是个二分类问题。比如，预测病人的肿瘤是恶性（malignant）还是良性（benign）的情况。<br>sofxmax　regression是个多分类问题，类标签$y$可以取两个以上的值。诸如MNIST手写数字分类，辨识10个不同的单个数字。</p>
@@ -231,9 +235,11 @@
 <blockquote>
 <p>如果你在开发一个音乐分类的应用，需要对k种类型的音乐进行识别，那么是选择使用 softmax 分类器呢，还是使用 logistic 回归算法建立 k 个独立的二元分类器呢？<br>这一选择取决于你的类别之间是否互斥，例如，如果你有四个类别的音乐，分别为：古典音乐、乡村音乐、摇滚乐和爵士乐，那么你可以假设每个训练样本只会被打上一个标签（即：一首歌只能属于这四种音乐类型的其中一种），此时你应该使用类别数 k = 4 的softmax回归。（如果在你的数据集中，有的歌曲不属于以上四类的其中任何一类，那么你可以添加一个“其他类”，并将类别数 k 设为5。）<br>如果你的四个类别如下：人声音乐、舞曲、影视原声、流行歌曲，那么这些类别之间并不是互斥的。例如：一首歌曲可以来源于影视原声，同时也包含人声 。这种情况下，使用4个二分类的 logistic 回归分类器更为合适。这样，对于每个新的音乐作品 ，我们的算法可以分别判断它是否属于各个类别。</p>
 </blockquote>
-<h2 id="激励方程">激励方程</h2><p>一般都是sigmoid函数。<br><a id="more"></a></p>
-<h2 id="代价函数">代价函数</h2><p>logistic regression一般选择cross entropy作为损失函数。<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1euctu4fxk1j20fv01ydft.jpg" alt="logistic regression-cost function"><br>softmax regression一般选择negative log likelihood作为损失函数。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1euctw1k2j6j20do026q2x.jpg" alt="softmax regression-cost function"></p>
-<p>虽然表面上这两个函数是不同的，但是实际上cross entropy可以转化成<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eucu37nuzqj20cw025dfs.jpg" alt="crossentropy-transform"><br>所以negative log likelihood是cross entropy在多分类上的推广。</p>
+<h2 id="预测函数">预测函数</h2><p>logistic regression的预测函数就是sigmoid函数,也称为logistic function。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eudmrxhruyj207c01y746.jpg" alt="logistic -hypothesis"><br>实际上logistic regression的cost function中用到了$1-h<em>\theta(x^i)$,相当于$y^i=0$时,概率是$1-h</em>\theta(x^i)$。所以作为二元分类器概率之和已经是1了。<br>softmax regression使用的预测函数如下，称为softmax函数，内部进行了归一化,使得输出的概率总和为1。<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1eudmuu0hm0j208u04e74c.jpg" alt="softmax-hypothesis"></p>
+<h2 id="代价函数">代价函数</h2><p>logistic regression一般选择cross entropy作为损失函数。<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1euctu4fxk1j20fv01ydft.jpg" alt="logistic regression-cost function"><br>softmax regression一般选择negative log likelihood作为损失函数。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1euctw1k2j6j20do026q2x.jpg" alt="softmax regression-cost function"><br>这个方程的含义是：<br>有m个example，k个分类label，NLL对每个example分在正确的label的概率求和，再除以m求平均值。也就是样本集数据被分到对的label的概率的均值。这个值应该越接近于1才说明正确率越高。但是加上负号之后，那么NLL的值越小说明正确率越高，又变成了cost function最小化的问题，因此可以使用Gradient Descent进行寻优了，这就是为什么要变成negative的原因。<br>虽然表面上这两个函数是不同的，但是实际上cross entropy可以转化成<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eucu37nuzqj20cw025dfs.jpg" alt="crossentropy-transform"><br>所以negative log likelihood是cross entropy在多分类上的推广。</p>
+<h2 id="使用">使用</h2><p>Theano中提供了logistic和softmax的实现，直接调用tensor.nnet.sigmoid(x)和tensor.nnet.softmax(x)即可使用。这里传入的参数x实际上是wx+b进行矩阵运算后得到的二维矩阵，返回的是theano的function（维度和输入参数x相同）。</p>
+<h2 id="说明">说明</h2><p>softmax regression是过度参数化的。将w1全部替换为全零向量，带入binomial softmax regression，化简后得到logistic regression。用图就可以表示为：<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eudnhu97j4j20nj07pgmm.jpg" alt="softmax logistic relation"></p>
+<h2 id="解决softmax冗余参数的问题">解决softmax冗余参数的问题</h2><p>由于冗余参数的问题，使$J(\theta)$ 最小化的解不是唯一的。<br>在实际应用中，为了使算法实现更简单清楚，往往保留所有参数 $ (\theta_1, \theta_2,\ldots, \theta_n)$，而不任意地将某一参数设置为 0。但此时我们需要对代价函数做一个改动：加入权重衰减。权重衰减可以解决 softmax 回归的参数冗余所带来的数值问题。<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1eudp1s7gy9j20gf023aa5.jpg" alt="softmax weightdecay"><br>有了这个权重衰减项以后 ($ \lambda &gt; 0$)，代价函数就变成了严格的凸函数，这样就可以保证得到唯一的解了。 此时的 Hessian矩阵变为可逆矩阵，并且因为$J(\theta)$是凸函数，梯度下降法和 L-BFGS 等算法可以保证收敛到全局最优解。</p>
 
       
     </div>
