@@ -16,8 +16,6 @@
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eukvlj5amrj20e603owel.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eukwkdcpo5j206b01m743.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eukv2actpwj20j704hmxh.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1euktudme8jj209l03fjrq.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eukv01qzkxj20jv03lt8z.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gaussian Process代码理解">
 <meta name="twitter:description" content="今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。课上他给出了一段GP的代码。看见python代码就激动肯定是一种病，哈哈。逐步分析一下：
@@ -246,8 +244,6 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># compute the mean at our test points.</span></span><br><span class="line">Lk = np.linalg.solve(L, kernel(X, Xtest))</span><br><span class="line">mu = np.dot(Lk.T, np.linalg.solve(L, y))</span><br></pre></td></tr></table></figure>
 <p>计算测试点的y值的均值（按公式）。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eukvlj5amrj20e603owel.jpg" alt=""><br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eukwkdcpo5j206b01m743.jpg" alt=""><br>将上式中$K<em>y$带换成$L\cdot L^T$。<br>得到$\mu</em>\star=k^T<em>\star L^{-T}L^{-1}y$<br>进一步将$k^T</em>\star L^{-T}$合并，得到$\mu<em>\star=(L^{-1}k</em>\star)^T L^{-1}y$<br>其中$L^{-1}k_\star = solve(L, k)$，$L^{-1}y = solve(L, y)$<br>因此就得到上面两行代码的结果。</p>
 <p><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eukv2actpwj20j704hmxh.jpg" alt="first correct"></p>
-<p><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1euktudme8jj209l03fjrq.jpg" alt="mu delta"></p>
-<p>下图是noiseless GP regression的公式。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eukv01qzkxj20jv03lt8z.jpg" alt="correct formula"></p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># compute the variance at our test points.</span></span><br><span class="line">K_ = kernel(Xtest, Xtest)</span><br><span class="line">s2 = np.diag(K_) - np.sum(Lk**<span class="number">2</span>, axis=<span class="number">0</span>)</span><br><span class="line">s = np.sqrt(s2)</span><br></pre></td></tr></table></figure>
 <p>计算测试点的变动范围$\sigma$。<br>K<em>表示的是$K</em> {\star\star}$矩阵。<br>(还没弄清楚)</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># PLOTS:</span></span><br><span class="line">pl.figure(<span class="number">1</span>)</span><br><span class="line">pl.clf()</span><br><span class="line">pl.plot(X, y, <span class="string">'r+'</span>, ms=<span class="number">20</span>)</span><br><span class="line">pl.plot(Xtest, f(Xtest), <span class="string">'b-'</span>)</span><br></pre></td></tr></table></figure>
