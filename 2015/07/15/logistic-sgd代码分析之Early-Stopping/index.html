@@ -24,7 +24,6 @@ Train Model-Ea">
     <link rel="icon" href="/img/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
 </head>
 <body>
   <div id="container">
@@ -33,7 +32,9 @@ Train Model-Ea">
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
+			
 			<img lazy-src="http://cdldy.img44.wal8.com/img44/517242_20150506085541/143087388199.png" class="js-avatar">
+			
 		</a>
 
 		<hgroup>
@@ -89,11 +90,7 @@ Train Model-Ea">
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/about">关于我</a></li>
-				        
-							<li><a href="/深度学习资源">深度学习资源</a></li>
-				        
-							<li><a href="/常用工具">常用工具</a></li>
+							<li><a href="/about">ABOUT ME</a></li>
 				        
 						</ul>
 					</nav>
@@ -103,6 +100,8 @@ Train Model-Ea">
 								<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
 					        
 								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/u/2417990255" title="weibo">weibo</a>
 					        
 								<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
 					        
@@ -122,13 +121,7 @@ Train Model-Ea">
 				<section class="switch-part switch-part3">
 					<div id="js-friends">
 					
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://summer-last.blogbus.com/">陈小醒</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucumr.pocoo.org/">Armin Ronacher</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.liaoxuefeng.com/">廖雪峰</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.lyonwj.com/">William Lyon</a>
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://summer-last.blogbus.com/">老婆的blog</a>
 			        
 			        </div>
 				</section>
@@ -164,11 +157,7 @@ Train Model-Ea">
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
-					<li><a href="/about">关于我</a></li>
-		        
-					<li><a href="/深度学习资源">深度学习资源</a></li>
-		        
-					<li><a href="/常用工具">常用工具</a></li>
+					<li><a href="/about">ABOUT ME</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -179,6 +168,8 @@ Train Model-Ea">
 						<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
 			        
 						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/u/2417990255" title="weibo">weibo</a>
 			        
 						<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
 			        
@@ -224,13 +215,6 @@ Train Model-Ea">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <!-- Table of Contents -->
-        
-          <div id="toc" class="toc-article">
-            <strong class="toc-title">文章目录</strong>
-            <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Train_Model-Early_Stopping"><span class="toc-number">1.</span> <span class="toc-text">Train Model-Early Stopping</span></a></li></ol>
-          </div>
-        
         <p>暑期实习带我正式迈上了Deep Learning的道路，虽然DL目前来说“坑多路险”，还是感谢geetest的黄老板领我“入坑”。至少这半个月以来看了很多，学了很多，加入了一个新的大家庭。从刚开始的痛苦挣扎到思路逐渐清晰，收获还是不小的。<br>这篇是我学习<a href="http://deeplearning.net/tutorial/logreg.html" target="_blank" rel="external">Deep Learning Tutorials-Logistic Regression</a>时对代码的理解，如果偏颇请多指正。</p>
 <h2 id="Train_Model-Early_Stopping">Train Model-Early Stopping</h2><p>这一部分代码的重点是理解<a href="http://deeplearning.net/tutorial/gettingstarted.html#opt-early-stopping" target="_blank" rel="external">Early-Stopping</a>的机制。</p>
 <blockquote>
@@ -339,42 +323,44 @@ Train Model-Ea">
     </div>
     
   <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
 
 
-<script src="/js/mobile.js" type="text/javascript"></script>
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="/js/main.js" type="text/javascript"></script>
 
 
 
 
 
-<!-- mathjax config similar to math.stackexchange -->
 
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
+MathJax.Hub.Config({
     tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
+    }
+});
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
 </script>
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">

@@ -27,7 +27,6 @@
     <link rel="icon" href="/img/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
 </head>
 <body>
   <div id="container">
@@ -36,7 +35,9 @@
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
+			
 			<img lazy-src="http://cdldy.img44.wal8.com/img44/517242_20150506085541/143087388199.png" class="js-avatar">
+			
 		</a>
 
 		<hgroup>
@@ -92,11 +93,7 @@
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/about">关于我</a></li>
-				        
-							<li><a href="/深度学习资源">深度学习资源</a></li>
-				        
-							<li><a href="/常用工具">常用工具</a></li>
+							<li><a href="/about">ABOUT ME</a></li>
 				        
 						</ul>
 					</nav>
@@ -106,6 +103,8 @@
 								<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
 					        
 								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/u/2417990255" title="weibo">weibo</a>
 					        
 								<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
 					        
@@ -125,13 +124,7 @@
 				<section class="switch-part switch-part3">
 					<div id="js-friends">
 					
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://summer-last.blogbus.com/">陈小醒</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucumr.pocoo.org/">Armin Ronacher</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.liaoxuefeng.com/">廖雪峰</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.lyonwj.com/">William Lyon</a>
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://summer-last.blogbus.com/">老婆的blog</a>
 			        
 			        </div>
 				</section>
@@ -167,11 +160,7 @@
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
-					<li><a href="/about">关于我</a></li>
-		        
-					<li><a href="/深度学习资源">深度学习资源</a></li>
-		        
-					<li><a href="/常用工具">常用工具</a></li>
+					<li><a href="/about">ABOUT ME</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -182,6 +171,8 @@
 						<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
 			        
 						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/u/2417990255" title="weibo">weibo</a>
 			        
 						<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
 			        
@@ -227,8 +218,6 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <!-- Table of Contents -->
-        
         <p>今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。<br>课上他给出了一段GP的代码。看见python代码就激动肯定是一种病，哈哈。<br>逐步分析一下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This is the true unknown function we are trying to approximate</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: np.sin(<span class="number">0.9</span>*x).flatten()</span><br></pre></td></tr></table></figure>
 <p>这是我们要不断去近似的一个方程。对于深度学习的自动寻参而言，我们给定几组参数组合，然后得到这几组参数对应的训练效果，那么可以根据这几组已知的结果，去预测在整个参数空间范围内，参数组合会有怎样一个训练结果趋势。这个结果趋势就是通过GP模拟出的。<br>其中隐含了一个信息：所以可能的参数组合他们所得出的训练结果真实值。但是这个真实值我们是得不到的，如果得到了我们就不用费劲，直接在这些结果中找到训练结果最好的那组参数就万事大吉了。但是，事与愿违，既然不能得到这样一个潜在的真实值，我们只能通过贝爷的方法去模拟出一个大致接近真实值的值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define the kernel</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kernel</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="string">""" GP squared exponential kernel """</span></span><br><span class="line">    kernelParameter = <span class="number">0.1</span></span><br><span class="line">    sqdist = np.sum(a**<span class="number">2</span>,<span class="number">1</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>) + np.sum(b**<span class="number">2</span>,<span class="number">1</span>) - <span class="number">2</span>*np.dot(a, b.T)</span><br><span class="line">    <span class="keyword">return</span> np.exp(-.<span class="number">5</span> * (<span class="number">1</span>/kernelParameter) * sqdist)</span><br></pre></td></tr></table></figure></p>
@@ -330,42 +319,44 @@
     </div>
     
   <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
 
 
-<script src="/js/mobile.js" type="text/javascript"></script>
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="/js/main.js" type="text/javascript"></script>
 
 
 
 
 
-<!-- mathjax config similar to math.stackexchange -->
 
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
+MathJax.Hub.Config({
     tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
+    }
+});
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
 </script>
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">

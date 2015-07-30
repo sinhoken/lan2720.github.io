@@ -27,7 +27,6 @@ Andrew Ng写的deep learning教程ufldlht">
     <link rel="icon" href="/img/favicon.ico">
   
   <link rel="stylesheet" href="/css/style.css" type="text/css">
-  <script src="http://libs.baidu.com/jquery/1.9.0/jquery.js"></script>
 </head>
 <body>
   <div id="container">
@@ -36,7 +35,9 @@ Andrew Ng写的deep learning教程ufldlht">
 <div class="intrude-less">
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
+			
 			<img lazy-src="http://cdldy.img44.wal8.com/img44/517242_20150506085541/143087388199.png" class="js-avatar">
+			
 		</a>
 
 		<hgroup>
@@ -92,11 +93,7 @@ Andrew Ng写的deep learning教程ufldlht">
 				        
 							<li><a href="/archives">所有文章</a></li>
 				        
-							<li><a href="/about">关于我</a></li>
-				        
-							<li><a href="/深度学习资源">深度学习资源</a></li>
-				        
-							<li><a href="/常用工具">常用工具</a></li>
+							<li><a href="/about">ABOUT ME</a></li>
 				        
 						</ul>
 					</nav>
@@ -106,6 +103,8 @@ Andrew Ng写的deep learning教程ufldlht">
 								<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
 					        
 								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
+					        
+								<a class="weibo" target="_blank" href="http://www.weibo.com/u/2417990255" title="weibo">weibo</a>
 					        
 								<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
 					        
@@ -125,13 +124,7 @@ Andrew Ng写的deep learning教程ufldlht">
 				<section class="switch-part switch-part3">
 					<div id="js-friends">
 					
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://summer-last.blogbus.com/">陈小醒</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://lucumr.pocoo.org/">Armin Ronacher</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.liaoxuefeng.com/">廖雪峰</a>
-			        
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://www.lyonwj.com/">William Lyon</a>
+			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://summer-last.blogbus.com/">老婆的blog</a>
 			        
 			        </div>
 				</section>
@@ -167,11 +160,7 @@ Andrew Ng写的deep learning教程ufldlht">
 		        
 					<li><a href="/archives">所有文章</a></li>
 		        
-					<li><a href="/about">关于我</a></li>
-		        
-					<li><a href="/深度学习资源">深度学习资源</a></li>
-		        
-					<li><a href="/常用工具">常用工具</a></li>
+					<li><a href="/about">ABOUT ME</a></li>
 		        
 		        <div class="clearfix"></div>
 				</ul>
@@ -182,6 +171,8 @@ Andrew Ng写的deep learning教程ufldlht">
 						<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
 			        
 						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
+			        
+						<a class="weibo" target="_blank" href="http://www.weibo.com/u/2417990255" title="weibo">weibo</a>
 			        
 						<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
 			        
@@ -223,8 +214,6 @@ Andrew Ng写的deep learning教程ufldlht">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <!-- Table of Contents -->
-        
         <h2 id="入门">入门</h2><p>LISA lab提供的Deep Learning Tutorial<br><a href="http://www.deeplearning.net/tutorial/deeplearning.pdf" target="_blank" rel="external">http://www.deeplearning.net/tutorial/deeplearning.pdf</a></p>
 <p>用python和numpy手把手从零开始构建neural network<br><a href="http://neuralnetworksanddeeplearning.com/" target="_blank" rel="external">http://neuralnetworksanddeeplearning.com/</a></p>
 <p>Andrew Ng写的deep learning教程ufldl<br><a href="http://deeplearning.stanford.edu/wiki/index.php/UFLDL_Tutorial" target="_blank" rel="external">http://deeplearning.stanford.edu/wiki/index.php/UFLDL_Tutorial</a></p>
@@ -322,42 +311,44 @@ Andrew Ng写的deep learning教程ufldlht">
     </div>
     
   <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
-  <script src="/fancybox/jquery.fancybox.pack.js" type="text/javascript"></script>
 
 
-<script src="/js/mobile.js" type="text/javascript"></script>
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: false,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
 <script src="/js/main.js" type="text/javascript"></script>
 
 
 
 
 
-<!-- mathjax config similar to math.stackexchange -->
 
 <script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
+MathJax.Hub.Config({
     tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
         skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
+    }
+});
 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
 </script>
 
 <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
