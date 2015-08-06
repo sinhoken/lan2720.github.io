@@ -260,7 +260,7 @@ Be warned, though: you shouldn’t expect to in">
 </blockquote>
 <p>现在你脑子里应该还有最后一个疑惑：我们如何将前面层对最后的cost function所做的贡献分离出来回传给之前层呢？</p>
 <blockquote>
-<p>真相只有一个：要~分~离~，眼(gong)泪(shi)就(tui)留(dao)下去～～～</p>
+<p>真相只有一个：要~分~离~，眼(gong)泪(shi)就(tui)留(dao)下去~~~</p>
 </blockquote>
 <p>其实只用到了微积分中最基本的链式法则，所以并不用惊慌啦。<br>具体推导看<a href="http://neuralnetworksanddeeplearning.com/chap2.html#the_four_fundamental_equations_behind_backpropagation" target="_blank" rel="external">这里</a><br>我只提取精华部分：<br>第l层的第j个neuron，它的input记为$Z_j^l$，output记为$a^l_j$<br>首先定义一个符号<img src="http://ww4.sinaimg.cn/large/901f9a6fgw1eusplyx5p9j205702v746.jpg" alt=""><br>然后我们先求$\delta_j^l$然后将$\delta_j^l$和cost_derivative_cwt_w和cost_derivative_wrt_b联系起来（如何联系后面讲解）。</p>
 <h3 id="$\delta^l$的计算">$\delta^l$的计算</h3><h4 id="第一步：最后一层">第一步：最后一层</h4><p><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1eusqs5jrulj207302zglm.jpg" alt="">（1）<br>如果cost function选取的是mean square，那么<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1eusqoxaj4kj20gp01iglv.jpg" alt="">（2）<br>由于$a^L_j = activation(Z^L_j)$，如果activation function选取的是sigmoid，记做f，那么<br>sigmoid_prime = f(1 - f)<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eusquah8gzj20be02y0st.jpg" alt="">（3）<br>将（2）,（3）带入（1）得到如下结果，<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1eusqya1oj4j207802adfq.jpg" alt="">（4）<br>【注意】这是在cost function=meansquare， activation function=sigmoid的情况下得到的，其他的选择得出的公式不一样。<br>接下来考虑vectorize的事情。<br>$a^j$,$y^j$和$Z^L_j$都是vector，维度和最后一层的neuron个数相同，所以他们直接相乘是Hadamard product(element-wise)，记为<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1eusrfk657ej209p01qdfu.jpg" alt=""></p>
