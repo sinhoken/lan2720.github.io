@@ -3,17 +3,39 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Lan&#39;s Blog</title>
+  <title>Demystify BackPropagation(BP)算法 | Lan&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Lan's Blog">
-<meta property="og:url" content="http://lan2720.github.io/index.html">
+  <meta name="description" content="前言以前也听别人喊BP算法BP算法的，一直以为是个多么高深莫测的算法呢，最近看了很多资料之后，觉得BP思想一开始接触确实不容易马上理解，但是在知识积累到一定程度（其实也就几天的间隔）再回头看时，发现之前难于理解的公式现在恍然大悟了。就像NeuralNetworksAndDeepLearning的作者所言：
+
+Be warned, though: you shouldn’t expect to in">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Demystify BackPropagation(BP)算法">
+<meta property="og:url" content="http://lan2720.github.io/2015/08/06/Demystify-BackPropagation-BP-算法/index.html">
 <meta property="og:site_name" content="Lan's Blog">
-<meta property="og:description">
+<meta property="og:description" content="前言以前也听别人喊BP算法BP算法的，一直以为是个多么高深莫测的算法呢，最近看了很多资料之后，觉得BP思想一开始接触确实不容易马上理解，但是在知识积累到一定程度（其实也就几天的间隔）再回头看时，发现之前难于理解的公式现在恍然大悟了。就像NeuralNetworksAndDeepLearning的作者所言：
+
+Be warned, though: you shouldn’t expect to in">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1euso4ck9jvj20bm033q30.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1euso9gietbj20dt01faa9.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eusplyx5p9j205702v746.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1eusqs5jrulj207302zglm.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1eusqoxaj4kj20gp01iglv.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eusquah8gzj20be02y0st.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1eusqya1oj4j207802adfq.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1eusrfk657ej209p01qdfu.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eust6u4czoj206402lmx2.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1eusun4owxdj20bl070q3r.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eusurxf3aqj201401tjr6.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eusuu228n9j209n01rdfv.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1eusv6jzvxbj203m02iq2t.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eusv745wtcj205302u0so.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1eusvjzd6mnj205p09lq3b.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eusw6owst4j20as02sglt.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lan's Blog">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Demystify BackPropagation(BP)算法">
+<meta name="twitter:description" content="前言以前也听别人喊BP算法BP算法的，一直以为是个多么高深莫测的算法呢，最近看了很多资料之后，觉得BP思想一开始接触确实不容易马上理解，但是在知识积累到一定程度（其实也就几天的间隔）再回头看时，发现之前难于理解的公式现在恍然大悟了。就像NeuralNetworksAndDeepLearning的作者所言：
+
+Be warned, though: you shouldn’t expect to in">
   
     <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
   
@@ -179,9 +201,7 @@
 		</header>				
 	</div>
 </nav>
-      <div class="body-wrap">
-  
-    <article id="post-Demystify-BackPropagation-BP-算法" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Demystify-BackPropagation-BP-算法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2015/08/06/Demystify-BackPropagation-BP-算法/" class="article-date">
@@ -197,12 +217,23 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/08/06/Demystify-BackPropagation-BP-算法/">Demystify BackPropagation(BP)算法</a>
+    <h1 class="article-title" itemprop="name">
+      Demystify BackPropagation(BP)算法
     </h1>
   
 
       </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
+	</div>
+
+        
+
+        <div class="clearfix"></div>
+      </div>
       
     
     <div class="article-entry" itemprop="articleBody">
@@ -256,580 +287,61 @@
       
     </div>
     
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2015/07/30/Gaussian-Process代码理解/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Gaussian Process代码理解</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
   
 </article>
 
 
-
-
-
-
-
-  
-    <article id="post-Gaussian-Process代码理解" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/30/Gaussian-Process代码理解/" class="article-date">
-  	<time datetime="2015-07-30T12:03:10.000Z" itemprop="datePublished">2015-07-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/30/Gaussian-Process代码理解/">Gaussian Process代码理解</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。<br>课上他给出了一段GP的代码。<br>逐步分析一下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This is the true unknown function we are trying to approximate</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: np.sin(<span class="number">0.9</span>*x).flatten()</span><br></pre></td></tr></table></figure>
-<p>这是我们要不断去近似的一个方程。对于深度学习的自动寻参而言，我们给定几组参数组合，然后得到这几组参数对应的训练效果，那么可以根据这几组已知的结果，去预测在整个参数空间范围内，参数组合会有怎样一个训练结果趋势。这个结果趋势就是通过GP模拟出的。<br>其中隐含了一个信息：所以可能的参数组合他们所得出的训练结果真实值。但是这个真实值我们是得不到的，如果得到了我们就不用费劲，直接在这些结果中找到训练结果最好的那组参数就万事大吉了。但是，事与愿违，既然不能得到这样一个潜在的真实值，我们只能通过贝爷的方法去模拟出一个大致接近真实值的值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define the kernel</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kernel</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="string">""" GP squared exponential kernel """</span></span><br><span class="line">    kernelParameter = <span class="number">0.1</span></span><br><span class="line">    sqdist = np.sum(a**<span class="number">2</span>,<span class="number">1</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>) + np.sum(b**<span class="number">2</span>,<span class="number">1</span>) - <span class="number">2</span>*np.dot(a, b.T)</span><br><span class="line">    <span class="keyword">return</span> np.exp(-.<span class="number">5</span> * (<span class="number">1</span>/kernelParameter) * sqdist)</span><br></pre></td></tr></table></figure></p>
-<p>这里定义了一个核方法。这个核方法是用来计算K的，K就是两个变量a，b的协方差矩阵。<br>核方法有很多，对应到不同领域又有处理文本的，处理图像音频的核方程。这里只是简单的拿一个核作为例子进行讲解。<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/machinelearning/">machinelearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/自动寻参/">自动寻参</a></li></ul>
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+<div class="duoshuo">
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="Demystify-BackPropagation-BP-算法" data-title="Demystify BackPropagation(BP)算法" data-url="http://lan2720.github.io/2015/08/06/Demystify-BackPropagation-BP-算法/"></div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan-blog"};
+    (function() {
+        var ds = document.createElement('script');
+        ds.type = 'text/javascript';ds.async = true;
+        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+        ds.charset = 'UTF-8';
+        (document.getElementsByTagName('head')[0] 
+         || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+    </script>
+    <!-- 多说公共JS代码 end -->
+</div>
 
-      
 
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/30/Gaussian-Process代码理解/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
 
-
-
-
-
-
-
-  
-    <article id="post-softmax-regression-vs-logistic-regression" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/23/softmax-regression-vs-logistic-regression/" class="article-date">
-  	<time datetime="2015-07-23T13:52:36.000Z" itemprop="datePublished">2015-07-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/23/softmax-regression-vs-logistic-regression/">softmax regression vs logistic regression</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="基础知识">基础知识</h2><p>logistic regression是个二分类问题。比如，预测病人的肿瘤是恶性（malignant）还是良性（benign）的情况。<br>sofxmax　regression是个多分类问题，类标签$y$可以取两个以上的值。诸如MNIST手写数字分类，辨识10个不同的单个数字。</p>
-<h2 id="什么时候用哪个">什么时候用哪个</h2><p>一开始我也很疑惑什么时候用logistic regression什么时候又该用sofxmax regression呢。<a href="http://ufldl.stanford.edu/wiki/index.php/Softmax%E5%9B%9E%E5%BD%92#Softmax_.E5.9B.9E.E5.BD.92_vs._k_.E4.B8.AA.E4.BA.8C.E5.85.83.E5.88.86.E7.B1.BB.E5.99.A8">ufldl</a>给出了一个很简单的方法。</p>
-<blockquote>
-<p>如果你在开发一个音乐分类的应用，需要对k种类型的音乐进行识别，那么是选择使用 softmax 分类器呢，还是使用 logistic 回归算法建立 k 个独立的二元分类器呢？<br>这一选择取决于你的类别之间是否互斥，例如，如果你有四个类别的音乐，分别为：古典音乐、乡村音乐、摇滚乐和爵士乐，那么你可以假设每个训练样本只会被打上一个标签（即：一首歌只能属于这四种音乐类型的其中一种），此时你应该使用类别数 k = 4 的softmax回归。（如果在你的数据集中，有的歌曲不属于以上四类的其中任何一类，那么你可以添加一个“其他类”，并将类别数 k 设为5。）<br>如果你的四个类别如下：人声音乐、舞曲、影视原声、流行歌曲，那么这些类别之间并不是互斥的。例如：一首歌曲可以来源于影视原声，同时也包含人声 。这种情况下，使用4个二分类的 logistic 回归分类器更为合适。这样，对于每个新的音乐作品 ，我们的算法可以分别判断它是否属于各个类别。</p>
-</blockquote>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ufldl/">ufldl</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/23/softmax-regression-vs-logistic-regression/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-用matplotlib可视化来理解autoencoder中的sparse-penalty" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/" class="article-date">
-  	<time datetime="2015-07-23T13:48:50.000Z" itemprop="datePublished">2015-07-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/">用matplotlib可视化来理解autoencoder中的sparse penalty</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近在看<a href="http://deeplearning.net/tutorial/dA.html#daa">Deep Learning Tutorials-Denoising Autoencoders</a>的内容，整个程序全部用theano和numpy写的，思路特别清晰。但是对于sparsity的限制没有感性的认识，一直觉得很玄幻。<br>今天就改了一下它的<a href="https://github.com/lisa-lab/DeepLearningTutorials/blob/master/code/dA.py">源码</a>，用matplotlib将hidden layer每个neuron输出的activation值用散点图的方式绘制出来，通过调节sparse_penalty参数进行对比。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eucn84hf8qj20mk0h0jxm.jpg" alt="sparse 0.01"><br>图1：当sparse限制在0.01时<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deeplearningtutorials/">deeplearningtutorials</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-初识Learning-Rate-Schedule问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/21/初识Learning-Rate-Schedule问题/" class="article-date">
-  	<time datetime="2015-07-21T13:34:03.000Z" itemprop="datePublished">2015-07-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/21/初识Learning-Rate-Schedule问题/">初识Learning Rate Schedule问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="背景">背景</h2><p>首先，上个图来看看。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eua62ghcgvj20mj0g875y.jpg" alt="diffrenet learning rate compare"><br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/21/初识Learning-Rate-Schedule问题/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-logistic-sgd代码分析之Early-Stopping" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/" class="article-date">
-  	<time datetime="2015-07-15T06:44:47.000Z" itemprop="datePublished">2015-07-15</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/">logistic_sgd代码分析之Early Stopping</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>暑期实习带我正式迈上了Deep Learning的道路，虽然DL目前来说“坑多路险”，还是感谢geetest的黄老板领我“入坑”。至少这半个月以来看了很多，学了很多，加入了一个新的大家庭。从刚开始的痛苦挣扎到思路逐渐清晰，收获还是不小的。<br>这篇是我学习<a href="http://deeplearning.net/tutorial/logreg.html">Deep Learning Tutorials-Logistic Regression</a>时对代码的理解，如果偏颇请多指正。</p>
-<h2 id="Train_Model-Early_Stopping">Train Model-Early Stopping</h2><p>这一部分代码的重点是理解<a href="http://deeplearning.net/tutorial/gettingstarted.html#opt-early-stopping">Early-Stopping</a>的机制。</p>
-<blockquote>
-<p>Talk is cheap, show me your code.</p>
-</blockquote>
-<p>上代码》》》<br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deeplearningtutorials/">deeplearningtutorials</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-对Network类的代码分析" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/07/13/对Network类的代码分析/" class="article-date">
-  	<time datetime="2015-07-13T05:53:05.000Z" itemprop="datePublished">2015-07-13</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/07/13/对Network类的代码分析/">对Network类的代码分析</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Neural Networks and Deep Learning 第一章学习笔记</p>
-<p>感兴趣的请移步<a href="http://neuralnetworksanddeeplearning.com/chap1.html">Neural Networks and Deep Learning - Chapter 1</a></p>
-<h2 id="SGD代码解析">SGD代码解析</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">SGD</span><span class="params">(self, training_data, epochs, mini_batch_size, eta,</span><br><span class="line">            test_data=None)</span>:</span></span><br><span class="line">        <span class="string">"""Train the neural network using mini-batch stochastic</span><br><span class="line">        gradient descent.  The "training_data" is a list of tuples</span><br><span class="line">        "(x, y)" representing the training inputs and the desired</span><br><span class="line">        outputs.  The other non-optional parameters are</span><br><span class="line">        self-explanatory.  If "test_data" is provided then the</span><br><span class="line">        network will be evaluated against the test data after each</span><br><span class="line">        epoch, and partial progress printed out.  This is useful for</span><br><span class="line">        tracking progress, but slows things down substantially."""</span></span><br><span class="line">        <span class="keyword">if</span> test_data: n_test = len(test_data)</span><br><span class="line">        n = len(training_data)</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> xrange(epochs):</span><br><span class="line">            random.shuffle(training_data)</span><br><span class="line">            mini_batches = [</span><br><span class="line">                training_data[k:k+mini_batch_size]</span><br><span class="line">                <span class="keyword">for</span> k <span class="keyword">in</span> xrange(<span class="number">0</span>, n, mini_batch_size)]</span><br><span class="line">            <span class="keyword">for</span> mini_batch <span class="keyword">in</span> mini_batches:</span><br><span class="line">                self.update_mini_batch(mini_batch, eta)</span><br><span class="line">            <span class="keyword">if</span> test_data:</span><br><span class="line">                <span class="keyword">print</span> <span class="string">"Epoch &#123;0&#125;: &#123;1&#125; / &#123;2&#125;"</span>.format(</span><br><span class="line">                    j, self.evaluate(test_data), n_test)</span><br><span class="line">            <span class="keyword">else</span>:</span><br><span class="line">                <span class="keyword">print</span> <span class="string">"Epoch &#123;0&#125; complete"</span>.format(j)</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neuralnetworksanddeeplearning/">neuralnetworksanddeeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/07/13/对Network类的代码分析/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Java访问权限" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/14/Java访问权限/" class="article-date">
-  	<time datetime="2015-06-14T11:05:18.000Z" itemprop="datePublished">2015-06-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/14/Java访问权限/">Java访问权限</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="权限的基本介绍">权限的基本介绍</h2><h3 id="public">public</h3><h4 id="类">类</h4><p>当两个类不在同一个包中，public权限就显示出作用了。<br>如果一个类不是public的话，<code>外部包</code>无法对这个类进行访问。</p>
-<h4 id="成员变量和函数">成员变量和函数</h4><p>如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/14/Java访问权限/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Java中的package" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/14/Java中的package/" class="article-date">
-  	<time datetime="2015-06-13T16:09:05.000Z" itemprop="datePublished">2015-06-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/14/Java中的package/">Java中的package</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是Java当中的软件包?">什么是Java当中的软件包?</h2><p>所谓的软件包<br>:    就是把类放在不同的文件夹下</p>
-<p>相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。</p>
-<p>同时，可以理解为java的软件包<br>:    提供了命名空间</p>
-<p>即规定了两个类可以重名，但是是两个不同的空间内可以重名。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/14/Java中的package/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-由“哪些类型的值可以做python-dict的key”所引发的血案" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/" class="article-date">
-  	<time datetime="2015-05-30T15:42:24.000Z" itemprop="datePublished">2015-05-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/">由“哪些类型的值可以做python dict的key”所引发的血案</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>今天遇到了这么一个问题，在C站的forum里小争论了一下</p>
-<blockquote>
-<p>list/dict/tuple/0/set([])/str中哪些类型能作为dict的key？</p>
-</blockquote>
-<p>平常较常用的dict的key值类型就是int啊，string啊，float啊，以前真没思考过这个问题，不过现在想来还是有点意思。</p>
-<h2 id="什么是hashable？">什么是hashable？</h2><p>请看官方对hashable给出的<a href="https://docs.python.org/2.7/glossary.html#term-hashable">解释</a><br>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/05/30/由“哪些类型的值可以做python-dict的key”所引发的血案/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
-    </nav>
-  
 </div>
       <footer id="footer">
   <div class="outer">
@@ -853,8 +365,8 @@
 		fancybox: true,
 		mathjax: true,
 		animate: true,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
