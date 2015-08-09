@@ -1,16 +1,48 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
 <head>
-  <meta charset="utf-8">
   
-  <title>min-char-rnn代码解读 | Lan&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="今天读了大神Andrej Karpathy关于rnn的博客，对于simple rnn（也叫Elman neuron network）有了了解，算是入门了～Karpathy在博客中给出了一段python/numpy实现的char-rnn代码。本篇就针对这段代码进行一个解读。
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="属性GEEK, 冷静思考" />
+
+
+
+  <meta name="keywords" content="deeplearning,rnn," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="今天读了大神Andrej Karpathy关于rnn的博客，对于simple rnn（也叫Elman neuron network）有了了解，算是入门了～Karpathy在博客中给出了一段python/numpy实现的char-rnn代码。本篇就针对这段代码进行一个解读。
 12345# data I/Odata = open(&apos;input.txt&apos;, &apos;r&apos;).read()  # should b">
 <meta property="og:type" content="article">
 <meta property="og:title" content="min-char-rnn代码解读">
 <meta property="og:url" content="http://lan2720.github.io/2015/08/09/min-char-rnn代码解读/index.html">
-<meta property="og:site_name" content="Lan's Blog">
+<meta property="og:site_name" content="Hakuna Matata">
 <meta property="og:description" content="今天读了大神Andrej Karpathy关于rnn的博客，对于simple rnn（也叫Elman neuron network）有了了解，算是入门了～Karpathy在博客中给出了一段python/numpy实现的char-rnn代码。本篇就针对这段代码进行一个解读。
 12345# data I/Odata = open(&apos;input.txt&apos;, &apos;r&apos;).read()  # should b">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eutxaot21wj20eh0bfmz7.jpg">
@@ -29,209 +61,168 @@
 <meta name="twitter:title" content="min-char-rnn代码解读">
 <meta name="twitter:description" content="今天读了大神Andrej Karpathy关于rnn的博客，对于simple rnn（也叫Elman neuron network）有了了解，算是入门了～Karpathy在博客中给出了一段python/numpy实现的char-rnn代码。本篇就针对这段代码进行一个解读。
 12345# data I/Odata = open(&apos;input.txt&apos;, &apos;r&apos;).read()  # should b">
-  
-    <link rel="alternative" href="/atom.xml" title="Lan&#39;s Blog" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/img/favicon.ico">
-  
-  <link rel="stylesheet" href="/css/style.css" type="text/css">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> min-char-rnn代码解读 | Hakuna Matata </title>
 </head>
-<body>
-  <div id="container">
-    <div class="left-col">
-    <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img lazy-src="http://www.alchemyapi.com/sites/default/files/deepLearningAI500.png" class="js-avatar">
-			
-		</a>
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">Lan</a></h1>
-		</hgroup>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-		
-		<p class="header-subtitle">属性GEEK, 冷静思考</p>
-		
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
 
-		
-			<div class="switch-btn">
-				<div class="icon">
-					<div class="icon-ctn">
-						<div class="icon-wrap icon-house" data-idx="0">
-							<div class="birdhouse"></div>
-							<div class="birdhouse_holes"></div>
-						</div>
-						<div class="icon-wrap icon-ribbon hide" data-idx="1">
-							<div class="ribbon"></div>
-						</div>
-						
-						<div class="icon-wrap icon-link hide" data-idx="2">
-							<div class="loopback_l"></div>
-							<div class="loopback_r"></div>
-						</div>
-						
-						
-					</div>
-					
-				</div>
-				<div class="tips-box hide">
-					<div class="tips-arrow"></div>
-					<ul class="tips-inner">
-						<li>菜单</li>
-						<li>标签</li>
-						
-						<li>友情链接</li>
-						
-						
-					</ul>
-				</div>
-			</div>
-		
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9df4ceec6aad0e521753edbb3b445837";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
-		<div class="switch-area">
-			<div class="switch-wrap">
-				<section class="switch-part switch-part1">
-					<nav class="header-menu">
-						<ul>
-						
-							<li><a href="/">主页</a></li>
-				        
-							<li><a href="/archives">所有文章</a></li>
-				        
-							<li><a href="/about">关于我</a></li>
-				        
-							<li><a href="/深度学习资源">深度学习资源</a></li>
-				        
-							<li><a href="/机器学习资源">机器学习资源</a></li>
-				        
-						</ul>
-					</nav>
-					<nav class="header-nav">
-						<div class="social">
-							
-								<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
-					        
-								<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
-					        
-								<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
-					        
-						</div>
-					</nav>
-				</section>
-				
-				
-				<section class="switch-part switch-part2">
-					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/deeplearning/" style="font-size: 10px;">deeplearning</a><a href="/tags/deeplearningtutorials/" style="font-size: 13.33px;">deeplearningtutorials</a><a href="/tags/java/" style="font-size: 13.33px;">java</a><a href="/tags/julyedu/" style="font-size: 10px;">julyedu</a><a href="/tags/life/" style="font-size: 10px;">life</a><a href="/tags/machinelearning/" style="font-size: 10px;">machinelearning</a><a href="/tags/neuralnetworksanddeeplearning/" style="font-size: 16.67px;">neuralnetworksanddeeplearning</a><a href="/tags/numpy/" style="font-size: 10px;">numpy</a><a href="/tags/python/" style="font-size: 10px;">python</a><a href="/tags/rnn/" style="font-size: 10px;">rnn</a><a href="/tags/ufldl/" style="font-size: 10px;">ufldl</a><a href="/tags/动态规划/" style="font-size: 10px;">动态规划</a><a href="/tags/学习笔记/" style="font-size: 20px;">学习笔记</a><a href="/tags/算法/" style="font-size: 10px;">算法</a><a href="/tags/自动寻参/" style="font-size: 10px;">自动寻参</a>
-					</div>
-				</section>
-				
-				
-				
-				<section class="switch-part switch-part3">
-					<div id="js-friends">
-					
-			          <a target="_blank" class="main-nav-link switch-friends-link" href="http://summer-last.blogbus.com/">陈小醒的blog</a>
-			        
-			        </div>
-				</section>
-				
 
-				
-			</div>
-		</div>
-	</header>				
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Hakuna Matata</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
 </div>
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"></div>
-  		<h1 class="header-author js-mobile-header hide">Lan</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				<img lazy-src="http://www.alchemyapi.com/sites/default/files/deepLearningAI500.png" class="js-avatar">
-			</div>
-			<hgroup>
-			  <h1 class="header-author">Lan</h1>
-			</hgroup>
-			
-			<p class="header-subtitle">属性GEEK, 冷静思考</p>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/archives">所有文章</a></li>
-		        
-					<li><a href="/about">关于我</a></li>
-		        
-					<li><a href="/深度学习资源">深度学习资源</a></li>
-		        
-					<li><a href="/机器学习资源">机器学习资源</a></li>
-		        
-		        <div class="clearfix"></div>
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/lan2720" title="github">github</a>
-			        
-						<a class="zhihu" target="_blank" href="http://www.zhihu.com/people/loafer-527" title="zhihu">zhihu</a>
-			        
-						<a class="douban" target="_blank" href="http://www.douban.com/people/57762260/" title="douban">douban</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
 </nav>
-      <div class="body-wrap"><article id="post-min-char-rnn代码解读" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/08/09/min-char-rnn代码解读/" class="article-date">
-  	<time datetime="2015-08-08T16:52:24.000Z" itemprop="datePublished">2015-08-09</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      min-char-rnn代码解读
-    </h1>
-  
 
-      </header>
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
       
-      <div class="article-info article-info-post">
-        
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/deeplearning/">deeplearning</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/rnn/">rnn</a></li></ul>
-	</div>
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              min-char-rnn代码解读
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-08-09T00:52:24+08:00" content="2015-08-09">
+            2015-08-09
+          </time>
+        </span>
 
         
 
-        <div class="clearfix"></div>
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/09/min-char-rnn代码解读/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/09/min-char-rnn代码解读/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
       </div>
+    </header>
+
+    <div class="post-body">
+
       
-    
-    <div class="article-entry" itemprop="articleBody">
       
-        <p>今天读了大神<a href="http://karpathy.github.io/about/" target="_blank" rel="external">Andrej Karpathy</a>关于rnn的<a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank" rel="external">博客</a>，对于simple rnn（也叫Elman neuron network）有了了解，算是入门了～<br>Karpathy在博客中给出了一段python/numpy实现的char-rnn<a href="https://gist.github.com/karpathy/d4dee566867f8291f086" target="_blank" rel="external">代码</a>。本篇就针对这段代码进行一个解读。</p>
+
+      
+        <span itemprop="articleBody"><p>今天读了大神<a href="http://karpathy.github.io/about/" target="_blank" rel="external">Andrej Karpathy</a>关于rnn的<a href="http://karpathy.github.io/2015/05/21/rnn-effectiveness/" target="_blank" rel="external">博客</a>，对于simple rnn（也叫Elman neuron network）有了了解，算是入门了～<br>Karpathy在博客中给出了一段python/numpy实现的char-rnn<a href="https://gist.github.com/karpathy/d4dee566867f8291f086" target="_blank" rel="external">代码</a>。本篇就针对这段代码进行一个解读。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># data I/O</span></span><br><span class="line">data = open(<span class="string">'input.txt'</span>, <span class="string">'r'</span>).read()  <span class="comment"># should be simple plain text file</span></span><br><span class="line">chars = list(set(data))</span><br><span class="line">data_size, vocab_size = len(data), len(chars)</span><br><span class="line"><span class="keyword">print</span> <span class="string">'data has %d characters, %d unique.'</span> % (data_size, vocab_size)</span><br></pre></td></tr></table></figure>
 <p>首先，导入数据。文本数据存储input.txt文件中，而且都是连接在一起中间没有换行符等多余字符的。<br>导入后，data是str类型变量。set(data)之后去除了data str中的重复字母。chars变量作为一个列表存储整个input文本中所有出现过的字母。<br>data_size是input str一共包含多少个字符，vocab_size是其中有多少种字符（重复的只记一次，无非就是大小写的26个字母加一些数字啊标点符号啊等等）<br><a id="more"></a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">char_to_ix = &#123;ch: i <span class="keyword">for</span> i, ch <span class="keyword">in</span> enumerate(chars)&#125;</span><br><span class="line">ix_to_char = &#123;i: ch <span class="keyword">for</span> i, ch <span class="keyword">in</span> enumerate(chars)&#125;</span><br></pre></td></tr></table></figure></p>
 <p>对于去重的字符列表chars，进行一个char-index的转换。char_to_ix[char_x]输入char_x就能返回对应的index；ix_to_char同理。</p>
@@ -248,134 +239,426 @@
 <p>最后是反向BP求导更新参数的过程。<br>这其实引出了一个新的算法back-propagation through time(BPTT)<br>第2,3行：模型的所有参数都需要计算导数，本例中有五个参数所以定义五个新变量dWxh，dWhh，dWhy，dbh，dby，全部初始化为0矩阵。<br>第4行：定义了变量dhnext【暂时没看出来有什么用】<br>接下来就是按照下图的过程将RNN在时间上展开。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1euu5lj204zj20g80k5dgt.jpg" alt="rnn-unfold"><br>看不懂这张图的请转看下图：<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1euu5n473ikj20gn0lj3z1.jpg" alt=""><br>【两张图都没看懂的。。。。。。。。。。。。。。。。。。再仔细看一遍】<br>实际上是这样的：<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1euu616feyqj20nh09naay.jpg" alt=""><br>左图中中间的circle有两个输入箭头指向它，形成了环路；右图将vanilla rnn在时间上展开后，每个node只和一个时间实例相关。<br>第5行：从最后一层向前传播的for循环。为什么要将t进行reversed操作？因为unfold之后的网络可以看出最后一层是t时刻的输出。所以按时间回退就相当于传统BP算法的反向传播。<br>第6行：将当前t时刻整个网络的输出ps[t]（输出的是每个字符在下一刻出现的概率）拷贝到dy。<br>第7行：<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1euu79zrf2ej20jn060glw.jpg" alt="">（1）<br>其中$p_y$的计算公式是<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1euu7cmwtkrj204k02qdfn.jpg" alt="">【这个公式不是单纯的概率计算公式，是softmax激励方程，计算的是激励输出，所以这里的$a_i$实际上是输入$Z_i$】<br>所以第7行代码利用公式（1）计算LossFunc关于Z的偏导，也就是上一篇博客中所定义的error——$\delta_y$，为（n_vocab,1）型矩阵。<br>第8行将dy(wrt_z)继续向后传播，传递的权重矩阵是$w^T$（即hs[t]^T），利用上一篇推导出的公式<img src="http://ww1.sinaimg.cn/large/901f9a6fgw1euv7kqgnizj208003qq2z.jpg" alt="">（此时$\delta^l_j$=dy，$a^{l-1}_k$=hs[t]），所以得到<code>dWhy += np.dot(dy, hs[t].T)</code>，求出了dWhy。<br>第9行：参考上一篇博客的公式（7）<br>第10行：<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1euvmfr4of7j20u00zemzt.jpg" alt=""><br>dh就是隐层的输出的微分，因为隐层的输入有两部分：一部分来自xs[t]一部分来自hs[t-1]，所以隐层的输出也分两部分，自然微分也是由两部分构成：<code>dh = np.dot(Why.T, dy) + dhnext</code>，dot(Why.T, dy)是当前时刻的dh’，还要加上前一时刻的dh的影响dhnext。<br>第11行：对activation function（此处是tanh(x)求导）<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1euvnkaizk6j209s02maa2.jpg" alt=""><br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1euvnrnphhoj20y404ujrw.jpg" alt=""><br>tanh(x)求了导之后还要乘上刚才求出的dh猜得到dhraw，即隐层输入的error——$\delta_h$。<br>第12行：dbh就是$\delta_h$。<br>第13，14行：同第8行<br>第15行：根据反向传播原理（乘以反向权重）<code>dhnext = np.dot(Whh.T, dhraw)</code><br>第16，17行：将偏微分限定在某一范围内，防止更新过快。</p>
 <p>哇~至此我们已经弄明白BPTT的整个过程，成就感满满。不早了今天先睡啦~<br>【TODO】</p>
 <h2 id="sample">sample</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">sample</span><span class="params">(h, seed_ix, n)</span>:</span></span><br><span class="line">  <span class="string">""" </span><br><span class="line">  sample a sequence of integers from the model </span><br><span class="line">  h is memory state, seed_ix is seed letter for first time step</span><br><span class="line">  """</span></span><br><span class="line">  x = np.zeros((vocab_size, <span class="number">1</span>))</span><br><span class="line">  x[seed_ix] = <span class="number">1</span></span><br><span class="line">  ixes = []</span><br><span class="line">  <span class="keyword">for</span> t <span class="keyword">in</span> xrange(n):</span><br><span class="line">    h = np.tanh(np.dot(Wxh, x) + np.dot(Whh, h) + bh)</span><br><span class="line">    y = np.dot(Why, h) + by</span><br><span class="line">    p = np.exp(y) / np.sum(np.exp(y))</span><br><span class="line">    ix = np.random.choice(range(vocab_size), p=p.ravel())</span><br><span class="line">    x = np.zeros((vocab_size, <span class="number">1</span>))</span><br><span class="line">    x[ix] = <span class="number">1</span></span><br><span class="line">    ixes.append(ix)</span><br><span class="line">  <span class="keyword">return</span> ixes</span><br></pre></td></tr></table></figure>
-<h2 id="adagrad">adagrad</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">n, p = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">mWxh, mWhh, mWhy = np.zeros_like(Wxh), np.zeros_like(Whh), np.zeros_like(Why)</span><br><span class="line">mbh, mby = np.zeros_like(bh), np.zeros_like(by) <span class="comment"># memory variables for Adagrad</span></span><br><span class="line">smooth_loss = -np.log(<span class="number">1.0</span>/vocab_size)*seq_length <span class="comment"># loss at iteration 0</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">  <span class="comment"># prepare inputs (we're sweeping from left to right in steps seq_length long)</span></span><br><span class="line">  <span class="keyword">if</span> p+seq_length+<span class="number">1</span> &gt;= len(data) <span class="keyword">or</span> n == <span class="number">0</span>: </span><br><span class="line">    hprev = np.zeros((hidden_size,<span class="number">1</span>)) <span class="comment"># reset RNN memory</span></span><br><span class="line">    p = <span class="number">0</span> <span class="comment"># go from start of data</span></span><br><span class="line">  inputs = [char_to_ix[ch] <span class="keyword">for</span> ch <span class="keyword">in</span> data[p:p+seq_length]]</span><br><span class="line">  targets = [char_to_ix[ch] <span class="keyword">for</span> ch <span class="keyword">in</span> data[p+<span class="number">1</span>:p+seq_length+<span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line">  <span class="comment"># sample from the model now and then</span></span><br><span class="line">  <span class="keyword">if</span> n % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">    sample_ix = sample(hprev, inputs[<span class="number">0</span>], <span class="number">200</span>)</span><br><span class="line">    txt = <span class="string">''</span>.join(ix_to_char[ix] <span class="keyword">for</span> ix <span class="keyword">in</span> sample_ix)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'----\n %s \n----'</span> % (txt, )</span><br><span class="line"></span><br><span class="line">  <span class="comment"># forward seq_length characters through the net and fetch gradient</span></span><br><span class="line">  loss, dWxh, dWhh, dWhy, dbh, dby, hprev = lossFun(inputs, targets, hprev)</span><br><span class="line">  smooth_loss = smooth_loss * <span class="number">0.999</span> + loss * <span class="number">0.001</span></span><br><span class="line">  <span class="keyword">if</span> n % <span class="number">100</span> == <span class="number">0</span>: <span class="keyword">print</span> <span class="string">'iter %d, loss: %f'</span> % (n, smooth_loss) <span class="comment"># print progress</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># perform parameter update with Adagrad</span></span><br><span class="line">  <span class="keyword">for</span> param, dparam, mem <span class="keyword">in</span> zip([Wxh, Whh, Why, bh, by], </span><br><span class="line">                                [dWxh, dWhh, dWhy, dbh, dby], </span><br><span class="line">                                [mWxh, mWhh, mWhy, mbh, mby]):</span><br><span class="line">    mem += dparam * dparam</span><br><span class="line">    param += -learning_rate * dparam / np.sqrt(mem + <span class="number">1e-8</span>) <span class="comment"># adagrad update</span></span><br><span class="line"></span><br><span class="line">  p += seq_length <span class="comment"># move data pointer</span></span><br><span class="line">  n += <span class="number">1</span> <span class="comment"># iteration counter</span></span><br></pre></td></tr></table></figure>
+<h2 id="adagrad">adagrad</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">n, p = <span class="number">0</span>, <span class="number">0</span></span><br><span class="line">mWxh, mWhh, mWhy = np.zeros_like(Wxh), np.zeros_like(Whh), np.zeros_like(Why)</span><br><span class="line">mbh, mby = np.zeros_like(bh), np.zeros_like(by) <span class="comment"># memory variables for Adagrad</span></span><br><span class="line">smooth_loss = -np.log(<span class="number">1.0</span>/vocab_size)*seq_length <span class="comment"># loss at iteration 0</span></span><br><span class="line"><span class="keyword">while</span> <span class="keyword">True</span>:</span><br><span class="line">  <span class="comment"># prepare inputs (we're sweeping from left to right in steps seq_length long)</span></span><br><span class="line">  <span class="keyword">if</span> p+seq_length+<span class="number">1</span> &gt;= len(data) <span class="keyword">or</span> n == <span class="number">0</span>: </span><br><span class="line">    hprev = np.zeros((hidden_size,<span class="number">1</span>)) <span class="comment"># reset RNN memory</span></span><br><span class="line">    p = <span class="number">0</span> <span class="comment"># go from start of data</span></span><br><span class="line">  inputs = [char_to_ix[ch] <span class="keyword">for</span> ch <span class="keyword">in</span> data[p:p+seq_length]]</span><br><span class="line">  targets = [char_to_ix[ch] <span class="keyword">for</span> ch <span class="keyword">in</span> data[p+<span class="number">1</span>:p+seq_length+<span class="number">1</span>]]</span><br><span class="line"></span><br><span class="line">  <span class="comment"># sample from the model now and then</span></span><br><span class="line">  <span class="keyword">if</span> n % <span class="number">100</span> == <span class="number">0</span>:</span><br><span class="line">    sample_ix = sample(hprev, inputs[<span class="number">0</span>], <span class="number">200</span>)</span><br><span class="line">    txt = <span class="string">''</span>.join(ix_to_char[ix] <span class="keyword">for</span> ix <span class="keyword">in</span> sample_ix)</span><br><span class="line">    <span class="keyword">print</span> <span class="string">'----\n %s \n----'</span> % (txt, )</span><br><span class="line"></span><br><span class="line">  <span class="comment"># forward seq_length characters through the net and fetch gradient</span></span><br><span class="line">  loss, dWxh, dWhh, dWhy, dbh, dby, hprev = lossFun(inputs, targets, hprev)</span><br><span class="line">  smooth_loss = smooth_loss * <span class="number">0.999</span> + loss * <span class="number">0.001</span></span><br><span class="line">  <span class="keyword">if</span> n % <span class="number">100</span> == <span class="number">0</span>: <span class="keyword">print</span> <span class="string">'iter %d, loss: %f'</span> % (n, smooth_loss) <span class="comment"># print progress</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment"># perform parameter update with Adagrad</span></span><br><span class="line">  <span class="keyword">for</span> param, dparam, mem <span class="keyword">in</span> zip([Wxh, Whh, Why, bh, by], </span><br><span class="line">                                [dWxh, dWhh, dWhy, dbh, dby], </span><br><span class="line">                                [mWxh, mWhh, mWhy, mbh, mby]):</span><br><span class="line">    mem += dparam * dparam</span><br><span class="line">    param += -learning_rate * dparam / np.sqrt(mem + <span class="number">1e-8</span>) <span class="comment"># adagrad update</span></span><br><span class="line"></span><br><span class="line">  p += seq_length <span class="comment"># move data pointer</span></span><br><span class="line">  n += <span class="number">1</span> <span class="comment"># iteration counter</span></span><br></pre></td></tr></table></figure></span>
       
     </div>
-    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/deeplearning/" rel="tag">#deeplearning</a>
+          
+            <a href="/tags/rnn/" rel="tag">#rnn</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/08/09/numpy学习小结/" rel="prev">numpy学习小结</a>
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/06/Demystify-BackPropagation-BP-算法/" rel="next">Demystify BackPropagation(BP)算法</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2015/08/09/numpy学习小结/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
+
+ </div>
+
         
-          numpy学习小结
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/08/09/min-char-rnn代码解读/"
+                   data-title="min-char-rnn代码解读" data-url="http://lan2720.github.io/2015/08/09/min-char-rnn代码解读/">
+              </div>
+            
+          </div>
         
       </div>
-    </a>
+
+      
   
-  
-    <a href="/2015/08/06/Demystify-BackPropagation-BP-算法/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Demystify BackPropagation(BP)算法</div>
-      <strong class="article-nav-caption">></strong>
-    </a>
-  
-</nav>
-
-  
-</article>
-
-
-<div class="share">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">分享到：</span>
-		<a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-<div class="duoshuo">
-    <!-- 多说评论框 start -->
-    <div class="ds-thread" data-thread-key="min-char-rnn代码解读" data-title="min-char-rnn代码解读" data-url="http://lan2720.github.io/2015/08/09/min-char-rnn代码解读/"></div>
-    <!-- 多说评论框 end -->
-    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-    <script type="text/javascript">
-    var duoshuoQuery = {short_name:"lan-blog"};
-    (function() {
-        var ds = document.createElement('script');
-        ds.type = 'text/javascript';ds.async = true;
-        ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-        ds.charset = 'UTF-8';
-        (document.getElementsByTagName('head')[0] 
-         || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-    </script>
-    <!-- 多说公共JS代码 end -->
-</div>
-
-
-
-</div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2015 Lan
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
     </div>
   </div>
-</footer>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="http://www.alchemyapi.com/sites/default/files/deepLearningAI500.png" alt="Jianan Wang" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Jianan Wang</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">属性GEEK, 冷静思考</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lan2720" target="_blank">Github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/loafer-527" target="_blank">Zhihu</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#loss_function"><span class="nav-number">1.</span> <span class="nav-text">loss function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sample"><span class="nav-number">2.</span> <span class="nav-text">sample</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#adagrad"><span class="nav-number">3.</span> <span class="nav-text">adagrad</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
     </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jianan Wang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
     
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" type="text/css">
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan2720"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
 
 
-<script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: true,
-		animate: true,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false
-	}
-</script>
-<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js" type="text/javascript"></script>
-<script src="/js/main.js" type="text/javascript"></script>
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
 
 
 
 
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
 
 
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    tex2jax: {
-        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
-        processEscapes: true,
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
     }
-});
 
-MathJax.Hub.Queue(function() {
-    var all = MathJax.Hub.getAllJax(), i;
-    for(i=0; i < all.length; i += 1) {
-        all[i].SourceElement().parentNode.className += ' has-jax';                 
-    }       
-});
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
 </script>
 
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
 </script>
 
 
-  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
 </body>
 </html>
