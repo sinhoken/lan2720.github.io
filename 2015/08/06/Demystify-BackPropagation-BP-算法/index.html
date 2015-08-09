@@ -37,16 +37,12 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="前言以前也听别人喊BP算法BP算法的，一直以为是个多么高深莫测的算法呢，最近看了很多资料之后，觉得BP思想一开始接触确实不容易马上理解，但是在知识积累到一定程度（其实也就几天的间隔）再回头看时，发现之前难于理解的公式现在恍然大悟了。就像NeuralNetworksAndDeepLearning的作者所言：
-
-Be warned, though: you shouldn’t expect to in">
+<meta name="description" content="BP算法可谓是神经网络的灵魂所在，结合代码深入思考之后发现有很多地方自己以前没注意到，也通过读代码对BP有了自己的理解和认识。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Demystify BackPropagation(BP)算法">
 <meta property="og:url" content="http://lan2720.github.io/2015/08/06/Demystify-BackPropagation-BP-算法/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="前言以前也听别人喊BP算法BP算法的，一直以为是个多么高深莫测的算法呢，最近看了很多资料之后，觉得BP思想一开始接触确实不容易马上理解，但是在知识积累到一定程度（其实也就几天的间隔）再回头看时，发现之前难于理解的公式现在恍然大悟了。就像NeuralNetworksAndDeepLearning的作者所言：
-
-Be warned, though: you shouldn’t expect to in">
+<meta property="og:description" content="BP算法可谓是神经网络的灵魂所在，结合代码深入思考之后发现有很多地方自己以前没注意到，也通过读代码对BP有了自己的理解和认识。">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1euso4ck9jvj20bm033q30.jpg">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1euso9gietbj20dt01faa9.jpg">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eusplyx5p9j205702v746.jpg">
@@ -65,9 +61,7 @@ Be warned, though: you shouldn’t expect to in">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eusw6owst4j20as02sglt.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Demystify BackPropagation(BP)算法">
-<meta name="twitter:description" content="前言以前也听别人喊BP算法BP算法的，一直以为是个多么高深莫测的算法呢，最近看了很多资料之后，觉得BP思想一开始接触确实不容易马上理解，但是在知识积累到一定程度（其实也就几天的间隔）再回头看时，发现之前难于理解的公式现在恍然大悟了。就像NeuralNetworksAndDeepLearning的作者所言：
-
-Be warned, though: you shouldn’t expect to in">
+<meta name="twitter:description" content="BP算法可谓是神经网络的灵魂所在，结合代码深入思考之后发现有很多地方自己以前没注意到，也通过读代码对BP有了自己的理解和认识。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -258,7 +252,6 @@ Be warned, though: you shouldn’t expect to in">
 <p>Be warned, though: you shouldn’t expect to instantaneously assimilate the equations. Such an expectation will lead to disappointment. In fact, the backpropagation equations are so rich that understanding them well requires considerable time and patience as you gradually delve deeper into the equations.</p>
 </blockquote>
 <p>所以，如果你现在还不理解BP算法，没有关系，看完第一遍之后隔一个星期再看，肯定会理解，而且反复思索的过程中收获更多。</p>
-<a id="more"></a>
 <h2 id="什么是BP算法？BP算法要解决什么问题？">什么是BP算法？BP算法要解决什么问题？</h2><p>神经网络说白了就两个过程。<br>就拿监督学习来说吧，有inputs， 有label（输出的准确值）。我唯一的目标就是希望我的整个网络接收到inputs之后，输出的结果和给定的labels差距尽可能小，因为那样就说明我完成了对数据的准确预测。那么来一个新的input，我就能八九不离十的预测它应该属于哪个label。<br>有了这个终极梦想之后，我们接下来就去想如何实现梦想：</p>
 <ol>
 <li>确定模型：这里面就涉及到模型需要多少层，每一层的激活函数，cost function（cost function就是衡量output和y的差距的方法）等。</li>
