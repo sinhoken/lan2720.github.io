@@ -459,12 +459,9 @@
 
       
         
-          <p>今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。<br>课上他给出了一段GP的代码。<br>逐步分析一下：</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This is the true unknown function we are trying to approximate</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: np.sin(<span class="number">0.9</span>*x).flatten()</span><br></pre></td></tr></table></figure>
-<p>这是我们要不断去近似的一个方程。对于深度学习的自动寻参而言，我们给定几组参数组合，然后得到这几组参数对应的训练效果，那么可以根据这几组已知的结果，去预测在整个参数空间范围内，参数组合会有怎样一个训练结果趋势。这个结果趋势就是通过GP模拟出的。<br>其中隐含了一个信息：所以可能的参数组合他们所得出的训练结果真实值。但是这个真实值我们是得不到的，如果得到了我们就不用费劲，直接在这些结果中找到训练结果最好的那组参数就万事大吉了。但是，事与愿违，既然不能得到这样一个潜在的真实值，我们只能通过贝爷的方法去模拟出一个大致接近真实值的值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define the kernel</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kernel</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="string">""" GP squared exponential kernel """</span></span><br><span class="line">    kernelParameter = <span class="number">0.1</span></span><br><span class="line">    sqdist = np.sum(a**<span class="number">2</span>,<span class="number">1</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>) + np.sum(b**<span class="number">2</span>,<span class="number">1</span>) - <span class="number">2</span>*np.dot(a, b.T)</span><br><span class="line">    <span class="keyword">return</span> np.exp(-.<span class="number">5</span> * (<span class="number">1</span>/kernelParameter) * sqdist)</span><br></pre></td></tr></table></figure></p>
-<p>这里定义了一个核方法。这个核方法是用来计算K的，K就是两个变量a，b的协方差矩阵。<br>核方法有很多，对应到不同领域又有处理文本的，处理图像音频的核方程。这里只是简单的拿一个核作为例子进行讲解。<br>
+          <span itemprop="description">研究了一个星期Ryan大牛的贝叶斯自动寻参也不明就里，但是至少明白了高斯过程，简单写写。</span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/07/30/Gaussian-Process代码理解/#more" rel="contents">
+            <a class="btn" href="/2015/07/30/Gaussian-Process代码理解/">
               阅读全文 &raquo;
             </a>
           </div>
@@ -535,13 +532,9 @@
 
       
         
-          <h2 id="基础知识">基础知识</h2><p>logistic regression是个二分类问题。比如，预测病人的肿瘤是恶性（malignant）还是良性（benign）的情况。<br>sofxmax　regression是个多分类问题，类标签$y$可以取两个以上的值。诸如MNIST手写数字分类，辨识10个不同的单个数字。</p>
-<h2 id="什么时候用哪个">什么时候用哪个</h2><p>一开始我也很疑惑什么时候用logistic regression什么时候又该用sofxmax regression呢。<a href="http://ufldl.stanford.edu/wiki/index.php/Softmax%E5%9B%9E%E5%BD%92#Softmax_.E5.9B.9E.E5.BD.92_vs._k_.E4.B8.AA.E4.BA.8C.E5.85.83.E5.88.86.E7.B1.BB.E5.99.A8">ufldl</a>给出了一个很简单的方法。</p>
-<blockquote>
-<p>如果你在开发一个音乐分类的应用，需要对k种类型的音乐进行识别，那么是选择使用 softmax 分类器呢，还是使用 logistic 回归算法建立 k 个独立的二元分类器呢？<br>这一选择取决于你的类别之间是否互斥，例如，如果你有四个类别的音乐，分别为：古典音乐、乡村音乐、摇滚乐和爵士乐，那么你可以假设每个训练样本只会被打上一个标签（即：一首歌只能属于这四种音乐类型的其中一种），此时你应该使用类别数 k = 4 的softmax回归。（如果在你的数据集中，有的歌曲不属于以上四类的其中任何一类，那么你可以添加一个“其他类”，并将类别数 k 设为5。）<br>如果你的四个类别如下：人声音乐、舞曲、影视原声、流行歌曲，那么这些类别之间并不是互斥的。例如：一首歌曲可以来源于影视原声，同时也包含人声 。这种情况下，使用4个二分类的 logistic 回归分类器更为合适。这样，对于每个新的音乐作品 ，我们的算法可以分别判断它是否属于各个类别。</p>
-</blockquote>
+          <span itemprop="description">对机器学习有一点了解的人都知道logistic regression，但是你真的了解它应该怎么用吗？</span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/07/23/softmax-regression-vs-logistic-regression/#more" rel="contents">
+            <a class="btn" href="/2015/07/23/softmax-regression-vs-logistic-regression/">
               阅读全文 &raquo;
             </a>
           </div>
@@ -612,9 +605,9 @@
 
       
         
-          <p>最近在看<a href="http://deeplearning.net/tutorial/dA.html#daa">Deep Learning Tutorials-Denoising Autoencoders</a>的内容，整个程序全部用theano和numpy写的，思路特别清晰。但是对于sparsity的限制没有感性的认识，一直觉得很玄幻。<br>今天就改了一下它的<a href="https://github.com/lisa-lab/DeepLearningTutorials/blob/master/code/dA.py">源码</a>，用matplotlib将hidden layer每个neuron输出的activation值用散点图的方式绘制出来，通过调节sparse_penalty参数进行对比。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eucn84hf8qj20mk0h0jxm.jpg" alt="sparse 0.01"><br>图1：当sparse限制在0.01时<br>
+          <span itemprop="description">可视化autoencoder的稀疏性，更直观的了解稀疏限制对输出的影响。</span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/#more" rel="contents">
+            <a class="btn" href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/">
               阅读全文 &raquo;
             </a>
           </div>
@@ -685,9 +678,9 @@
 
       
         
-          <h2 id="背景">背景</h2><p>首先，上个图来看看。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eua62ghcgvj20mj0g875y.jpg" alt="diffrenet learning rate compare"><br>
+          <span itemprop="description">学习率的调整涉及很多tricks，这里仅仅对问题有个初步的认识，后续还会对相关的schedule算法作介绍。</span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/07/21/初识Learning-Rate-Schedule问题/#more" rel="contents">
+            <a class="btn" href="/2015/07/21/初识Learning-Rate-Schedule问题/">
               阅读全文 &raquo;
             </a>
           </div>
@@ -758,14 +751,9 @@
 
       
         
-          <p>暑期实习带我正式迈上了Deep Learning的道路，虽然DL目前来说“坑多路险”，还是感谢geetest的黄老板领我“入坑”。至少这半个月以来看了很多，学了很多，加入了一个新的大家庭。从刚开始的痛苦挣扎到思路逐渐清晰，收获还是不小的。<br>这篇是我学习<a href="http://deeplearning.net/tutorial/logreg.html">Deep Learning Tutorials-Logistic Regression</a>时对代码的理解，如果偏颇请多指正。</p>
-<h2 id="Train_Model-Early_Stopping">Train Model-Early Stopping</h2><p>这一部分代码的重点是理解<a href="http://deeplearning.net/tutorial/gettingstarted.html#opt-early-stopping">Early-Stopping</a>的机制。</p>
-<blockquote>
-<p>Talk is cheap, show me your code.</p>
-</blockquote>
-<p>上代码》》》<br>
+          <span itemprop="description">Theano的官方教程，代码写的真不赖，应该仔细研读。Early Stopping的标准有很多，仅实现了一种策略。</span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/#more" rel="contents">
+            <a class="btn" href="/2015/07/15/logistic-sgd代码分析之Early-Stopping/">
               阅读全文 &raquo;
             </a>
           </div>
@@ -909,10 +897,9 @@
 
       
         
-          <h2 id="权限的基本介绍">权限的基本介绍</h2><h3 id="public">public</h3><h4 id="类">类</h4><p>当两个类不在同一个包中，public权限就显示出作用了。<br>如果一个类不是public的话，<code>外部包</code>无法对这个类进行访问。</p>
-<h4 id="成员变量和函数">成员变量和函数</h4><p>如果想在包的外部调用某一个类的成员变量或者成员函数，那么这个成员必须是public，也就是必须是外部包可见的才能被访问，否则无法访问该成员。</p>
+          <span itemprop="description">Java我学的不多，但是作为基础的访问权限问题，有很多人学了很久也弄不明白。</span>
           <div class="post-more-link text-center">
-            <a class="btn" href="/2015/06/14/Java访问权限/#more" rel="contents">
+            <a class="btn" href="/2015/06/14/Java访问权限/">
               阅读全文 &raquo;
             </a>
           </div>

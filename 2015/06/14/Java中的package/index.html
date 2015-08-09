@@ -37,24 +37,15 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="什么是Java当中的软件包?所谓的软件包:    就是把类放在不同的文件夹下
-相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。
-同时，可以理解为java的软件包:    提供了命名空间
-即规定了两个类可以重名，但是是两个不同的空间内可以重名。">
+<meta name="description" content="整理一下java中包的用法，都是基本的认识和操作。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Java中的package">
 <meta property="og:url" content="http://lan2720.github.io/2015/06/14/Java中的package/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="什么是Java当中的软件包?所谓的软件包:    就是把类放在不同的文件夹下
-相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。
-同时，可以理解为java的软件包:    提供了命名空间
-即规定了两个类可以重名，但是是两个不同的空间内可以重名。">
+<meta property="og:description" content="整理一下java中包的用法，都是基本的认识和操作。">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中的package">
-<meta name="twitter:description" content="什么是Java当中的软件包?所谓的软件包:    就是把类放在不同的文件夹下
-相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。
-同时，可以理解为java的软件包:    提供了命名空间
-即规定了两个类可以重名，但是是两个不同的空间内可以重名。">
+<meta name="twitter:description" content="整理一下java中包的用法，都是基本的认识和操作。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -244,7 +235,6 @@
 <p>相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。</p>
 <p>同时，可以理解为java的软件包<br>:    提供了命名空间</p>
 <p>即规定了两个类可以重名，但是是两个不同的空间内可以重名。</p>
-<a id="more"></a>
 <h2 id="为什么要用软件包">为什么要用软件包</h2><p>举个栗子，某公司对学校的管理系统进行开发，A组人员创建了一个父类User，下面有两个子类Student和Teacher。由于是单独开发，B组人员并不知道A组人员的命名，他们也定义了一个User父类，有RegUser和UnRegUser两个子类。</p>
 <table>
 <thead>

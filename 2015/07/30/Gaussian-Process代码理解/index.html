@@ -37,14 +37,12 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。课上他给出了一段GP的代码。逐步分析一下：
-12# This is the true unknown function we are trying to approximatef = lambda x: np.sin(0.9*x).flatten(">
+<meta name="description" content="研究了一个星期Ryan大牛的贝叶斯自动寻参也不明就里，但是至少明白了高斯过程，简单写写。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Gaussian Process代码理解">
 <meta property="og:url" content="http://lan2720.github.io/2015/07/30/Gaussian-Process代码理解/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。课上他给出了一段GP的代码。逐步分析一下：
-12# This is the true unknown function we are trying to approximatef = lambda x: np.sin(0.9*x).flatten(">
+<meta property="og:description" content="研究了一个星期Ryan大牛的贝叶斯自动寻参也不明就里，但是至少明白了高斯过程，简单写写。">
 <meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eukvlj5amrj20e603owel.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eukwkdcpo5j206b01m743.jpg">
 <meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eukv2actpwj20j704hmxh.jpg">
@@ -53,8 +51,7 @@
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1eupffwvs91j20fo033jrh.jpg">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Gaussian Process代码理解">
-<meta name="twitter:description" content="今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。课上他给出了一段GP的代码。逐步分析一下：
-12# This is the true unknown function we are trying to approximatef = lambda x: np.sin(0.9*x).flatten(">
+<meta name="twitter:description" content="研究了一个星期Ryan大牛的贝叶斯自动寻参也不明就里，但是至少明白了高斯过程，简单写写。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -243,7 +240,8 @@
         <span itemprop="articleBody"><p>今天看了大神Nando de Freitas在UBC讲的machine learning 2013年春季课程，关于高斯过程的视频，对GP有了初步的理解。<br>课上他给出了一段GP的代码。<br>逐步分析一下：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># This is the true unknown function we are trying to approximate</span></span><br><span class="line">f = <span class="keyword">lambda</span> x: np.sin(<span class="number">0.9</span>*x).flatten()</span><br></pre></td></tr></table></figure>
 <p>这是我们要不断去近似的一个方程。对于深度学习的自动寻参而言，我们给定几组参数组合，然后得到这几组参数对应的训练效果，那么可以根据这几组已知的结果，去预测在整个参数空间范围内，参数组合会有怎样一个训练结果趋势。这个结果趋势就是通过GP模拟出的。<br>其中隐含了一个信息：所以可能的参数组合他们所得出的训练结果真实值。但是这个真实值我们是得不到的，如果得到了我们就不用费劲，直接在这些结果中找到训练结果最好的那组参数就万事大吉了。但是，事与愿违，既然不能得到这样一个潜在的真实值，我们只能通过贝爷的方法去模拟出一个大致接近真实值的值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Define the kernel</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">kernel</span><span class="params">(a, b)</span>:</span></span><br><span class="line">    <span class="string">""" GP squared exponential kernel """</span></span><br><span class="line">    kernelParameter = <span class="number">0.1</span></span><br><span class="line">    sqdist = np.sum(a**<span class="number">2</span>,<span class="number">1</span>).reshape(-<span class="number">1</span>,<span class="number">1</span>) + np.sum(b**<span class="number">2</span>,<span class="number">1</span>) - <span class="number">2</span>*np.dot(a, b.T)</span><br><span class="line">    <span class="keyword">return</span> np.exp(-.<span class="number">5</span> * (<span class="number">1</span>/kernelParameter) * sqdist)</span><br></pre></td></tr></table></figure></p>
-<p>这里定义了一个核方法。这个核方法是用来计算K的，K就是两个变量a，b的协方差矩阵。<br>核方法有很多，对应到不同领域又有处理文本的，处理图像音频的核方程。这里只是简单的拿一个核作为例子进行讲解。<br><a id="more"></a><br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">N = <span class="number">10</span>         <span class="comment"># number of training points.</span></span><br><span class="line">n = <span class="number">50</span>         <span class="comment"># number of test points.</span></span><br><span class="line">s = <span class="number">0.00005</span>    <span class="comment"># noise variance.</span></span><br></pre></td></tr></table></figure></p>
+<p>这里定义了一个核方法。这个核方法是用来计算K的，K就是两个变量a，b的协方差矩阵。<br>核方法有很多，对应到不同领域又有处理文本的，处理图像音频的核方程。这里只是简单的拿一个核作为例子进行讲解。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">N = <span class="number">10</span>         <span class="comment"># number of training points.</span></span><br><span class="line">n = <span class="number">50</span>         <span class="comment"># number of test points.</span></span><br><span class="line">s = <span class="number">0.00005</span>    <span class="comment"># noise variance.</span></span><br></pre></td></tr></table></figure>
 <p>这里给出10组训练点。最后要预测50个测试点。并且在y值上加上噪音。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Sample some input points and noisy versions of the function evaluated at</span></span><br><span class="line"><span class="comment"># these points. </span></span><br><span class="line">X = np.random.uniform(-<span class="number">5</span>, <span class="number">5</span>, size=(N,<span class="number">1</span>))</span><br><span class="line">y = f(X) + s*np.random.randn(N)</span><br></pre></td></tr></table></figure>
 <p>生成训练点的坐标。训练点得到的观测值也可能是不准确的，所以要加上一些噪音。</p>
