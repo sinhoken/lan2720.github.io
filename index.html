@@ -111,7 +111,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/deeplearning/" style="font-size: 10px;">deeplearning</a><a href="/tags/deeplearningtutorials/" style="font-size: 13.33px;">deeplearningtutorials</a><a href="/tags/java/" style="font-size: 13.33px;">java</a><a href="/tags/julyedu/" style="font-size: 10px;">julyedu</a><a href="/tags/life/" style="font-size: 10px;">life</a><a href="/tags/machinelearning/" style="font-size: 10px;">machinelearning</a><a href="/tags/neuralnetworksanddeeplearning/" style="font-size: 16.67px;">neuralnetworksanddeeplearning</a><a href="/tags/python/" style="font-size: 10px;">python</a><a href="/tags/rnn/" style="font-size: 10px;">rnn</a><a href="/tags/ufldl/" style="font-size: 10px;">ufldl</a><a href="/tags/动态规划/" style="font-size: 10px;">动态规划</a><a href="/tags/学习笔记/" style="font-size: 20px;">学习笔记</a><a href="/tags/算法/" style="font-size: 10px;">算法</a><a href="/tags/自动寻参/" style="font-size: 10px;">自动寻参</a>
+						<a href="/tags/deeplearning/" style="font-size: 10px;">deeplearning</a><a href="/tags/deeplearningtutorials/" style="font-size: 13.33px;">deeplearningtutorials</a><a href="/tags/java/" style="font-size: 13.33px;">java</a><a href="/tags/julyedu/" style="font-size: 10px;">julyedu</a><a href="/tags/life/" style="font-size: 10px;">life</a><a href="/tags/machinelearning/" style="font-size: 10px;">machinelearning</a><a href="/tags/neuralnetworksanddeeplearning/" style="font-size: 16.67px;">neuralnetworksanddeeplearning</a><a href="/tags/numpy/" style="font-size: 10px;">numpy</a><a href="/tags/python/" style="font-size: 10px;">python</a><a href="/tags/rnn/" style="font-size: 10px;">rnn</a><a href="/tags/ufldl/" style="font-size: 10px;">ufldl</a><a href="/tags/动态规划/" style="font-size: 10px;">动态规划</a><a href="/tags/学习笔记/" style="font-size: 20px;">学习笔记</a><a href="/tags/算法/" style="font-size: 10px;">算法</a><a href="/tags/自动寻参/" style="font-size: 10px;">自动寻参</a>
 					</div>
 				</section>
 				
@@ -180,6 +180,94 @@
 	</div>
 </nav>
       <div class="body-wrap">
+  
+    <article id="post-numpy学习小结" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/08/09/numpy学习小结/" class="article-date">
+  	<time datetime="2015-08-09T06:51:27.000Z" itemprop="datePublished">2015-08-09</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/08/09/numpy学习小结/">numpy学习小结</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>axis = 0</li>
+</ul>
+<p>对“列”的操作</p>
+<ul>
+<li>axis = 1 </li>
+</ul>
+<p>对“行”的操作</p>
+<h2 id="numpy-random-randn(d0,d1,d2,…,dn)">numpy.random.randn(d0,d1,d2,…,dn)</h2><p>输出标准正态分布的矩阵<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">2</span>]: np.random.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">Out[<span class="number">2</span>]:</span><br><span class="line">array([[-<span class="number">2.35555038</span>, -<span class="number">0.60776017</span>, -<span class="number">0.00299252</span>,  <span class="number">0.66800849</span>],</span><br><span class="line">       [-<span class="number">0.10564223</span>,  <span class="number">0.85010081</span>,  <span class="number">0.09955459</span>,  <span class="number">0.65413315</span>],</span><br><span class="line">       [ <span class="number">0.68389408</span>,  <span class="number">0.16823155</span>,  <span class="number">0.10815476</span>,  <span class="number">0.23052734</span>]])</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">3</span>]: np.random.randn(<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line">Out[<span class="number">3</span>]:</span><br><span class="line">array([[[ <span class="number">0.73165777</span>, -<span class="number">0.88526387</span>, -<span class="number">0.62006827</span>, -<span class="number">0.54128639</span>, -<span class="number">0.19230798</span>],</span><br><span class="line">        [ <span class="number">1.33784512</span>,  <span class="number">0.93766309</span>,  <span class="number">0.00875593</span>,  <span class="number">0.04044714</span>,  <span class="number">0.28594893</span>],</span><br><span class="line">        [-<span class="number">0.40189678</span>,  <span class="number">0.34185559</span>, -<span class="number">1.14444086</span>,  <span class="number">1.16959141</span>, -<span class="number">0.12970186</span>],</span><br><span class="line">        [ <span class="number">0.22244501</span>,  <span class="number">0.0886731</span> ,  <span class="number">0.19920915</span>,  <span class="number">0.28482659</span>,  <span class="number">1.05407091</span>]],</span><br><span class="line"></span><br><span class="line">       [[-<span class="number">0.2937382</span> ,  <span class="number">0.37630827</span>, -<span class="number">0.5257294</span> ,  <span class="number">0.05723213</span>, -<span class="number">1.37493923</span>],</span><br><span class="line">        [-<span class="number">0.84811103</span>, -<span class="number">1.26930787</span>, -<span class="number">1.09508187</span>,  <span class="number">0.45675305</span>, -<span class="number">0.17887663</span>],</span><br><span class="line">        [ <span class="number">0.25849537</span>,  <span class="number">0.95260957</span>,  <span class="number">1.21697954</span>, -<span class="number">1.3069511</span> ,  <span class="number">0.85833526</span>],</span><br><span class="line">        [-<span class="number">0.36348516</span>, -<span class="number">0.56026657</span>, -<span class="number">0.37870525</span>, -<span class="number">0.12051882</span>,  <span class="number">0.0929342</span> ]],</span><br><span class="line"></span><br><span class="line">       [[-<span class="number">1.05940758</span>, -<span class="number">0.77302374</span>,  <span class="number">1.41248773</span>, -<span class="number">0.63063312</span>, -<span class="number">0.62099717</span>],</span><br><span class="line">        [-<span class="number">0.43340296</span>,  <span class="number">1.11419493</span>, -<span class="number">0.95258542</span>,  <span class="number">0.66176479</span>,  <span class="number">1.28709499</span>],</span><br><span class="line">        [ <span class="number">0.5445358</span> , -<span class="number">0.0803879</span> ,  <span class="number">0.55310637</span>, -<span class="number">0.54642863</span>,  <span class="number">1.23923391</span>],</span><br><span class="line">        [ <span class="number">2.2470355</span> ,  <span class="number">0.06080774</span>, -<span class="number">0.16382904</span>,  <span class="number">0.02292626</span>, -<span class="number">0.76685715</span>]]])</span><br></pre></td></tr></table></figure>
+<h2 id="numpy-array(object,_dtype)">numpy.array(object, dtype)</h2><p><code>params</code>:</p>
+<ul>
+<li>object : array-like</li>
+</ul>
+<h2 id="numpy-asarray(a,_dtype)">numpy.asarray(a, dtype)</h2><p><code>params</code>:<br>a : array-like</p>
+<h2 id="numpy-mutiply(x1,x2)">numpy.mutiply(x1,x2)</h2><p>对应位置元素相乘，并不是矩阵的点乘<br><code>params</code>:</p>
+<ul>
+<li>x1, x2 : array-like</li>
+</ul>
+<h2 id="numpy-dot(a,b)">numpy.dot(a,b)</h2><p>矩阵的点乘</p>
+<h2 id="a-T">a.T</h2><p>矩阵a的转置</p>
+<h2 id="numpy-ravel(a)">numpy.ravel(a)</h2><p>将array a展开，成为一个sequence/vector</p>
+<h2 id="numpy-concatenate((a1,_a2))">numpy.concatenate((a1, a2))</h2><p>连接两个序列a1,a2。一定是序列或者是vector，如果是matrix/array就要先ravel成vector。<br><code>params</code>:</p>
+<ul>
+<li>a1, a2 : sequence of array-like</li>
+</ul>
+<h2 id="numpy-reshape(a,_newShape)">numpy.reshape(a, newShape)</h2><p>params:</p>
+<ul>
+<li><code>a</code> : array-like</li>
+<li><code>newShape</code> : int or tuple of ints</li>
+</ul>
+<h2 id="numpy-zeros_like(a)">numpy.zeros_like(a)</h2><p>返回一个和a同型的全零矩阵</p>
+<h2 id="numpy-copy(a)">numpy.copy(a)</h2><p>同<code>np.array(a, copy=True)</code><br>对a进行一个拷贝命名为一个新的变量，当a的元素有改变时，新的变量不会随之改变。<br>但是<code>b=a</code>这样b会随着a的改变而变。</p>
+<p>【持续更新】</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/numpy/">numpy</a></li></ul>
+	</div>
+
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
   
     <article id="post-min-char-rnn代码解读" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -708,67 +796,6 @@
       
         <p class="article-more-link">
           <a  href="/2015/06/14/Java访问权限/#more">more >></a>
-        </p>
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-  
-    <article id="post-Java中的package" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/06/14/Java中的package/" class="article-date">
-  	<time datetime="2015-06-13T16:09:05.000Z" itemprop="datePublished">2015-06-14</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/06/14/Java中的package/">Java中的package</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="什么是Java当中的软件包?">什么是Java当中的软件包?</h2><p>所谓的软件包<br>:    就是把类放在不同的文件夹下</p>
-<p>相当于我们平时使用电脑时，有两个同名的文件，但是这两个文件我们都想保存，那么放在不同名的文件夹下，就可以了。对于Java软件包，使用的是同一个原理。</p>
-<p>同时，可以理解为java的软件包<br>:    提供了命名空间</p>
-<p>即规定了两个类可以重名，但是是两个不同的空间内可以重名。</p>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/java/">java</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/学习笔记/">学习笔记</a></li></ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a  href="/2015/06/14/Java中的package/#more">more >></a>
         </p>
       
       <div class="clearfix"></div>
