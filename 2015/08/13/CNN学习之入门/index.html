@@ -241,9 +241,9 @@
 </blockquote>
 <p>然后给出了一副动态卷积图：<br><img src="http://ufldl.stanford.edu/wiki/images/6/6c/Convolution_schematic.gif" alt=""><br>实际上这个图和上述的那个例子没有一点关系，仅仅展示了5<em>5的图像如何用3</em>3的小区块卷积得到对应的卷积特征而已。不过对于不知道卷积为何物的beginner而言这个例子很好的说明了如何进行卷积运算。<br>了解了卷积之后还是回头仔细读读上面那个例子。</p>
 <ol>
-<li>构建一个autoencoder。输入层为8<em>8，隐层为100个neuron，输出层自然也为8</em>8个neuron。</li>
-<li>将96<em>96的图片分割成8</em>8的图片，共可分89<em>89个。由于每个小区块都做一次卷积，所以最后得到的convolved feature是89</em>89的。</li>
-<li>接下来学习这些8<em>8的小区块的feature，也就是representation learning，所以用上自编码器。整个autoencoder学习完成后，得到的$w$为(100,8</em>8)。学到的这些$w$(8<em>8的，有100个)相当于动图中的3</em>3卷积块。</li>
+<li>构建一个autoencoder。输入层为8*8，隐层为100个neuron，输出层自然也为8*8个neuron。</li>
+<li>将96*96的图片分割成8<em>8的图片，共可分89\</em>89个。由于每个小区块都做一次卷积，所以最后得到的convolved feature是89*89的。</li>
+<li>接下来学习这些8*8的小区块的feature，也就是representation learning，所以用上自编码器。整个autoencoder学习完成后，得到的$w$为(100,8<em>8)。学到的这些$w$(8\</em>8的，有100个)相当于动图中的3*3卷积块。</li>
 <li>将原始图像与这些卷积块做卷积。从动图中可以看到，卷积的过程是一小块一小块进行的，每次对一个8<em>8小块做卷积。所以还是将原始的96</em>96图片以8*8的小块顺序输入，依次卷积。</li>
 <li>卷积过程还是由之前训练好的autoencoder完成。$x$为（8<em>8，89</em>89），$w$为（100，8<em>8），所以$w\cdot x$为（100，89</em>89），进行sigmoid输出的激励还是（100，89<em>89）。每一个89</em>89都是一个（8*8）小区块对原图的全部区域卷积的结果，现在有100个，也就是我们之前representation学习到的100个特征。</li>
 </ol>
