@@ -259,7 +259,7 @@
 <h4 id="Real-world_example">Real-world example</h4><p>2012年Krizhevsky等人在ImageNet比赛上使用的图片为[227*227*3]。第一个卷积层，他们使用的是$F=11$，$S=4$ and no zero padding $P$=0，因为（227-11）/4+1=55，卷积层的深度$K=96$，所以卷积后的输出为[55*55*96]，这55*55*96个神经元中的每一个neuron都和输入图片的11×11×3的一块感知域相连。<br>卷积层最后的输出就为96个feature maps，得到每个feature map所用的卷积方式（输入的分块区域）是相同的，但是卷积核不同（$w$不同）。</p>
 <h3 id="Parameter_Sharing">Parameter Sharing</h3><p>上面ImageNet例子中，第一层卷积层有55×55×96=290,400个神经元，每个神经元由输入和11×11×3=363 weights + 1 bias卷积而来。所以单算第一个卷积层就有290,400×364=105,705,600个参数之多。<br>再看卷积核，共有96 unique set of weights (one for each depth slice)，一共有96*11*11*3=34,848个weights（每个卷积核都是11*11*3的，和输入的小区块同型）和96个biases，但是depth slice中每55*55个神经元都是共享the same weights卷积来的。</p>
 <blockquote>
-<p>$W_{ij}$ is the matrix connecting the $i^{th}$ input channel with the $j^{th}$ feature map.</p>
+<p>$W_{ij}$ is the matrix connecting the $i^{th}$ input channel with the $j^{th}$ feature map.(input channel such as red, green and blue)</p>
 </blockquote>
 <p>那么，为什么可以权值共享呢？</p>
 <blockquote>
