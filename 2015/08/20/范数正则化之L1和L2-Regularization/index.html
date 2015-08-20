@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="cnn,ufldl,学习笔记," />
+  <meta name="keywords" content="machinelearning,优化," />
 
 
 
@@ -39,16 +39,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="CNN在deep learning中有着极其重要的地位，也是当下最火的模型之一。从ufldl文档浅显易懂，入门是个不错的选择。">
+<meta name="description" content="在人人都用dropout，maxout的时候，经典的正则化方法还是需要了解的，在传统的机器学习中仍有一定作用。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CNN学习之入门">
-<meta property="og:url" content="http://lan2720.github.io/2015/08/13/CNN学习之入门/index.html">
+<meta property="og:title" content="范数正则化之L1和L2 Regularization">
+<meta property="og:url" content="http://lan2720.github.io/2015/08/20/范数正则化之L1和L2-Regularization/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="CNN在deep learning中有着极其重要的地位，也是当下最火的模型之一。从ufldl文档浅显易懂，入门是个不错的选择。">
-<meta property="og:image" content="http://ufldl.stanford.edu/wiki/images/6/6c/Convolution_schematic.gif">
+<meta property="og:description" content="在人人都用dropout，maxout的时候，经典的正则化方法还是需要了解的，在传统的机器学习中仍有一定作用。">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1ev96lsfjxuj20ye0etq6l.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CNN学习之入门">
-<meta name="twitter:description" content="CNN在deep learning中有着极其重要的地位，也是当下最火的模型之一。从ufldl文档浅显易懂，入门是个不错的选择。">
+<meta name="twitter:title" content="范数正则化之L1和L2 Regularization">
+<meta name="twitter:description" content="在人人都用dropout，maxout的时候，经典的正则化方法还是需要了解的，在传统的机器学习中仍有一定作用。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -58,7 +58,7 @@
   };
 </script>
 
-  <title> CNN学习之入门 | Hakuna Matata </title>
+  <title> 范数正则化之L1和L2 Regularization | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -199,7 +199,7 @@
           
           
             
-              CNN学习之入门
+              范数正则化之L1和L2 Regularization
             
           
         </h1>
@@ -208,8 +208,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-08-13T21:32:54+08:00" content="2015-08-13">
-            2015-08-13
+          <time itemprop="dateCreated" datetime="2015-08-20T23:56:36+08:00" content="2015-08-20">
+            2015-08-20
           </time>
         </span>
 
@@ -219,8 +219,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/08/13/CNN学习之入门/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/13/CNN学习之入门/" itemprop="commentsCount"></span>
+              <a href="/2015/08/20/范数正则化之L1和L2-Regularization/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/20/范数正则化之L1和L2-Regularization/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -234,25 +234,13 @@
       
 
       
-        <span itemprop="articleBody"><p>今天读了ufldl中关于CNN的内容，只想说中文翻译的简直太难理解，琢磨了好久，对照着英文看了好几遍才弄明白究竟是如何卷积的。<br>整体来说讲的很清晰，但是举的小例子没说明白，我记录一下自己的想法。原文<a href="http://ufldl.stanford.edu/wiki/index.php/%E5%8D%B7%E7%A7%AF%E7%89%B9%E5%BE%81%E6%8F%90%E5%8F%96" target="_blank" rel="external">请看</a></p>
-<h2 id="稀疏连接">稀疏连接</h2><p>这个最好理解，就比如动物或者人类的神经系统中，神经元只会把刺激信号传给临近的几个神经元，而无法直接传给更远的神经元，稀疏连接也正是模拟的这个过程。之前的model层与层之间都是“全连接”，这并不符合真是情况。当我们只允许神经元将信号传递和临近的几个神经元，就变成了“稀疏连接”。</p>
-<h2 id="卷积过程">卷积过程</h2><blockquote>
-<p>下面给出一个具体的例子：假设你已经从一个 96x96 的图像中学习到了它的一个 8x8 的样本所具有的特征，假设这是由有 100 个隐含单元的自编码完成的。为了得到卷积特征，需要对 96x96 的图像的每个 8x8 的小块图像区域都进行卷积运算。也就是说，抽取 8x8 的小块区域，并且从起始坐标开始依次标记为（1，1），（1，2），…，一直到（89，89），然后对抽取的区域逐个运行训练过的稀疏自编码来得到特征的激活值。在这个例子里，显然可以得到 100 个集合，每个集合含有 89x89 个卷积特征。</p>
-</blockquote>
-<p>然后给出了一副动态卷积图：<br><img src="http://ufldl.stanford.edu/wiki/images/6/6c/Convolution_schematic.gif" alt=""><br>实际上这个图和上述的那个例子没有一点关系，仅仅展示了5<em>5的图像如何用3</em>3的小区块卷积得到对应的卷积特征而已。不过对于不知道卷积为何物的beginner而言这个例子很好的说明了如何进行卷积运算。<br>了解了卷积之后还是回头仔细读读上面那个例子。</p>
-<ol>
-<li>构建一个autoencoder。输入层为8*8，隐层为100个neuron，输出层自然也为8*8个neuron。</li>
-<li>将96*96的图片分割成8*8的图片，共可分89*89个。由于每个小区块都做一次卷积，所以最后得到的convolved feature是89*89的。</li>
-<li>接下来学习这些8*8的小区块的feature，也就是representation learning，所以用上自编码器。整个autoencoder学习完成后，得到的$w$为(100,8*8)。学到的这些$w$(8*8的，有100个)相当于动图中的3*3卷积块。</li>
-<li>将原始图像与这些卷积块做卷积。从动图中可以看到，卷积的过程是一小块一小块进行的，每次对一个8*8小块做卷积。所以还是将原始的96*96图片以8*8的小块顺序输入，依次卷积。</li>
-<li>卷积过程还是由之前训练好的autoencoder完成。$x$为（8*8，89*89），$w$为（100，8*8），所以$w\cdot x$为（100，89*89），进行sigmoid输出的激励还是（100，89*89）。每一个89*89都是一个（8*8）小区块对原图的全部区域卷积的结果，现在有100个，也就是我们之前representation学习到的100个特征。</li>
+        <span itemprop="articleBody"><h2 id="L1范数">L1范数</h2><h3 id="简介">简介</h3><p>L1范数是指向量中各个元素绝对值之和，也有个美称叫“稀疏规则算子”（Lasso regularization）。既然是“稀疏”，我们要弄明白它为什么能实现参数的稀疏化，但是要将明白这个问题最好还是和L2范数对比，所以放到下一节讨论。</p>
+<h3 id="参数稀疏化的优点">参数稀疏化的优点</h3><ol>
+<li>特征选择<br>一般而言，$x_i$的大部分元素（也就是特征）对最终的输出$y$是没用的或者不提供重要信息的。可能这些特征能降低training error但是由于过多的冗余特征导致模型过拟合（overfitting），也就是这些特征描述的是training dataset中存在的特性，但是这些特性在别的数据集（如test dataset）中并不一定存在，导致模型泛化能力变差。所以我们希望模型能自动筛选一些特征，但是对另一些特征将它们的权重置0，这也就是参数变得稀疏了（大部分参数为0）。</li>
+<li>可解释性<br>模型涉及的参数越少，模型越容易解释。比如要确定患者是否患感冒，只需要知道是否打喷嚏流鼻涕等就能确诊，医生很容易解释感冒。但是如果想知道患者是否得了癌症，需要全面的医学检查和化验才能确定，因为确诊癌症所需要的特征更多，也就难以解释患者发生某类症状时是不是属于癌症了。</li>
 </ol>
-<h2 id="共享变量">共享变量</h2><p>最后卷积得到的每个89*89块都叫做一个feature map，在此例中共100个。每一个feature map都是一个8*8的$w’$在原图上卷积得到的，所以每个$w’$在其对应的卷积中保持不变，称为shared weights。</p>
-<h2 id="池化过程">池化过程</h2><p>ufldl关于池化的<a href="http://ufldl.stanford.edu/wiki/index.php/%E6%B1%A0%E5%8C%96" target="_blank" rel="external">原文</a>讲的很好，请参看，我就不废话了。</p>
-<h2 id="问题">问题</h2><ol>
-<li>实际应用中每个shared weights是由autoencoder训练得到吗，还是其他方式？</li>
-<li>卷积后要得到多少个feature maps，这个个数如何确定？</li>
-</ol>
+<h2 id="L2范数">L2范数</h2><h3 id="简介-1">简介</h3><p>L2范数是指向量各元素的平方和然后求平方根。机器学习中经常出现的一个名词叫“weight decay”，就是说的L2范数啦。它还有一个美称叫“Ridge Regression”。大家用L<br>1范数是看中它能自动选择特征，那么使用L2范数就是因为它能解决模型训练过程中的一个重大问题：过拟合。<br>那你一定很疑惑之前讲的L1也是通过去除冗余特征从而防止过拟合，那L2又有什么独特之处呢？<br>区别在于<strong>L1使得大部分特征置0，但是L2并不会将特征都置0，只是尽量将参数“惩罚”为接近0的一个小值，这个惩罚力度由因子$\lambda$控制，$\lambda$越大，最终训练得到的$w$就越小（越接近0）。</strong></p>
+<h2 id="为什么L1比L2更加容易使$w$变成0">为什么L1比L2更加容易使$w$变成0</h2><p><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ev96lsfjxuj20ye0etq6l.jpg" alt=""><br>此图是Bengio大神写的Deep Learning一书中第七章的一幅图，右边的方形（绝对值）表示L1正则化的参数范围，左边的圆形（平方）是L2正则化的参数范围，方形更容易相交到角点。图中接近角点时，$w_1$几乎为0。这就是为什么L1具有参数稀疏化这一intriguing property。</p>
 </span>
       
     </div>
@@ -261,11 +249,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/cnn/" rel="tag">#cnn</a>
+            <a href="/tags/machinelearning/" rel="tag">#machinelearning</a>
           
-            <a href="/tags/ufldl/" rel="tag">#ufldl</a>
-          
-            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
+            <a href="/tags/优化/" rel="tag">#优化</a>
           
         </div>
       
@@ -274,13 +260,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/14/CNN学习之进阶/" rel="prev">CNN学习之进阶</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/09/numpy学习小结/" rel="next">numpy学习小结</a>
+              <a href="/2015/08/14/CNN学习之进阶/" rel="next">CNN学习之进阶</a>
             
           </div>
         </div>
@@ -305,8 +289,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/08/13/CNN学习之入门/"
-                   data-title="CNN学习之入门" data-url="http://lan2720.github.io/2015/08/13/CNN学习之入门/">
+              <div class="ds-thread" data-thread-key="2015/08/20/范数正则化之L1和L2-Regularization/"
+                   data-title="范数正则化之L1和L2 Regularization" data-url="http://lan2720.github.io/2015/08/20/范数正则化之L1和L2-Regularization/">
               </div>
             
           </div>
@@ -410,7 +394,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#稀疏连接"><span class="nav-number">1.</span> <span class="nav-text">稀疏连接</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#卷积过程"><span class="nav-number">2.</span> <span class="nav-text">卷积过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享变量"><span class="nav-number">3.</span> <span class="nav-text">共享变量</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#池化过程"><span class="nav-number">4.</span> <span class="nav-text">池化过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">5.</span> <span class="nav-text">问题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L1范数"><span class="nav-number">1.</span> <span class="nav-text">L1范数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数稀疏化的优点"><span class="nav-number">1.2.</span> <span class="nav-text">参数稀疏化的优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2范数"><span class="nav-number">2.</span> <span class="nav-text">L2范数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-1"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么L1比L2更加容易使$w$变成0"><span class="nav-number">3.</span> <span class="nav-text">为什么L1比L2更加容易使$w$变成0</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
