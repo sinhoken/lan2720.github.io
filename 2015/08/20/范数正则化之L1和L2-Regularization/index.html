@@ -240,7 +240,7 @@
 <li>可解释性<br>模型涉及的参数越少，模型越容易解释。比如要确定患者是否患感冒，只需要知道是否打喷嚏流鼻涕等就能确诊，医生很容易解释感冒。但是如果想知道患者是否得了癌症，需要全面的医学检查和化验才能确定，因为确诊癌症所需要的特征更多，也就难以解释患者发生某类症状时是不是属于癌症了。</li>
 </ol>
 <h2 id="L2范数">L2范数</h2><h3 id="简介-1">简介</h3><p>L2范数是指向量各元素的平方和然后求平方根。机器学习中经常出现的一个名词叫“weight decay”，就是说的L2范数啦。它还有一个美称叫“Ridge Regression”。大家用L<br>1范数是看中它能自动选择特征，那么使用L2范数就是因为它能解决模型训练过程中的一个重大问题：过拟合。<br>那你一定很疑惑之前讲的L1也是通过去除冗余特征从而防止过拟合，那L2又有什么独特之处呢？<br>区别在于<strong>L1使得大部分特征置0，但是L2并不会将特征都置0，只是尽量将参数“惩罚”为接近0的一个小值，这个惩罚力度由因子$\lambda$控制，$\lambda$越大，最终训练得到的$w$就越小（越接近0）。</strong></p>
-<h2 id="为什么L1比L2更加容易使$w$变成0">为什么L1比L2更加容易使$w$变成0</h2><p><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ev96lsfjxuj20ye0etq6l.jpg" alt=""><br>此图是Bengio大神写的Deep Learning一书中第七章的一幅图，右边的方形（绝对值）表示L1正则化的参数范围，左边的圆形（平方）是L2正则化的参数范围，方形更容易相交到角点。图中接近角点时，$w_1$几乎为0。这就是为什么L1具有参数稀疏化这一intriguing property。</p>
+<h2 id="为什么L1比L2更容易使$w$变成0">为什么L1比L2更容易使$w$变成0</h2><p><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ev96lsfjxuj20ye0etq6l.jpg" alt=""><br>此图是Bengio大神写的Deep Learning一书中第七章的一幅图，右边的方形（绝对值）表示L1正则化的参数范围，左边的圆形（平方）是L2正则化的参数范围，方形更容易相交到角点。图中接近角点时，$w_1$几乎为0。这就是为什么L1具有参数稀疏化这一intriguing property。</p>
 </span>
       
     </div>
@@ -394,7 +394,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L1范数"><span class="nav-number">1.</span> <span class="nav-text">L1范数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数稀疏化的优点"><span class="nav-number">1.2.</span> <span class="nav-text">参数稀疏化的优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2范数"><span class="nav-number">2.</span> <span class="nav-text">L2范数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-1"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么L1比L2更加容易使$w$变成0"><span class="nav-number">3.</span> <span class="nav-text">为什么L1比L2更加容易使$w$变成0</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L1范数"><span class="nav-number">1.</span> <span class="nav-text">L1范数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参数稀疏化的优点"><span class="nav-number">1.2.</span> <span class="nav-text">参数稀疏化的优点</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2范数"><span class="nav-number">2.</span> <span class="nav-text">L2范数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介-1"><span class="nav-number">2.1.</span> <span class="nav-text">简介</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么L1比L2更容易使$w$变成0"><span class="nav-number">3.</span> <span class="nav-text">为什么L1比L2更容易使$w$变成0</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
