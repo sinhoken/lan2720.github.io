@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="life," />
+  <meta name="keywords" content="machinelearninginaction,学习笔记," />
 
 
 
@@ -39,15 +39,18 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="这是一个新的开始">
+<meta name="description" content="Random Forest/GBDT这些分类算法的基础都是Decision Tree，所以先认识DT吧~">
 <meta property="og:type" content="article">
-<meta property="og:title" content="welcome to the new world">
-<meta property="og:url" content="http://lan2720.github.io/2015/05/06/welcome-to-the-new-world/index.html">
+<meta property="og:title" content="machinelearninginaction之决策树">
+<meta property="og:url" content="http://lan2720.github.io/2015/08/26/machinelearninginaction之决策树/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="这是一个新的开始">
+<meta property="og:description" content="Random Forest/GBDT这些分类算法的基础都是Decision Tree，所以先认识DT吧~">
+<meta property="og:image" content="http://b.hiphotos.baidu.com/baike/w%3D268/sign=bdfc8bef2f2eb938ec6d7df4ed6285fe/574e9258d109b3de75996c66ccbf6c81800a4c9e.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1evfue2q34mj206401bweb.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1evfuk41wavj209m01fgli.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="welcome to the new world">
-<meta name="twitter:description" content="这是一个新的开始">
+<meta name="twitter:title" content="machinelearninginaction之决策树">
+<meta name="twitter:description" content="Random Forest/GBDT这些分类算法的基础都是Decision Tree，所以先认识DT吧~">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -57,7 +60,7 @@
   };
 </script>
 
-  <title> welcome to the new world | Hakuna Matata </title>
+  <title> machinelearninginaction之决策树 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -198,7 +201,7 @@
           
           
             
-              welcome to the new world
+              machinelearninginaction之决策树
             
           
         </h1>
@@ -207,8 +210,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-05-06T15:46:34+08:00" content="2015-05-06">
-            2015-05-06
+          <time itemprop="dateCreated" datetime="2015-08-26T22:37:58+08:00" content="2015-08-26">
+            2015-08-26
           </time>
         </span>
 
@@ -218,8 +221,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/05/06/welcome-to-the-new-world/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/06/welcome-to-the-new-world/" itemprop="commentsCount"></span>
+              <a href="/2015/08/26/machinelearninginaction之决策树/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/26/machinelearninginaction之决策树/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -233,10 +236,24 @@
       
 
       
-        <span itemprop="articleBody"><blockquote>
-<p>这是一个新的开始</p>
+        <span itemprop="articleBody"><h2 id="简介">简介</h2><p>决策树简单来说就是给定一个dataset，通过对特定dataset数据属性的分析，找到数据能够被分类的一些features。<br>由于是根据数据的属性分类的，所以决策树的一大缺点就是容易过拟合。</p>
+<h2 id="重点：信息熵">重点：信息熵</h2><p>决策树其实是最简单的分类方法，不需要太多的数学推导，直观易懂。<br>它的核心思想就是找到能最好分类出dataset的feature，所以关键点就是如何衡量每个feature对于数据集的分类情况。<br>这就需要<strong>香农熵</strong>。公式如下：<br><img src="http://b.hiphotos.baidu.com/baike/w%3D268/sign=bdfc8bef2f2eb938ec6d7df4ed6285fe/574e9258d109b3de75996c66ccbf6c81800a4c9e.jpg" alt=""><br>乍看这个公式肯定不明白，那就先理解什么是熵(entropy)。</p>
+<blockquote>
+<p>Entropy is defined as the expected value of the information.</p>
 </blockquote>
-</span>
+<p>熵是信息的期望值。那问题是如何定义information呢？<br>比如，需要将一个item分类，有多种类别可选，$p(x^i)$表示这个item是$x^i$类的概率。那么“这个东西是$x^i$类”这句话的信息量是<img src="http://ww2.sinaimg.cn/large/901f9a6fgw1evfue2q34mj206401bweb.jpg" alt=""><br>但是在给这个item分类之前我们是不知道它究竟是哪一类的，也就是不知道正确的分类信息，所以就需要对所有可能的分类求期望值<img src="http://ww3.sinaimg.cn/large/901f9a6fgw1evfuk41wavj209m01fgli.jpg" alt="">，这就是信息熵了。<br>信息熵的公式可以看出，熵越大，说明期望的绝对值越大，也就是分到正确的类的概率越小，信息的不确定性越大。<br>所以信息熵衡量的是不确定性而不是确定性。它的表面含义就是一件越不确定的事发生了，能提供更多的信息。<br>所以，在决策树中，我们希望按某一feature split dataset之后，熵越小越好。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">baseEntropy = calcShannonEnt(dataset)</span><br><span class="line">subDataSet = splitDataSet(dataset, i, value) <span class="comment"># Split Dataset according to feature "i = value"</span></span><br><span class="line">newEntropy = calcShannonEnt(subDataSet)</span><br><span class="line">infoGain = baseEntropy - newEntropy</span><br></pre></td></tr></table></figure></p>
+<p>由于一开始dataset没有任何分割的时候，baseEntropy较大，按某一feature分割后增加了确定性，newEntropy变小，所以infoGain就是信息熵的减少量。<br>我们需要在所有features中找到infoGain最大的那个，就是当前最好对dataset最好的分类特征了。</p>
+<h2 id="终止条件">终止条件</h2><p>一般有两种：</p>
+<ul>
+<li>run out of attritubes on which to split</li>
+<li>all the instances in a branch are the same class</li>
+</ul>
+<p>对于第一种情况，subdataset并没有全部分好，最后的子节点怎么命名呢？就采取majority vote的方式决定。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">majorityCnt</span><span class="params">(classList)</span>:</span></span><br><span class="line">    classCount=&#123;&#125;</span><br><span class="line">    <span class="keyword">for</span> vote <span class="keyword">in</span> classList:</span><br><span class="line">        <span class="keyword">if</span> vote <span class="keyword">not</span> <span class="keyword">in</span> classCount.keys(): classCount[vote] = <span class="number">0</span></span><br><span class="line">        classCount[vote] += <span class="number">1</span></span><br><span class="line">    sortedClassCount = sorted(classCount.iteritems(),</span><br><span class="line">                        key=operator.itemgetter(<span class="number">1</span>), reverse=<span class="keyword">True</span>)</span><br><span class="line">    <span class="keyword">return</span> sortedClassCount[<span class="number">0</span>][<span class="number">0</span>]</span><br></pre></td></tr></table></figure></p>
+<p>最后的子节点由于所有的attributes全部用完，最终subdataset只剩下class了，所以输入是classList。</p>
+<p>【小结：sorted函数】<br>sorted是内建函数，key指定了排序的依据，reverse=True表示从大到小排列。</p>
+<h2 id="迭代建树">迭代建树</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">creatTree</span><span class="params">(dataSet, labels)</span>:</span></span><br><span class="line">    classList = [i[-<span class="number">1</span>] <span class="keyword">for</span> i <span class="keyword">in</span> dataSet]  <span class="comment"># extract current (sub)dataset's labels</span></span><br><span class="line">    <span class="comment"># Termination Situation 1: all item have the same class</span></span><br><span class="line">    <span class="keyword">if</span> classList.count(classList[<span class="number">0</span>]) == len(classList):</span><br><span class="line">        <span class="keyword">return</span> classList[<span class="number">0</span>]  <span class="comment"># Return the class name</span></span><br><span class="line">    <span class="comment"># Termination Situation 2: Run out of all attritubes</span></span><br><span class="line">    <span class="keyword">if</span> len(dataSet[<span class="number">0</span>]) == <span class="number">1</span>:</span><br><span class="line">        <span class="keyword">return</span> majorityCls(classList)</span><br><span class="line">    <span class="comment"># Else: Not in Termination Situation: continue to split dataset</span></span><br><span class="line">    <span class="comment"># 1st: Find Best Feature</span></span><br><span class="line">    bestFeat = chooseBestFeatureToSplit(dataSet)</span><br><span class="line">    bestFeatName = labels[bestFeat]</span><br><span class="line">    <span class="comment"># 2nd: Create sub node</span></span><br><span class="line">    myTree = &#123;bestFeatName: &#123;&#125;&#125;</span><br><span class="line">    <span class="keyword">del</span> (labels[bestFeat])  <span class="comment"># this time has used the bestFeature to split, so delete it.</span></span><br><span class="line">    <span class="comment"># 3rd: Find num of class to split</span></span><br><span class="line">    featVals = [ins[bestFeat] <span class="keyword">for</span> ins <span class="keyword">in</span> dataSet]</span><br><span class="line">    uniqueVals = set(featVals)</span><br><span class="line">    <span class="keyword">for</span> val <span class="keyword">in</span> uniqueVals:</span><br><span class="line">        subLabels = labels[:]  <span class="comment"># To each value, guarantee the subLabels is the same when we send to it's creatTree</span></span><br><span class="line">        <span class="comment"># list type don't have copy() method, a[:] just like copy()</span></span><br><span class="line">        myTree[bestFeatName][val] = creatTree(splitDataSet(dataSet, bestFeat, val), subLabels)</span><br><span class="line">    <span class="keyword">return</span> myTree</span><br></pre></td></tr></table></figure>
+<p>这段代码思路很清晰，加了注释，常读常新吧。</p>
+<h2 id="测试">测试</h2></span>
       
     </div>
 
@@ -244,7 +261,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/life/" rel="tag">#life</a>
+            <a href="/tags/machinelearninginaction/" rel="tag">#machinelearninginaction</a>
+          
+            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
           
         </div>
       
@@ -253,11 +272,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/05/08/最长公共子序列的求解/" rel="prev">最长公共子序列的求解</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/20/范数正则化之L1和L2-Regularization/" rel="next">范数正则化之L1和L2 Regularization</a>
             
           </div>
         </div>
@@ -282,8 +301,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/05/06/welcome-to-the-new-world/"
-                   data-title="welcome to the new world" data-url="http://lan2720.github.io/2015/05/06/welcome-to-the-new-world/">
+              <div class="ds-thread" data-thread-key="2015/08/26/machinelearninginaction之决策树/"
+                   data-title="machinelearninginaction之决策树" data-url="http://lan2720.github.io/2015/08/26/machinelearninginaction之决策树/">
               </div>
             
           </div>
@@ -387,7 +406,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重点：信息熵"><span class="nav-number">2.</span> <span class="nav-text">重点：信息熵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#终止条件"><span class="nav-number">3.</span> <span class="nav-text">终止条件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代建树"><span class="nav-number">4.</span> <span class="nav-text">迭代建树</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">5.</span> <span class="nav-text">测试</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
