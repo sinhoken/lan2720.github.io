@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+  <meta name="keywords" content="问题解决," />
 
 
 
@@ -39,21 +39,15 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hakuna Matata">
-<meta property="og:url" content="http://lan2720.github.io/tags/julyedu/index.html">
+<meta name="description" content="repository access denied. access via a deployment key is read-only.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bitbucket push origin出现权限问题">
+<meta property="og:url" content="http://lan2720.github.io/2015/08/26/bitbucket-push-origin出现权限问题/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
+<meta property="og:description" content="repository access denied. access via a deployment key is read-only.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hakuna Matata">
-<meta name="twitter:description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
+<meta name="twitter:title" content="bitbucket push origin出现权限问题">
+<meta name="twitter:description" content="repository access denied. access via a deployment key is read-only.">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -63,7 +57,7 @@
   };
 </script>
 
-  <title> 标签: julyedu | Hakuna Matata </title>
+  <title> bitbucket push origin出现权限问题 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -91,7 +85,7 @@
 
 
 
-  <div class="container one-column ">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -192,44 +186,111 @@
       <div class="main-inner">
         <div id="content" class="content"> 
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        julyedu
-        <small>标签</small>
-      </h2>
-    </div>
-
+  <div id="posts" class="posts-expand">
     
-      
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/05/08/最长公共子序列的求解/" itemprop="url">
-              <span itemprop="name">最长公共子序列的求解</span>
-            </a>
-        
-      </h1>
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              bitbucket push origin出现权限问题
+            
+          
+        </h1>
+      
 
       <div class="post-meta">
-        <time class="post-time" datetime="2015-05-08T08:52:31.000Z" itemprop="dateCreated" content="2015-05-08"> 05-08 </time>
-      </div>
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-08-26T22:43:36+08:00" content="2015-08-26">
+            2015-08-26
+          </time>
+        </span>
 
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/08/26/bitbucket-push-origin出现权限问题/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/26/bitbucket-push-origin出现权限问题/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
     </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conq: repository access denied. access via a deployment key is read-only.&#10;fatal: Could not read from remote repository.&#10;&#10;Please make sure you have the correct access rights&#10;and the repository exists.</span><br></pre></td></tr></table></figure>
+<p>Bitbucket在两个地方可以添加你的ssh key，分别在你的repository settings 和manage account中。</p>
+<p>repository中添加的ssh key称为deployment key，在account中添加的ssh key叫account key。</p>
+<p>如果repository中设置了你的account具有write以上的权限，那么使用account key才对该repository有write 权限。</p>
+<p>在repository中添加的ssh key（deployment key）是read-only。要想使用ssh的方式提交代码，你必须设置你的account key。</p>
+<p>如果你遇见了和我一样的问题：</p>
+<p>你需要去删除deployment key再把你的ssh key添加到你的account key中！</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/问题解决/" rel="tag">#问题解决</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/08/26/machinelearninginaction之决策树/" rel="next">machinelearninginaction之决策树</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </article>
 
 
-    
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
-  
  </div>
 
         
 
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/08/26/bitbucket-push-origin出现权限问题/"
+                   data-title="bitbucket push origin出现权限问题" data-url="http://lan2720.github.io/2015/08/26/bitbucket-push-origin出现权限问题/">
+              </div>
+            
+          </div>
         
       </div>
 
@@ -246,6 +307,15 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
 
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
       
 
       <section class="site-overview">
@@ -316,6 +386,17 @@
       </section>
 
       
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <p class="post-toc-empty">此文章未包含目录</p>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
 
     </div>
   </aside>
@@ -356,12 +437,6 @@
 
   
   
-  
-    <script type="text/javascript">
-      postMotionOptions = {stagger: 100, drag: true};
-    </script>
-  
-
   
     
 
@@ -408,6 +483,165 @@
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
 
   <script type="text/javascript">
     $(document).ready(function () {
