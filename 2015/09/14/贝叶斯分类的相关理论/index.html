@@ -245,7 +245,7 @@
         <span itemprop="articleBody"><p>何谓<strong>贝叶斯学习</strong>？简单来说，就是给定了一个训练样本数据（样本数据已经人工分类好了），我们应该如何从这个样本数据集去学习，从而当我们碰到新的数据时，可以将新数据分类到某一个类别中去。</p>
 <p>那么，什么是<strong>朴素贝叶斯分类器</strong>呢？<br>基于一个简单的假设：在给定目标值时，属性值之间相互条件独立。<br>换言之，该假定在给定实例的目标值情况下，观察到联合的$a_1$、$a_2$、$a_3$、…$a_n$的概率等于每个单独属性的概率乘积：<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1ew2c22vao0j20ow02qjrl.jpg" alt=""><br>朴素贝叶斯最后的目标输出值就是<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ew2ccsgl3yj20m603imxf.jpg" alt=""><br>该属性$a_1$、$a_2$、$a_3$、…$a_n$下，出现概率最大的类别就是$v_j$，也就完成了分类任务。</p>
 <blockquote>
-<p>应用到文本中得到……</p>
+<p>应用到文本中……</p>
 </blockquote>
 <p>已知<img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ew2cmra7b1j20km024jri.jpg" alt=""><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ew2cnaym4qj20w801uwet.jpg" alt="">且<img src="http://ww2.sinaimg.cn/large/901f9a6fgw1ew2co2pycej20ow022dg2.jpg" alt=""><br>因此：<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1ew2cp7qcxpj20we0b80u3.jpg" alt=""><br>$P(c_1,c_2,…,c_n)$是一定的，可以不考虑。简化为：<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1ew2cky4t6sj20su03wmxh.jpg" alt=""><br>推导出了分类公式，但是$P(c_j)$和$P(x_i|c_j)$仍未知。<br>因此需要对这两个先验值进行估算：<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ew2dew59gdj20go03s3yn.jpg" alt=""><br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ew2de8jq12j20uk04ewez.jpg" alt=""></p>
 </span>
