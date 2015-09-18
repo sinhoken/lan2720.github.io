@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="numpy," />
+  <meta name="keywords" content="cnn,sentenceclassification,论文," />
 
 
 
@@ -39,15 +39,16 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="学习过程中遇到的一些有用且神奇的numpy函数。在我初学numpy时，梦想得到一份这样的整理文档，可惜并没有找到；现在做一个简单记录，以此帮助感兴趣、刚入门的童鞋。">
+<meta name="description" content="第一篇paper笔记，以后要继续保持这个好习惯。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="numpy学习小结">
-<meta property="og:url" content="http://lan2720.github.io/2015/08/09/numpy学习小结/index.html">
+<meta property="og:title" content="论文笔记《Convolutional Neural Networks for Sentence Classification》">
+<meta property="og:url" content="http://lan2720.github.io/2015/09/18/论文笔记《Convolutional-Neural-Networks-for-Sentence-Classification》/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="学习过程中遇到的一些有用且神奇的numpy函数。在我初学numpy时，梦想得到一份这样的整理文档，可惜并没有找到；现在做一个简单记录，以此帮助感兴趣、刚入门的童鞋。">
+<meta property="og:description" content="第一篇paper笔记，以后要继续保持这个好习惯。">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1ew44uf4s6bj21f40kgtdd.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="numpy学习小结">
-<meta name="twitter:description" content="学习过程中遇到的一些有用且神奇的numpy函数。在我初学numpy时，梦想得到一份这样的整理文档，可惜并没有找到；现在做一个简单记录，以此帮助感兴趣、刚入门的童鞋。">
+<meta name="twitter:title" content="论文笔记《Convolutional Neural Networks for Sentence Classification》">
+<meta name="twitter:description" content="第一篇paper笔记，以后要继续保持这个好习惯。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -57,7 +58,7 @@
   };
 </script>
 
-  <title> numpy学习小结 | Hakuna Matata </title>
+  <title> 论文笔记《Convolutional Neural Networks for Sentence Classification》 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -198,7 +199,7 @@
           
           
             
-              numpy学习小结
+              论文笔记《Convolutional Neural Networks for Sentence Classification》
             
           
         </h1>
@@ -207,8 +208,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-08-09T14:51:27+08:00" content="2015-08-09">
-            2015-08-09
+          <time itemprop="dateCreated" datetime="2015-09-18T11:51:13+08:00" content="2015-09-18">
+            2015-09-18
           </time>
         </span>
 
@@ -218,8 +219,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/08/09/numpy学习小结/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/09/numpy学习小结/" itemprop="commentsCount"></span>
+              <a href="/2015/09/18/论文笔记《Convolutional-Neural-Networks-for-Sentence-Classification》/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/18/论文笔记《Convolutional-Neural-Networks-for-Sentence-Classification》/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -233,54 +234,55 @@
       
 
       
-        <span itemprop="articleBody"><ul>
-<li>axis = 0</li>
+        <span itemprop="articleBody"><p>研一的生活就这样开始了，新的起点，奋斗！</p>
+<p>言归正传，这篇论文是stanford cs224d <a href="http://cs224d.stanford.edu/lectures/CS224d-Lecture13.pdf" target="_blank" rel="external">lec13</a>提到的Kim(2014)。只有短短6页，没什么新颖的结果，只是简单记录下作者的写作思路吧。<br>论文地址：<a href="http://arxiv.org/pdf/1408.5882" target="_blank" rel="external">http://arxiv.org/pdf/1408.5882</a></p>
+<h2 id="Abstract">Abstract</h2><p>摘要里面讲了如下几点：</p>
+<ol>
+<li>在sentence classfication任务中，我们用cnn进行了一系列实验。</li>
+<li>直接用word2vec得到的static vectors，超参不怎么调就能得到比较好的结果。</li>
+<li>对word2vec的word vectors进行针对性的fine-tuning，会得到更好的结果。</li>
+<li>另外，对cnn模型进行了小改动：将static vectors和non static vectors变成cnn模型中的两个channels，尤如图像中的rgb三通道。</li>
+<li>测试了7个tasks，有4个tasks得到state of art的结果，其中包括sentiment analysis和question classification。</li>
+</ol>
+<h2 id="Model">Model</h2><p><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ew44uf4s6bj21f40kgtdd.jpg" alt=""><br>整个论文中用到的cnn模型就是这样的。<br>$x_i\in R^k$表示一个sentence中的第i个word，记为$x_i$，它是一个k维的词向量。上图中，一排就代表一个词向量。<br>一个sentence中的word个数为n。</p>
+<h2 id="关于convolution">关于convolution</h2><p><em>filter</em>：$w\in R^{hk}$意思是作为filter的权重矩阵是h<em>k的。如果h=2，就是相邻的两个word做一次卷积，如果h=3，即为3个word做一次卷积，以此类推。<br>卷积之后的结果再经过激活函数$f$就得到了</em>feature*，记为$c<em>i$。它是由$x</em>{i:i+h-1}$相邻的h个words卷积得到的值，再activation之后的值，也是当前层的输出。<br>卷积之后的值：$w \cdot x<em>{i:i+h-1} +b$<br>输出的feature值$c_i=f(w \cdot x</em>{i:i+h-1} +b)$<br>窗口大小：$h$<br>这样之后，一个n长度的sentence就有[$x<em>{1:h}$， $x</em>{2:h+1}$，$x<em>{3:h+2}$，…，$x</em>{n-h+1:n}$]这些word windows，卷积后的结果就是$c$ = [$c<em>1,c_2, …, c</em>{n-h+1}$]，维度为(1，n-h+1)<br>然后进行池化max pooling，选出最重要的feature。pooling scheme可以根据句子的长度来选择。</p>
+<h2 id="关于feature">关于feature</h2><p>一个filter只能提取一种feature，论文中的model用多种filter（不同的window size）来获取多种features。</p>
+<h2 id="关于two_channels_of_word_vectors">关于two channels of word vectors</h2><p>one channel将word2vec得到的结果直接static的传入整个模型，另一个channel在BP训练过程中要进行fine-tune。每一个filter都要分别应用到这两个channels上。<br>例如上图中就能看出，系统有2 filters，对2个channels分别卷积后得到4 stacks。</p>
+<h2 id="Regularization">Regularization</h2><p>一句话总结，dropout+l2-norm。</p>
+<h3 id="dropout">dropout</h3><p>有一点需要注意：<br>train time按一定概率p对每层的输入神经元进行dropout。<br>test time时将学到的weights rescale成$\hat w = p*w$，得到的$\hat w$应用于unseen sentences，期间不需要dropout。</p>
+<h3 id="L2_norm">L2 norm</h3><p>$|w|_2=s$ whenever $|w|_2&gt;s$</p>
+<h2 id="Datasets_and_Experimental_Setup">Datasets and Experimental Setup</h2><p>MR : Movie reviews. positive/negative<br>SST-1 : an extention of MR with train/dev/test splits and very fine-grained labels.<br>SST-2 : same as SST-1 but without neutral reviews.<br>Subj : classify a sentence as being subjective or objective.<br>TREC : classify a question into 6 question types.<br>CR : customer reviews. predict positive or negative.<br>MPQA : opinion polarity detection.</p>
+<h2 id="Hyperparameters_and_Training">Hyperparameters and Training</h2><ul>
+<li>rectified linear units</li>
+<li>filter windows(h) : 3, 4, 5</li>
+<li>100 feature maps for each filter window</li>
+<li>mini-batch size : 50</li>
+<li>adadelta update rule</li>
 </ul>
-<p>对“列”的操作</p>
-<ul>
-<li>axis = 1 </li>
+<p>以上参数是由grid search 在SST-2 dev set上选出来的。</p>
+<p>所做的唯一dataset-specific fining : early stopping on dev set</p>
+<h2 id="Pre-trained_Word_Vectors">Pre-trained Word Vectors</h2><p>当手头上没有large supervised training dataset的时候，用word2vec（或相似的unsupervised nlp模型得到）初始化word vectors能提高performance。</p>
+<h3 id="word2vec_vectors">word2vec vectors</h3><ul>
+<li>publicly available</li>
+<li>trained on 100 billion words from Goo </li>
+<li>dimension of 300</li>
+<li>没出现在如word2vec这类pre-trained set中的words将随机初始化</li>
 </ul>
-<p>对“行”的操作</p>
-<h2 id="numpy-random-randn(d0,d1,d2,…,dn)">numpy.random.randn(d0,d1,d2,…,dn)</h2><p>输出标准正态分布的矩阵<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">2</span>]: np.random.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">Out[<span class="number">2</span>]:</span><br><span class="line">array([[-<span class="number">2.35555038</span>, -<span class="number">0.60776017</span>, -<span class="number">0.00299252</span>,  <span class="number">0.66800849</span>],</span><br><span class="line">       [-<span class="number">0.10564223</span>,  <span class="number">0.85010081</span>,  <span class="number">0.09955459</span>,  <span class="number">0.65413315</span>],</span><br><span class="line">       [ <span class="number">0.68389408</span>,  <span class="number">0.16823155</span>,  <span class="number">0.10815476</span>,  <span class="number">0.23052734</span>]])</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">3</span>]: np.random.randn(<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line">Out[<span class="number">3</span>]:</span><br><span class="line">array([[[ <span class="number">0.73165777</span>, -<span class="number">0.88526387</span>, -<span class="number">0.62006827</span>, -<span class="number">0.54128639</span>, -<span class="number">0.19230798</span>],</span><br><span class="line">        [ <span class="number">1.33784512</span>,  <span class="number">0.93766309</span>,  <span class="number">0.00875593</span>,  <span class="number">0.04044714</span>,  <span class="number">0.28594893</span>],</span><br><span class="line">        [-<span class="number">0.40189678</span>,  <span class="number">0.34185559</span>, -<span class="number">1.14444086</span>,  <span class="number">1.16959141</span>, -<span class="number">0.12970186</span>],</span><br><span class="line">        [ <span class="number">0.22244501</span>,  <span class="number">0.0886731</span> ,  <span class="number">0.19920915</span>,  <span class="number">0.28482659</span>,  <span class="number">1.05407091</span>]],</span><br><span class="line"></span><br><span class="line">       [[-<span class="number">0.2937382</span> ,  <span class="number">0.37630827</span>, -<span class="number">0.5257294</span> ,  <span class="number">0.05723213</span>, -<span class="number">1.37493923</span>],</span><br><span class="line">        [-<span class="number">0.84811103</span>, -<span class="number">1.26930787</span>, -<span class="number">1.09508187</span>,  <span class="number">0.45675305</span>, -<span class="number">0.17887663</span>],</span><br><span class="line">        [ <span class="number">0.25849537</span>,  <span class="number">0.95260957</span>,  <span class="number">1.21697954</span>, -<span class="number">1.3069511</span> ,  <span class="number">0.85833526</span>],</span><br><span class="line">        [-<span class="number">0.36348516</span>, -<span class="number">0.56026657</span>, -<span class="number">0.37870525</span>, -<span class="number">0.12051882</span>,  <span class="number">0.0929342</span> ]],</span><br><span class="line"></span><br><span class="line">       [[-<span class="number">1.05940758</span>, -<span class="number">0.77302374</span>,  <span class="number">1.41248773</span>, -<span class="number">0.63063312</span>, -<span class="number">0.62099717</span>],</span><br><span class="line">        [-<span class="number">0.43340296</span>,  <span class="number">1.11419493</span>, -<span class="number">0.95258542</span>,  <span class="number">0.66176479</span>,  <span class="number">1.28709499</span>],</span><br><span class="line">        [ <span class="number">0.5445358</span> , -<span class="number">0.0803879</span> ,  <span class="number">0.55310637</span>, -<span class="number">0.54642863</span>,  <span class="number">1.23923391</span>],</span><br><span class="line">        [ <span class="number">2.2470355</span> ,  <span class="number">0.06080774</span>, -<span class="number">0.16382904</span>,  <span class="number">0.02292626</span>, -<span class="number">0.76685715</span>]]])</span><br></pre></td></tr></table></figure>
-<h2 id="numpy-array(object,_dtype)">numpy.array(object, dtype)</h2><p><code>params</code>:</p>
-<ul>
-<li>object : array-like</li>
+<h2 id="Model_Variations">Model Variations</h2><ul>
+<li>CNN-rand : 所有的word vector都是随机初始化的，在训练过程中更新</li>
+<li>CNN-static : word vector用word2vec得出的结果，在整个train process中所有的words保持不变，只学习其他参数</li>
+<li>CNN-non-static : pretrained vector在训练过程中要被fine-tuned</li>
+<li>CNN-multichannel : two sets of word vectors. 初始化时两个channel都直接赋值word2vec得出的结果，每个filter也会分别applied到两个channel，但是训练过程中只有一个channel会进行BP</li>
 </ul>
-<h2 id="numpy-asarray(a,_dtype)">numpy.asarray(a, dtype)</h2><p><code>params</code>:</p>
-<ul>
-<li>a : array-like</li>
+<p>模型中除了这些参数改变，其他参数相同。</p>
+<h2 id="Results_and_Discussion">Results and Discussion</h2><p>用了pre-trained vectors（cnn-static）就有明显的提高。pretrained vector相当于“universal” feature extractors，fine-tuned后可以在很多tasks上表现出色。</p>
+<h3 id="Multichannel_vs-_Single_Channel_Models">Multichannel vs. Single Channel Models</h3><p>一句话总结，加一个通道之后的效果是mixed。</p>
+<h3 id="Static_vs-_Non-static_Representations">Static vs. Non-static Representations</h3><p>一句话，non-static更适应specific task</p>
+<h2 id="Further_Observations">Further Observations</h2><ul>
+<li>Max-TDNN效果只有37.4%但是我们有45%的原因是我们的cnn有更大的capacity，多个filter width（3，4，5）和多个feature maps（100）</li>
+<li>dropout是很棒的regularization方法，可以使得network更大也不会过拟合，大概有2%-4%的提升。</li>
+<li>Adadelta和Adagrad得到的结果差不多，但是fewer epochs</li>
 </ul>
-<h2 id="numpy-mutiply(x1,x2)">numpy.mutiply(x1,x2)</h2><p>对应位置元素相乘，并不是矩阵的点乘<br><code>params</code>:</p>
-<ul>
-<li>x1, x2 : array-like</li>
-</ul>
-<h2 id="numpy-dot(a,b)">numpy.dot(a,b)</h2><p>矩阵的点乘</p>
-<h2 id="a-T">a.T</h2><p>矩阵a的转置</p>
-<h2 id="numpy-ravel(a)">numpy.ravel(a)</h2><p>将array a展开，成为一个sequence/vector</p>
-<h2 id="numpy-concatenate((a1,_a2))">numpy.concatenate((a1, a2))</h2><p>连接两个序列a1,a2。一定是序列或者是vector，如果是matrix/array就要先ravel成vector。<br><code>params</code>:</p>
-<ul>
-<li>a1, a2 : sequence of array-like</li>
-</ul>
-<h2 id="numpy-reshape(a,_newShape)">numpy.reshape(a, newShape)</h2><p>params:</p>
-<ul>
-<li><code>a</code> : array-like</li>
-<li><code>newShape</code> : int or tuple of ints</li>
-</ul>
-<h2 id="numpy-zeros_like(a)">numpy.zeros_like(a)</h2><p>返回一个和a同型的全零矩阵</p>
-<h2 id="numpy-copy(a)">numpy.copy(a)</h2><p>同<code>np.array(a, copy=True)</code><br>对a进行一个拷贝命名为一个新的变量，当a的元素有改变时，新的变量不会随之改变。<br>但是<code>b=a</code>这样b会随着a的改变而变。</p>
-<p>[2015.08.18]</p>
-<h2 id="numpy-random-binomial(x-shape,_p)">numpy.random.binomial(x.shape, p)</h2><p>【注意】这个函数是我自己编出来的，numpy中的binomial(n, p, size=None)参数不一样，输出的是服从二项分布的随机数。<br>这个函数我想实现的功能是：随机生成一个与x同型的二值矩阵（由0，1构成的矩阵），p是置0的概率。</p>
-<ul>
-<li><p>首先a = random.uniform(size=x.shape)，随机生成0~1之间的平均分布数矩阵a。</p>
-</li>
-<li><p>b = a &lt; (1- p)<br>比如x中有20%的元素要dropout（置0），那么p=0.2。然后b就是一个由bool类型矩阵，与x同型。</p>
-</li>
-<li><p>c = b.astype(int)就将bool转化成int（0 or 1）<br>c就是与x同型的随机二值矩阵（元素有p的概率为0）</p>
-</li>
-</ul>
-<p>【持续更新】</p>
 </span>
       
     </div>
@@ -289,7 +291,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/numpy/" rel="tag">#numpy</a>
+            <a href="/tags/cnn/" rel="tag">#cnn</a>
+          
+            <a href="/tags/sentenceclassification/" rel="tag">#sentenceclassification</a>
+          
+            <a href="/tags/论文/" rel="tag">#论文</a>
           
         </div>
       
@@ -298,13 +304,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/13/CNN学习之入门/" rel="prev">CNN学习之入门</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/09/min-char-rnn代码解读/" rel="next">min-char-rnn代码解读</a>
+              <a href="/2015/09/14/贝叶斯分类的相关理论/" rel="next">贝叶斯分类的相关理论</a>
             
           </div>
         </div>
@@ -329,8 +333,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/08/09/numpy学习小结/"
-                   data-title="numpy学习小结" data-url="http://lan2720.github.io/2015/08/09/numpy学习小结/">
+              <div class="ds-thread" data-thread-key="2015/09/18/论文笔记《Convolutional-Neural-Networks-for-Sentence-Classification》/"
+                   data-title="论文笔记《Convolutional Neural Networks for Sentence Classification》" data-url="http://lan2720.github.io/2015/09/18/论文笔记《Convolutional-Neural-Networks-for-Sentence-Classification》/">
               </div>
             
           </div>
@@ -434,7 +438,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-random-randn(d0,d1,d2,…,dn)"><span class="nav-number">1.</span> <span class="nav-text">numpy.random.randn(d0,d1,d2,…,dn)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-array(object,_dtype)"><span class="nav-number">2.</span> <span class="nav-text">numpy.array(object, dtype)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-asarray(a,_dtype)"><span class="nav-number">3.</span> <span class="nav-text">numpy.asarray(a, dtype)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-mutiply(x1,x2)"><span class="nav-number">4.</span> <span class="nav-text">numpy.mutiply(x1,x2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-dot(a,b)"><span class="nav-number">5.</span> <span class="nav-text">numpy.dot(a,b)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#a-T"><span class="nav-number">6.</span> <span class="nav-text">a.T</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-ravel(a)"><span class="nav-number">7.</span> <span class="nav-text">numpy.ravel(a)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-concatenate((a1,_a2))"><span class="nav-number">8.</span> <span class="nav-text">numpy.concatenate((a1, a2))</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-reshape(a,_newShape)"><span class="nav-number">9.</span> <span class="nav-text">numpy.reshape(a, newShape)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-zeros_like(a)"><span class="nav-number">10.</span> <span class="nav-text">numpy.zeros_like(a)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-copy(a)"><span class="nav-number">11.</span> <span class="nav-text">numpy.copy(a)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-random-binomial(x-shape,_p)"><span class="nav-number">12.</span> <span class="nav-text">numpy.random.binomial(x.shape, p)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model"><span class="nav-number">2.</span> <span class="nav-text">Model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于convolution"><span class="nav-number">3.</span> <span class="nav-text">关于convolution</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于feature"><span class="nav-number">4.</span> <span class="nav-text">关于feature</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于two_channels_of_word_vectors"><span class="nav-number">5.</span> <span class="nav-text">关于two channels of word vectors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Regularization"><span class="nav-number">6.</span> <span class="nav-text">Regularization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#dropout"><span class="nav-number">6.1.</span> <span class="nav-text">dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L2_norm"><span class="nav-number">6.2.</span> <span class="nav-text">L2 norm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Datasets_and_Experimental_Setup"><span class="nav-number">7.</span> <span class="nav-text">Datasets and Experimental Setup</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hyperparameters_and_Training"><span class="nav-number">8.</span> <span class="nav-text">Hyperparameters and Training</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Pre-trained_Word_Vectors"><span class="nav-number">9.</span> <span class="nav-text">Pre-trained Word Vectors</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#word2vec_vectors"><span class="nav-number">9.1.</span> <span class="nav-text">word2vec vectors</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Model_Variations"><span class="nav-number">10.</span> <span class="nav-text">Model Variations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Results_and_Discussion"><span class="nav-number">11.</span> <span class="nav-text">Results and Discussion</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Multichannel_vs-_Single_Channel_Models"><span class="nav-number">11.1.</span> <span class="nav-text">Multichannel vs. Single Channel Models</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Static_vs-_Non-static_Representations"><span class="nav-number">11.2.</span> <span class="nav-text">Static vs. Non-static Representations</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Further_Observations"><span class="nav-number">12.</span> <span class="nav-text">Further Observations</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
