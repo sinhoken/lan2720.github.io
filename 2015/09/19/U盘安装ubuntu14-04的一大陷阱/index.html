@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="Hexo,next" />
+  <meta name="keywords" content="linux,装机," />
 
 
 
@@ -39,21 +39,15 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hakuna Matata">
-<meta property="og:url" content="http://lan2720.github.io/tags/cnn/index.html">
+<meta name="description" content="折腾了一晚上，终于把14.10装好了，可谓是linux引导程序引发的一场血案，不过通过装系统也学到了很多新东西。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="U盘安装ubuntu14.10的一大陷阱">
+<meta property="og:url" content="http://lan2720.github.io/2015/09/19/U盘安装ubuntu14-04的一大陷阱/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
+<meta property="og:description" content="折腾了一晚上，终于把14.10装好了，可谓是linux引导程序引发的一场血案，不过通过装系统也学到了很多新东西。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hakuna Matata">
-<meta name="twitter:description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
+<meta name="twitter:title" content="U盘安装ubuntu14.10的一大陷阱">
+<meta name="twitter:description" content="折腾了一晚上，终于把14.10装好了，可谓是linux引导程序引发的一场血案，不过通过装系统也学到了很多新东西。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -63,7 +57,7 @@
   };
 </script>
 
-  <title> 标签: cnn | Hakuna Matata </title>
+  <title> U盘安装ubuntu14.10的一大陷阱 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -91,7 +85,7 @@
 
 
 
-  <div class="container one-column ">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -192,88 +186,116 @@
       <div class="main-inner">
         <div id="content" class="content"> 
 
-  <div id="posts" class="posts-collapse">
-    <div class="collection-title">
-      <h2 >
-        cnn
-        <small>标签</small>
-      </h2>
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              U盘安装ubuntu14.10的一大陷阱
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-09-19T10:46:46+08:00" content="2015-09-19">
+            2015-09-19
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/09/19/U盘安装ubuntu14-04的一大陷阱/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/19/U盘安装ubuntu14-04的一大陷阱/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="问题">问题</h2><p>一晚上用U盘制作的ubuntu启动盘都在启动完选择install ubuntu后黑屏，接下来就什么都没有了。。很是奇怪，排除了U盘损坏的原因之后，发现网上有人说</p>
+<blockquote>
+<p> 用迅雷下载iso文件：迅雷等下载工具通常会导致iso文件损坏，用MD5计算软件发现MD5值不对，这会导致安装过程中从u盘向硬盘拷贝安装文件时出错。<br>    正确做法：直接从IE下载iso文件</p>
+</blockquote>
+<p>然后重新老老实实地在chrome中下载了一个，还是用ultraiso傻瓜制作，结果。。仍然是启动后光标闪烁，白屏，黑屏，然后就没有然后了。</p>
+<p>所以问题并不是出在下载.iso文件上。</p>
+<h2 id="解决">解决</h2><p>那一定就是ultraiso烧写的引导程序有问题。</p>
+<p>在网上看到有人说自己12.04可以用ultraiso烧写成功安装但是14.10不行，会不会是因为14.10的版本较新，ultraiso中的引导程序是syslinux v4，版本较老，无法引导新版本的ubuntu？</p>
+<p>基于这个问题，搜索到的解决办法是用ubuntu官方发布的Win32DiskImager。<br>随即下载了一个，按照提示烧写到U盘，插入主机，启动。。。<br>成败在此一举。果然，顺利进入了ubuntu的安装界面。</p>
+<h2 id="总结">总结</h2><p>一句话就是因为14.10版本新，大部分非官方的烧写软件都没有高版本的syslinux做引导，就出现了无法引导黑屏的情况。如果不是强迫症的话，可以就用ultraiso制作一个12.04的启动盘，再升级。</p>
+</span>
+      
     </div>
 
-    
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
+          
+            <a href="/tags/装机/" rel="tag">#装机</a>
+          
+        </div>
       
 
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
 
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/09/18/论文笔记《Convolutional-Neural-Networks-for-Sentence-Classification》/" itemprop="url">
-              <span itemprop="name">论文笔记《Convolutional Neural Networks for Sentence Classification》</span>
-            </a>
-        
-      </h1>
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/09/19/U盘安装ubuntu14-10的一大陷阱/" rel="next">U盘安装ubuntu14.10的一大陷阱</a>
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" datetime="2015-09-18T03:51:13.000Z" itemprop="dateCreated" content="2015-09-18"> 09-18 </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
-    
+
+    <div class="post-spread">
       
-
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/08/14/CNN学习之进阶/" itemprop="url">
-              <span itemprop="name">CNN学习之进阶</span>
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" datetime="2015-08-14T14:42:34.000Z" itemprop="dateCreated" content="2015-08-14"> 08-14 </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h1 class="post-title">
-        
-            <a class="post-title-link" href="/2015/08/13/CNN学习之入门/" itemprop="url">
-              <span itemprop="name">CNN学习之入门</span>
-            </a>
-        
-      </h1>
-
-      <div class="post-meta">
-        <time class="post-time" datetime="2015-08-13T13:32:54.000Z" itemprop="dateCreated" content="2015-08-13"> 08-13 </time>
-      </div>
-
-    </header>
-  </article>
-
-
-    
+    </div>
   </div>
 
-  
  </div>
 
         
 
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/09/19/U盘安装ubuntu14-04的一大陷阱/"
+                   data-title="U盘安装ubuntu14.10的一大陷阱" data-url="http://lan2720.github.io/2015/09/19/U盘安装ubuntu14-04的一大陷阱/">
+              </div>
+            
+          </div>
         
       </div>
 
@@ -290,6 +312,15 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
 
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
       
 
       <section class="site-overview">
@@ -360,6 +391,17 @@
       </section>
 
       
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#问题"><span class="nav-number">1.</span> <span class="nav-text">问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决"><span class="nav-number">2.</span> <span class="nav-text">解决</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#总结"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
 
     </div>
   </aside>
@@ -400,12 +442,6 @@
 
   
   
-  
-    <script type="text/javascript">
-      postMotionOptions = {stagger: 100, drag: true};
-    </script>
-  
-
   
     
 
@@ -452,6 +488,165 @@
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
 
   <script type="text/javascript">
     $(document).ready(function () {
