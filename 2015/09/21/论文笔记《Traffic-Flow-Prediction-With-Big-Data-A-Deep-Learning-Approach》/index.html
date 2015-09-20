@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="deeplearningtutorials,学习笔记," />
+  <meta name="keywords" content="TrafficPredict,deeplearning,论文," />
 
 
 
@@ -39,17 +39,18 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="可视化autoencoder的稀疏性，更直观的了解稀疏限制对输出的影响。">
+<meta name="description" content="这篇论文还是很水的，没任何新东西，都是deeplearning中最基础的介绍，但是读来的目的只是告诉我用SAE来做traffic predict是可行的且效果不错。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="用matplotlib可视化来理解autoencoder中的sparse penalty">
-<meta property="og:url" content="http://lan2720.github.io/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/index.html">
+<meta property="og:title" content="论文笔记《Traffic Flow Prediction With Big Data:A Deep Learning Approach》">
+<meta property="og:url" content="http://lan2720.github.io/2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="可视化autoencoder的稀疏性，更直观的了解稀疏限制对输出的影响。">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1eucn84hf8qj20mk0h0jxm.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1eucn90j9hoj20mk0h0ten.jpg">
+<meta property="og:description" content="这篇论文还是很水的，没任何新东西，都是deeplearning中最基础的介绍，但是读来的目的只是告诉我用SAE来做traffic predict是可行的且效果不错。">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1ew970epqunj206v022q2s.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1ew9724ef0fj206r0213yd.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1ew97ep4obij209902ldfr.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="用matplotlib可视化来理解autoencoder中的sparse penalty">
-<meta name="twitter:description" content="可视化autoencoder的稀疏性，更直观的了解稀疏限制对输出的影响。">
+<meta name="twitter:title" content="论文笔记《Traffic Flow Prediction With Big Data:A Deep Learning Approach》">
+<meta name="twitter:description" content="这篇论文还是很水的，没任何新东西，都是deeplearning中最基础的介绍，但是读来的目的只是告诉我用SAE来做traffic predict是可行的且效果不错。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -59,7 +60,7 @@
   };
 </script>
 
-  <title> 用matplotlib可视化来理解autoencoder中的sparse penalty | Hakuna Matata </title>
+  <title> 论文笔记《Traffic Flow Prediction With Big Data:A Deep Learning Approach》 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -200,7 +201,7 @@
           
           
             
-              用matplotlib可视化来理解autoencoder中的sparse penalty
+              论文笔记《Traffic Flow Prediction With Big Data:A Deep Learning Approach》
             
           
         </h1>
@@ -209,8 +210,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-07-23T21:48:50+08:00" content="2015-07-23">
-            2015-07-23
+          <time itemprop="dateCreated" datetime="2015-09-21T00:51:58+08:00" content="2015-09-21">
+            2015-09-21
           </time>
         </span>
 
@@ -220,8 +221,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/" itemprop="commentsCount"></span>
+              <a href="/2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -235,10 +236,69 @@
       
 
       
-        <span itemprop="articleBody"><p>最近在看<a href="http://deeplearning.net/tutorial/dA.html#daa" target="_blank" rel="external">Deep Learning Tutorials-Denoising Autoencoders</a>的内容，整个程序全部用theano和numpy写的，思路特别清晰。但是对于sparsity的限制没有感性的认识，一直觉得很玄幻。<br>今天就改了一下它的<a href="https://github.com/lisa-lab/DeepLearningTutorials/blob/master/code/dA.py" target="_blank" rel="external">源码</a>，用matplotlib将hidden layer每个neuron输出的activation值用散点图的方式绘制出来，通过调节sparse_penalty参数进行对比。<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1eucn84hf8qj20mk0h0jxm.jpg" alt="sparse 0.01"><br>图1：当sparse限制在0.01时</p>
-<p>相当于100个neurons，只有大概1个neuron被激活。<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1eucn90j9hoj20mk0h0ten.jpg" alt="sparse 0.05"><br>图2：当sparse限制在0.05时<br>实验的训练集是MNIST数据的50000个train_dataset，经过15次epoch训练后，利用训练好的w和b参数，再次输入500个train_dataset，得到其hidden layer的输出结果，然后绘制成图。</p>
-<p>绘图代码如下：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">################################</span></span><br><span class="line"><span class="comment"># GET HIDDEN ACTIVATION RESULT #</span></span><br><span class="line"><span class="comment">################################</span></span><br><span class="line"><span class="comment"># plot a scatter graph</span></span><br><span class="line">colors = numpy.array([[<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">                      [<span class="number">0</span>,<span class="number">0</span>,<span class="number">1</span>],</span><br><span class="line">                      [<span class="number">0</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">                      [<span class="number">1</span>,<span class="number">0</span>,<span class="number">0</span>],</span><br><span class="line">                      [<span class="number">1</span>,<span class="number">1</span>,<span class="number">0</span>],</span><br><span class="line">                      [<span class="number">1</span>,<span class="number">0</span>,<span class="number">1</span>],</span><br><span class="line">                      [<span class="number">0</span>,<span class="number">1</span>,<span class="number">1</span>],</span><br><span class="line">                      [<span class="number">0.46</span>,<span class="number">0.29</span>,<span class="number">0.07</span>],</span><br><span class="line">                      [<span class="number">0.64</span>,<span class="number">0.13</span>,<span class="number">0.96</span>],</span><br><span class="line">                      [<span class="number">0.76</span>,<span class="number">0.76</span>,<span class="number">0.76</span>]</span><br><span class="line">                    ])</span><br><span class="line"><span class="comment"># hidden_output is a matrix, whose shape is n_vis*n_hid</span></span><br><span class="line">hidden_output = da.get_hidden_values(input=x)</span><br><span class="line">get_hidden_output = theano.function([], hidden_output, givens=&#123;x: train_set_x[:<span class="number">500</span>]&#125;)</span><br><span class="line">   </span><br><span class="line"></span><br><span class="line"><span class="comment"># scatter_y store indexes of each hand-write class</span></span><br><span class="line">scatter_y = &#123;&#125;</span><br><span class="line"><span class="keyword">for</span> i, label <span class="keyword">in</span> zip(xrange(train_set_y.eval()[:<span class="number">500</span>].shape[<span class="number">0</span>]), train_set_y.eval()[:<span class="number">500</span>]):</span><br><span class="line">    scatter_y.setdefault(label, [])</span><br><span class="line">    scatter_y[label].append(i)</span><br><span class="line"></span><br><span class="line"><span class="comment"># create a figure</span></span><br><span class="line">plt.figure(<span class="number">1</span>)</span><br><span class="line"><span class="comment"># plot multiple graph on one figure</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">10</span>):</span><br><span class="line">    x = get_hidden_output()[scatter_y[i], :].flatten()</span><br><span class="line">    y = [j <span class="keyword">for</span> j <span class="keyword">in</span> xrange(<span class="number">500</span>)]*len(scatter_y[i])</span><br><span class="line">    plt.scatter(x, y, c=colors[i], alpha=<span class="number">0.5</span>)</span><br><span class="line"><span class="comment"># show</span></span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment"># end-snippet-4</span></span><br></pre></td></tr></table></figure></p>
-<p>通过这两张图很明显的看出稀疏惩罚p越小，越多的神经元被抑制，比如图中大部分神经元输出的结果在[0,0.2]之间。</p>
+        <span itemprop="articleBody"><p>这篇比较新，今年刚发的paper。</p>
+<h2 id="Abstract">Abstract</h2><ul>
+<li>考虑时间和空间的内在相关性</li>
+<li>stacked autoencoder</li>
+<li>学习到generic traffic flow features</li>
+<li>trained in a greedy layerwise fashion【现在的fashion应该是整体训练而不是layerwise吧？】</li>
+</ul>
+<h2 id="Introduction">Introduction</h2><p>ITS ： Intelligent Transportation System</p>
+<ul>
+<li>traffic flow prediction大大的依赖于历史数据和实时数据</li>
+<li>目前所存在的prediction model都使用的是浅层模型，效果并不令人满意</li>
+<li>深度学习训练时不需要先验知识</li>
+<li>论文中的模型是用SAE学习generic traffic flow features，时间空间信息都被考虑在模型中</li>
+</ul>
+<h2 id="Literature_Review">Literature Review</h2><h3 id="定义">定义</h3><p>$X_i^t$ ： i地点，t时刻的车流量</p>
+<h3 id="任务">任务</h3><p>给出i = 1,2,…,m; t = 1,2,…,T<br>预测出今后的某一时刻($t+ \Delta$)的车流量</p>
+<h3 id="历史">历史</h3><ul>
+<li>最早1970s提出ARIMA model去预测短期内的高速公路车流量</li>
+<li>后来衍生出很多model，大致分为三类：parametric techniques/ nonparametric methods/ simulations</li>
+</ul>
+<p><code>parametric techniques</code>: time-series models, Kalman filtering models<br><code>nonparametric techniques</code>: k-NN, ANNs<br><code>simulations</code>: traffic simulation tools</p>
+<ol>
+<li><p>其中广泛应用的模型是time-series methods，这里面大部分都是ARIMA的变种。</p>
+</li>
+<li><p>由于traffic flow的随机性和非线性特点，很多nonparametric methods被提出。<br>【这里遗留了一个问题】：什么是参数法和非参数法？<br>k-NN表现不错，但是并没有linear time-series method好<br>Chang ： 基于k-NN非参数回归的动态多间隔模型<br>El Faouzi ： a kernel smoother for the autoregression function<br>Sun  ： a local linear regression<br>Bayesian network<br>online learning weighted support vector regression（SVR）<br>various ANNs<br>还有很多杂交(hybrid)算法：combine several methods<br>Tan ： MA+ES+ARIMA+NN<br>还有很多很多……<br>不过一句话，NNs的效果最好：good prediction power and robustness</p>
+</li>
+</ol>
+<h2 id="Methodology">Methodology</h2><h3 id="Autoencoder">Autoencoder</h3><ul>
+<li>activation function：sigmoid</li>
+<li>cost function：mean square</li>
+<li>一大问题：如果hidden unit比input unit多的话，学出来的identity function，也就是说hidden layer的output完全是input，没有学到任何新东西。</li>
+<li>解决：实验证明，hidden unit大于或加上了稀疏限制时，不会出现这个问题。</li>
+<li>稀疏限制：KL divergence</li>
+</ul>
+<h3 id="SAE">SAE</h3><p>结构图很简单，一句话总结：多个ae+logistic regression</p>
+<h3 id="Training_Algorithm">Training Algorithm</h3><p>Pretrain Phrase：greedy pretrain the deep network layer by layer<br>Fine Tuning：BP to tune the whole model’s params -&gt; better result</p>
+<h2 id="Experiments">Experiments</h2><h3 id="Data">Data</h3><ul>
+<li>加利福利亚州的高速公路系统</li>
+<li>2013年的前三个月的weekdays数据：前两个月的数据作为training data，后一个月作为test data</li>
+<li>同一段路分两个方向，但是本文中三个月的数据都是单车道的</li>
+</ul>
+<h3 id="Index_of_Performance_性能指标">Index of Performance 性能指标</h3><p>三个不同的性能指标：<br>mean absolute error 绝对误差的平均值：<img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ew970epqunj206v022q2s.jpg" alt=""><br>mean relative error 相对误差的平均值：<img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ew9724ef0fj206r0213yd.jpg" alt=""><br>root mean square error 平方误差的均值开根号：<img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ew97ep4obij209902ldfr.jpg" alt=""></p>
+<h3 id="Determination_of_the_Structure_of_a_SAE_Model">Determination of the Structure of a SAE Model</h3><ul>
+<li>输入层的神经元个数</li>
+<li>隐藏层的个数</li>
+<li>每个隐藏层的神经元个数</li>
+<li>模型考虑了交通流的空间和时间关系</li>
+<li>时间：要预测t时刻的交通状况，就要用到前面时间段的交通状况$X^{t-1}$,$X^{t-2}$,…,$X^{t-r}$</li>
+<li>输入大小为mr</li>
+<li>输出的大小是m，m是高速路的个数</li>
+</ul>
+<p>任务：预测15min，30min，45min，60min的交通状况</p>
+<p>实验参数：</p>
+<ul>
+<li>r：1-12 这个参数是控制预测时参考的过往数据多少，1代表只参考前一个时间段的交通状况</li>
+<li>隐藏层的神经元个数：[100:1000:100]<br>然后用grid search搜索最佳参数。发现，不同的预测任务（15/30/45/60min），最好参数设置不一样。<br>但是有一个结论是：最好的隐藏层个数在[2,5]之间，不能太少也不能太多。</li>
+</ul>
+<h3 id="Results">Results</h3><p>对比observed traffic flow（真实值）和predicted traffic flow（模型输出）结果。</p>
+<ul>
+<li>相似的traffic pattern</li>
+<li>对于<strong>heavy</strong>和<strong>medium</strong> traffic flow，模型预测的很好，但是在<strong>low</strong>就表现的不是太好。<br>分析原因是：low traffic flow时，observed flow和predicted flow很小的一点差异都会引起一个大的relative error</li>
+</ul>
+<p>对比BP NN/random walk/SVM/radial basic function NN:<br>这些方法都没有SAE好。<br>BP NN：88%-90%<br>SAE：几乎都&gt;90%</p>
 </span>
       
     </div>
@@ -247,9 +307,11 @@
       
         <div class="post-tags">
           
-            <a href="/tags/deeplearningtutorials/" rel="tag">#deeplearningtutorials</a>
+            <a href="/tags/TrafficPredict/" rel="tag">#TrafficPredict</a>
           
-            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
+            <a href="/tags/deeplearning/" rel="tag">#deeplearning</a>
+          
+            <a href="/tags/论文/" rel="tag">#论文</a>
           
         </div>
       
@@ -258,13 +320,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/07/23/softmax-regression-vs-logistic-regression/" rel="prev">softmax regression vs logistic regression</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/07/21/初识Learning-Rate-Schedule问题/" rel="next">初识Learning Rate Schedule问题</a>
+              <a href="/2015/09/19/带GTX970显卡裸机装Ubuntu15-04并安装显卡驱动/" rel="next">带GTX970显卡裸机装Ubuntu15.04并安装显卡驱动</a>
             
           </div>
         </div>
@@ -289,8 +349,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/"
-                   data-title="用matplotlib可视化来理解autoencoder中的sparse penalty" data-url="http://lan2720.github.io/2015/07/23/用matplotlib可视化来理解autoencoder中的sparse-penalty/">
+              <div class="ds-thread" data-thread-key="2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/"
+                   data-title="论文笔记《Traffic Flow Prediction With Big Data:A Deep Learning Approach》" data-url="http://lan2720.github.io/2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/">
               </div>
             
           </div>
@@ -394,7 +454,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Abstract"><span class="nav-number">1.</span> <span class="nav-text">Abstract</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction"><span class="nav-number">2.</span> <span class="nav-text">Introduction</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Literature_Review"><span class="nav-number">3.</span> <span class="nav-text">Literature Review</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">3.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#任务"><span class="nav-number">3.2.</span> <span class="nav-text">任务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#历史"><span class="nav-number">3.3.</span> <span class="nav-text">历史</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Methodology"><span class="nav-number">4.</span> <span class="nav-text">Methodology</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Autoencoder"><span class="nav-number">4.1.</span> <span class="nav-text">Autoencoder</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SAE"><span class="nav-number">4.2.</span> <span class="nav-text">SAE</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Training_Algorithm"><span class="nav-number">4.3.</span> <span class="nav-text">Training Algorithm</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Experiments"><span class="nav-number">5.</span> <span class="nav-text">Experiments</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Data"><span class="nav-number">5.1.</span> <span class="nav-text">Data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Index_of_Performance_性能指标"><span class="nav-number">5.2.</span> <span class="nav-text">Index of Performance 性能指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Determination_of_the_Structure_of_a_SAE_Model"><span class="nav-number">5.3.</span> <span class="nav-text">Determination of the Structure of a SAE Model</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Results"><span class="nav-number">5.4.</span> <span class="nav-text">Results</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
