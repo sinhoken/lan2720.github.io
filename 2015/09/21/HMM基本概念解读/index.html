@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="numpy," />
+  <meta name="keywords" content="TrafficPredict," />
 
 
 
@@ -39,15 +39,15 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="学习过程中遇到的一些有用且神奇的numpy函数。在我初学numpy时，梦想得到一份这样的整理文档，可惜并没有找到；现在做一个简单记录，以此帮助感兴趣、刚入门的童鞋。">
+<meta name="description" content="HMM听起来就自带神秘光环，如何demystify，娓娓道来。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="numpy学习小结">
-<meta property="og:url" content="http://lan2720.github.io/2015/08/09/numpy学习小结/index.html">
+<meta property="og:title" content="HMM基本概念解读">
+<meta property="og:url" content="http://lan2720.github.io/2015/09/21/HMM基本概念解读/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="学习过程中遇到的一些有用且神奇的numpy函数。在我初学numpy时，梦想得到一份这样的整理文档，可惜并没有找到；现在做一个简单记录，以此帮助感兴趣、刚入门的童鞋。">
+<meta property="og:description" content="HMM听起来就自带神秘光环，如何demystify，娓娓道来。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="numpy学习小结">
-<meta name="twitter:description" content="学习过程中遇到的一些有用且神奇的numpy函数。在我初学numpy时，梦想得到一份这样的整理文档，可惜并没有找到；现在做一个简单记录，以此帮助感兴趣、刚入门的童鞋。">
+<meta name="twitter:title" content="HMM基本概念解读">
+<meta name="twitter:description" content="HMM听起来就自带神秘光环，如何demystify，娓娓道来。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -57,7 +57,7 @@
   };
 </script>
 
-  <title> numpy学习小结 | Hakuna Matata </title>
+  <title> HMM基本概念解读 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -198,7 +198,7 @@
           
           
             
-              numpy学习小结
+              HMM基本概念解读
             
           
         </h1>
@@ -207,8 +207,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-08-09T14:51:27+08:00" content="2015-08-09">
-            2015-08-09
+          <time itemprop="dateCreated" datetime="2015-09-21T22:00:00+08:00" content="2015-09-21">
+            2015-09-21
           </time>
         </span>
 
@@ -218,8 +218,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/08/09/numpy学习小结/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/09/numpy学习小结/" itemprop="commentsCount"></span>
+              <a href="/2015/09/21/HMM基本概念解读/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/21/HMM基本概念解读/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -233,54 +233,66 @@
       
 
       
-        <span itemprop="articleBody"><ul>
-<li>axis = 0</li>
-</ul>
-<p>对“列”的操作</p>
+        <span itemprop="articleBody"><p>交通灯的状态变化规律是确定的，但是天气的变化规律就不确定了，不过我们还是希望建模后找到天气变化的模式（规律）。<br>markov模型假定今天的天气只能通过过去的n天已知天气情况进行预测，而未知信息如风力，气压等因素则没有考虑，因此产生的某些信息是不完全准确的。</p>
+<h2 id="隐藏状态">隐藏状态</h2><p>隐藏状态即为真实状态，可以由一个markov process来描述。比如在天气预测中，晴天/多云/雨天等都属于隐藏状态，我们无法直接掌握天气信息，但是能通过观察如：海藻湿润情况（干/稍干/潮湿/湿润）等信息，推测出隐藏在背后的天气状况。</p>
+<h2 id="观察状态">观察状态</h2><p>上面提到的海藻湿润情况就是能直接观察到的状态，整个process中的‘可视’状态。</p>
+<h2 id="隐藏状态和观察状态之间的连接：">隐藏状态和观察状态之间的连接：</h2><p><em>混淆矩阵</em>（confusion matrix）：它包含了给定一个<strong>隐藏状态</strong>后得到的<strong>观察状态</strong>的概率。也可以说是</p>
+<blockquote>
+<p>一个特定的隐藏状态生成特定的观察状态的概率</p>
+</blockquote>
+<p>如：今天是晴天（隐藏状态=晴天），这时候海藻干燥（观察状态=干）的概率是多大。</p>
+<h2 id="状态转移矩阵：">状态转移矩阵：</h2><p>刚讲到混淆矩阵，这里又出现了状态转移矩阵，确实很容易confused啊。<br>所谓状态转移矩阵，包含有一个<strong>隐藏状态</strong>到另一个<strong>隐藏状态</strong>的概率。这样一来，瞬间就对比出不同了。</p>
+<blockquote>
+<p>混淆矩阵连接了隐藏状态和观察状态，状态转移矩阵连接的是隐藏状态和另一个隐藏状态。</p>
+</blockquote>
+<h2 id="HMM基本要素">HMM基本要素</h2><p>只要三个要素就能描述一个系统的HMM：pi，A，B</p>
 <ul>
-<li>axis = 1 </li>
+<li>pi：初始化时的隐藏状态概率</li>
+<li>A：状态转移矩阵</li>
+<li>B：混淆矩阵<br>这样看来，HMM真是so easy啊。</li>
 </ul>
-<p>对“行”的操作</p>
-<h2 id="numpy-random-randn(d0,d1,d2,…,dn)">numpy.random.randn(d0,d1,d2,…,dn)</h2><p>输出标准正态分布的矩阵<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">2</span>]: np.random.randn(<span class="number">3</span>,<span class="number">4</span>)</span><br><span class="line">Out[<span class="number">2</span>]:</span><br><span class="line">array([[-<span class="number">2.35555038</span>, -<span class="number">0.60776017</span>, -<span class="number">0.00299252</span>,  <span class="number">0.66800849</span>],</span><br><span class="line">       [-<span class="number">0.10564223</span>,  <span class="number">0.85010081</span>,  <span class="number">0.09955459</span>,  <span class="number">0.65413315</span>],</span><br><span class="line">       [ <span class="number">0.68389408</span>,  <span class="number">0.16823155</span>,  <span class="number">0.10815476</span>,  <span class="number">0.23052734</span>]])</span><br></pre></td></tr></table></figure></p>
-<a id="more"></a>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">In [<span class="number">3</span>]: np.random.randn(<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>)</span><br><span class="line">Out[<span class="number">3</span>]:</span><br><span class="line">array([[[ <span class="number">0.73165777</span>, -<span class="number">0.88526387</span>, -<span class="number">0.62006827</span>, -<span class="number">0.54128639</span>, -<span class="number">0.19230798</span>],</span><br><span class="line">        [ <span class="number">1.33784512</span>,  <span class="number">0.93766309</span>,  <span class="number">0.00875593</span>,  <span class="number">0.04044714</span>,  <span class="number">0.28594893</span>],</span><br><span class="line">        [-<span class="number">0.40189678</span>,  <span class="number">0.34185559</span>, -<span class="number">1.14444086</span>,  <span class="number">1.16959141</span>, -<span class="number">0.12970186</span>],</span><br><span class="line">        [ <span class="number">0.22244501</span>,  <span class="number">0.0886731</span> ,  <span class="number">0.19920915</span>,  <span class="number">0.28482659</span>,  <span class="number">1.05407091</span>]],</span><br><span class="line"></span><br><span class="line">       [[-<span class="number">0.2937382</span> ,  <span class="number">0.37630827</span>, -<span class="number">0.5257294</span> ,  <span class="number">0.05723213</span>, -<span class="number">1.37493923</span>],</span><br><span class="line">        [-<span class="number">0.84811103</span>, -<span class="number">1.26930787</span>, -<span class="number">1.09508187</span>,  <span class="number">0.45675305</span>, -<span class="number">0.17887663</span>],</span><br><span class="line">        [ <span class="number">0.25849537</span>,  <span class="number">0.95260957</span>,  <span class="number">1.21697954</span>, -<span class="number">1.3069511</span> ,  <span class="number">0.85833526</span>],</span><br><span class="line">        [-<span class="number">0.36348516</span>, -<span class="number">0.56026657</span>, -<span class="number">0.37870525</span>, -<span class="number">0.12051882</span>,  <span class="number">0.0929342</span> ]],</span><br><span class="line"></span><br><span class="line">       [[-<span class="number">1.05940758</span>, -<span class="number">0.77302374</span>,  <span class="number">1.41248773</span>, -<span class="number">0.63063312</span>, -<span class="number">0.62099717</span>],</span><br><span class="line">        [-<span class="number">0.43340296</span>,  <span class="number">1.11419493</span>, -<span class="number">0.95258542</span>,  <span class="number">0.66176479</span>,  <span class="number">1.28709499</span>],</span><br><span class="line">        [ <span class="number">0.5445358</span> , -<span class="number">0.0803879</span> ,  <span class="number">0.55310637</span>, -<span class="number">0.54642863</span>,  <span class="number">1.23923391</span>],</span><br><span class="line">        [ <span class="number">2.2470355</span> ,  <span class="number">0.06080774</span>, -<span class="number">0.16382904</span>,  <span class="number">0.02292626</span>, -<span class="number">0.76685715</span>]]])</span><br></pre></td></tr></table></figure>
-<h2 id="numpy-array(object,_dtype)">numpy.array(object, dtype)</h2><p><code>params</code>:</p>
+<p>【注】以上这些名词就是HMM中最基本也是最重要的概念。最后了解一下HMM到底能实实在在地做些什么。</p>
+<h2 id="HMM的用处">HMM的用处</h2><p>一旦一个系统可以作为HMM被描述（三元组pi，A，B），那么就能解决三个问题：</p>
+<h3 id="评估">评估</h3><p>已知：</p>
 <ul>
-<li>object : array-like</li>
+<li>一个观察序列</li>
+<li>一些描述不同HMM的三元组参数</li>
 </ul>
-<h2 id="numpy-asarray(a,_dtype)">numpy.asarray(a, dtype)</h2><p><code>params</code>:</p>
+<p>求解：</p>
 <ul>
-<li>a : array-like</li>
+<li>这个观察序列最可能是哪一个HMM产生的</li>
 </ul>
-<h2 id="numpy-mutiply(x1,x2)">numpy.mutiply(x1,x2)</h2><p>对应位置元素相乘，并不是矩阵的点乘<br><code>params</code>:</p>
+<p>方法：</p>
 <ul>
-<li>x1, x2 : array-like</li>
+<li>前向算法：计算给定的HMM产生以上这个观察序列的概率，因此就能选出最合适的HMM</li>
 </ul>
-<h2 id="numpy-dot(a,b)">numpy.dot(a,b)</h2><p>矩阵的点乘</p>
-<h2 id="a-T">a.T</h2><p>矩阵a的转置</p>
-<h2 id="numpy-ravel(a)">numpy.ravel(a)</h2><p>将array a展开，成为一个sequence/vector</p>
-<h2 id="numpy-concatenate((a1,_a2))">numpy.concatenate((a1, a2))</h2><p>连接两个序列a1,a2。一定是序列或者是vector，如果是matrix/array就要先ravel成vector。<br><code>params</code>:</p>
+<h3 id="解码">解码</h3><p>已知：</p>
 <ul>
-<li>a1, a2 : sequence of array-like</li>
+<li>观察序列</li>
+<li>HMM</li>
 </ul>
-<h2 id="numpy-reshape(a,_newShape)">numpy.reshape(a, newShape)</h2><p>params:</p>
+<p>求解：</p>
 <ul>
-<li><code>a</code> : array-like</li>
-<li><code>newShape</code> : int or tuple of ints</li>
+<li>最有可能的隐藏状态序列</li>
 </ul>
-<h2 id="numpy-zeros_like(a)">numpy.zeros_like(a)</h2><p>返回一个和a同型的全零矩阵</p>
-<h2 id="numpy-copy(a)">numpy.copy(a)</h2><p>同<code>np.array(a, copy=True)</code><br>对a进行一个拷贝命名为一个新的变量，当a的元素有改变时，新的变量不会随之改变。<br>但是<code>b=a</code>这样b会随着a的改变而变。</p>
-<p>[2015.08.18]</p>
-<h2 id="numpy-random-binomial(x-shape,_p)">numpy.random.binomial(x.shape, p)</h2><p>【注意】这个函数是我自己编出来的，numpy中的binomial(n, p, size=None)参数不一样，输出的是服从二项分布的随机数。<br>这个函数我想实现的功能是：随机生成一个与x同型的二值矩阵（由0，1构成的矩阵），p是置0的概率。</p>
+<p>因为大部分时候，我们最关心的还是隐藏状态，而不是“可视”状态。</p>
+<p>方法：</p>
 <ul>
-<li><p>首先a = random.uniform(size=x.shape)，随机生成0~1之间的平均分布数矩阵a。</p>
-</li>
-<li><p>b = a &lt; (1- p)<br>比如x中有20%的元素要dropout（置0），那么p=0.2。然后b就是一个由bool类型矩阵，与x同型。</p>
-</li>
-<li><p>c = b.astype(int)就将bool转化成int（0 or 1）<br>c就是与x同型的随机二值矩阵（元素有p的概率为0）</p>
-</li>
+<li>Viterbi算法：ps.维特比算法的另一大应用是词性标注，一句话中出现了一组单词，预测这些单词最可能的词性是什么。</li>
 </ul>
-<p>【持续更新】</p>
+<h3 id="学习（参数估计）：这个问题是最难的">学习（参数估计）：这个问题是<strong>最难</strong>的</h3><p>已知：</p>
+<ul>
+<li>观察序列</li>
+<li>与之相关的一个隐藏状态集</li>
+</ul>
+<p>求解：</p>
+<ul>
+<li>最合适的HMM（pi，A，B）</li>
+</ul>
+<p>方法：</p>
+<ul>
+<li>前向-后向算法</li>
+</ul>
 </span>
       
     </div>
@@ -289,7 +301,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/numpy/" rel="tag">#numpy</a>
+            <a href="/tags/TrafficPredict/" rel="tag">#TrafficPredict</a>
           
         </div>
       
@@ -298,13 +310,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/13/CNN学习之入门/" rel="prev">CNN学习之入门</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/09/min-char-rnn代码解读/" rel="next">min-char-rnn代码解读</a>
+              <a href="/2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/" rel="next">论文笔记《Traffic Flow Prediction With Big Data:A Deep Learning Approach》</a>
             
           </div>
         </div>
@@ -329,8 +339,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/08/09/numpy学习小结/"
-                   data-title="numpy学习小结" data-url="http://lan2720.github.io/2015/08/09/numpy学习小结/">
+              <div class="ds-thread" data-thread-key="2015/09/21/HMM基本概念解读/"
+                   data-title="HMM基本概念解读" data-url="http://lan2720.github.io/2015/09/21/HMM基本概念解读/">
               </div>
             
           </div>
@@ -434,7 +444,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-random-randn(d0,d1,d2,…,dn)"><span class="nav-number">1.</span> <span class="nav-text">numpy.random.randn(d0,d1,d2,…,dn)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-array(object,_dtype)"><span class="nav-number">2.</span> <span class="nav-text">numpy.array(object, dtype)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-asarray(a,_dtype)"><span class="nav-number">3.</span> <span class="nav-text">numpy.asarray(a, dtype)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-mutiply(x1,x2)"><span class="nav-number">4.</span> <span class="nav-text">numpy.mutiply(x1,x2)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-dot(a,b)"><span class="nav-number">5.</span> <span class="nav-text">numpy.dot(a,b)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#a-T"><span class="nav-number">6.</span> <span class="nav-text">a.T</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-ravel(a)"><span class="nav-number">7.</span> <span class="nav-text">numpy.ravel(a)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-concatenate((a1,_a2))"><span class="nav-number">8.</span> <span class="nav-text">numpy.concatenate((a1, a2))</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-reshape(a,_newShape)"><span class="nav-number">9.</span> <span class="nav-text">numpy.reshape(a, newShape)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-zeros_like(a)"><span class="nav-number">10.</span> <span class="nav-text">numpy.zeros_like(a)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-copy(a)"><span class="nav-number">11.</span> <span class="nav-text">numpy.copy(a)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#numpy-random-binomial(x-shape,_p)"><span class="nav-number">12.</span> <span class="nav-text">numpy.random.binomial(x.shape, p)</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态"><span class="nav-number">1.</span> <span class="nav-text">隐藏状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#观察状态"><span class="nav-number">2.</span> <span class="nav-text">观察状态</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#隐藏状态和观察状态之间的连接："><span class="nav-number">3.</span> <span class="nav-text">隐藏状态和观察状态之间的连接：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#状态转移矩阵："><span class="nav-number">4.</span> <span class="nav-text">状态转移矩阵：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HMM基本要素"><span class="nav-number">5.</span> <span class="nav-text">HMM基本要素</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#HMM的用处"><span class="nav-number">6.</span> <span class="nav-text">HMM的用处</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#评估"><span class="nav-number">6.1.</span> <span class="nav-text">评估</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解码"><span class="nav-number">6.2.</span> <span class="nav-text">解码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#学习（参数估计）：这个问题是最难的"><span class="nav-number">6.3.</span> <span class="nav-text">学习（参数估计）：这个问题是最难的</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
