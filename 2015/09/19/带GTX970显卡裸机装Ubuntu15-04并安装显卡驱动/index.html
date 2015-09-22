@@ -242,7 +242,7 @@
 <p>好的，不负众望顺利开机了。但是上面修改的boot para只是一次的，下次启动还是会黑屏还是无法顺利进入login界面，因此要修改grub配置文件。<br>一般在/boot/grub/目录下有一个叫grub.cfg的文件，如果不存在就在附近找找，反正就叫这个名字。当前的权限是444只读，sudo chmod成777好了，然后sudo nano grub.cfg找到“ubuntu”配置下的quiet splash进行上面相同的修改，保存，chmod回444，最后重启。</p>
 <p>再一次顺利进入到了系统，问题成功解决。</p>
 <h2 id="安装显卡驱动">安装显卡驱动</h2><p>进入到系统后，装显卡驱动就so easy了。<br>因为我后续需要在theano中用到GPU加速计算，要安装cuda库，因此我就不去安装单独的gtx970的显卡驱动了，直接下载cuda toolkit 7.5（目前的最新版）里面就包含了显卡驱动。直接在google搜cuda toolkit下载最新版即可，然后按照theano instruction中的安装步骤进行。</p>
-<p>安装好之后，reboot。。。哈哈哈，显示正常了，再也不用看嗨大的字！</p>
+<p>安装好之后，reboot。。。哈哈哈，显示正常，再也不用看嗨大的字了！</p>
 </span>
       
     </div>
