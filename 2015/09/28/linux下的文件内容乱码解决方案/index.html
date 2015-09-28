@@ -235,14 +235,14 @@
       
         <span itemprop="articleBody"><p>最近project中遇到一个小问题，从网站上抓取来的数据是GBK编码。而我平时的开发环境是ubuntu，队友给的数据在linux下打开全是乱码，要转换成UTF-8才行。</p>
 <p>搜到最佳的解决办法就是用<code>iconv</code>命令，一个专门用来转换文件的编码方式的命令。</p>
-<h2 id="常用参数">常用参数</h2><ol>
-<li>要看支持的字符编码有哪些，就可以用-l参数得到<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -l</span><br></pre></td></tr></table></figure>
+<h2 id="常用参数">常用参数</h2><ul>
+<li>要看支持的字符编码有哪些，就可以用-l参数得到 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -l</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
-<ol>
-<li>从一种编码方式（from）转换到另一种编码方式（to）<br>例如：从linux下显示乱码的GBK编码方式，转换成linux下的UTF-8编码。<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f GBK -t UTF-<span class="number">8</span> inputfile -o outputfile</span><br></pre></td></tr></table></figure>
+</ul>
+<ul>
+<li>从一种编码方式（from）转换到另一种编码方式（to）<br> 例如：从linux下显示乱码的GBK编码方式，转换成linux下的UTF-8编码。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f GBK -t UTF-<span class="number">8</span> inputfile -o outputfile</span><br></pre></td></tr></table></figure>
 </li>
-</ol>
+</ul>
 <p>仅做记录。</p>
 </span>
       
