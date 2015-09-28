@@ -235,8 +235,12 @@
       
         <span itemprop="articleBody"><p>最近project中遇到一个小问题，从网站上抓取来的数据是GBK编码。而我平时的开发环境是ubuntu，队友给的数据在linux下打开全是乱码，要转换成UTF-8才行。</p>
 <p>搜到最佳的解决办法就是用<code>iconv</code>命令，一个专门用来转换文件的编码方式的命令。</p>
-<h1 id="常用参数">常用参数</h1><ol>
-<li>要看支持的字符编码有哪些，就可以用-l参数得到<figure class="highlight"><figcaption><span>-l```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#10;&#10;2. &#20174;&#19968;&#31181;&#32534;&#30721;&#26041;&#24335;&#65288;from&#65289;&#36716;&#25442;&#21040;&#21478;&#19968;&#31181;&#32534;&#30721;&#26041;&#24335;&#65288;to&#65289;&#10;   ``` iconv -f GBK -t UTF-8 inputfile -o outputfile</span><br></pre></td></tr></table></figure>
+<h2 id="常用参数">常用参数</h2><ol>
+<li>要看支持的字符编码有哪些，就可以用-l参数得到<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -l</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li>从一种编码方式（from）转换到另一种编码方式（to）<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f GBK -t UTF-<span class="number">8</span> inputfile -o outputfile</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 <pre><code>就是从linux下显示乱码的GBK编码方式，转换成linux下的UTF-8编码。
@@ -392,7 +396,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#常用参数"><span class="nav-number">1.</span> <span class="nav-text">常用参数</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用参数"><span class="nav-number">1.</span> <span class="nav-text">常用参数</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
