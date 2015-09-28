@@ -236,20 +236,11 @@
         <span itemprop="articleBody"><p>最近project中遇到一个小问题，从网站上抓取来的数据是GBK编码。而我平时的开发环境是ubuntu，队友给的数据在linux下打开全是乱码，要转换成UTF-8才行。</p>
 <p>搜到最佳的解决办法就是用<code>iconv</code>命令，一个专门用来转换文件的编码方式的命令。</p>
 <h1 id="常用参数">常用参数</h1><ol>
-<li>要看支持的字符编码有哪些，就可以用-l参数得到<blockquote>
-<p>iconv -l</p>
-</blockquote>
+<li>要看支持的字符编码有哪些，就可以用-l参数得到<figure class="highlight"><figcaption><span>-l```</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#10;&#10;&#10;2. &#20174;&#19968;&#31181;&#32534;&#30721;&#26041;&#24335;&#65288;from&#65289;&#36716;&#25442;&#21040;&#21478;&#19968;&#31181;&#32534;&#30721;&#26041;&#24335;&#65288;to&#65289;&#10;   ``` iconv -f GBK -t UTF-8 inputfile -o outputfile</span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<ol>
-<li><p>从一种编码方式（from）转换到另一种编码方式（to）</p>
-<blockquote>
-<p>iconv -f GBK -t UTF-8 inputfile -o outputfile</p>
-</blockquote>
-<p>就是从linux下显示乱码的GBK编码方式，转换成linux下的UTF-8编码。</p>
-</li>
-</ol>
-<p>仅做记录。</p>
+<pre><code>就是从linux下显示乱码的GBK编码方式，转换成linux下的UTF-8编码。
+</code></pre><p>仅做记录。</p>
 </span>
       
     </div>
