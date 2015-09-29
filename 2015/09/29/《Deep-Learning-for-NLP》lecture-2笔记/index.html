@@ -242,7 +242,7 @@
       
 
       
-        <span itemprop="articleBody"><p>今天看了青年才俊Richard Socher讲的cs224d，Socher是standford毕业的PhD，后来创办了MetaMind，很是牛逼。</p>
+        <span itemprop="articleBody"><p>今天看了青年才俊Richard Socher讲的cs224d，Socher是stanford毕业的PhD，后来创办了MetaMind，很是牛逼。</p>
 <p>言归正传，lecture2中最重要的部分就是介绍<strong>word2vec</strong>.</p>
 <h2 id="什么是word2vec">什么是word2vec</h2><p>搞nlp的人都知道word2vec，2013年被google的一帮人搞出来之后，受到了极大的赞誉，word2vec也被用到nlp的各种应用中。它的思想很简单：<em>将word表征成实数值向量</em>。在用deeplearning的方法训练得到这些词向量后，很容易找到与某个词相近的词。所以这里并不限定是word，而是具有一定意义的单元块。比如<a href="http://erikbern.com/2013/11/02/model-benchmarks/" target="_blank" rel="external">国外音乐网站</a>就拿用户的听歌记录来训练，这里与word对应的就是歌曲编号，每首歌曲都能用一个实数值向量表示，因此就能找到与这首歌相似的歌曲，为用户推荐。类似的应用还有很多。</p>
 <p>Mikolov等人首次提出word2vec的论文<a href="http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="external">Distributed Representations of Words and Phrases<br>and their Compositionality</a>，有时间做个详读。</p>
