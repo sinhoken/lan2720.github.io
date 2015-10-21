@@ -39,21 +39,19 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Hakuna Matata">
-<meta property="og:url" content="http://lan2720.github.io/index.html">
+<meta name="description" content="快速排序的时间复杂度是$NlgN$，是几种排序算法中效率最高的，通常是用于排序的最佳选择，因此看到算法-第2.3节时，也忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序了。
+基本思想上一篇博客讲到了归并排序，其特点是先将数组递归的不断切分，切到不能再切，然后再merge到整个数组；而快速排序正好互补，它先将整个数组进行一些处理，选取出切分元素，再进行切分，再对子数组进行处理">
+<meta property="og:type" content="article">
+<meta property="og:title" content="排序代码分析之快速排序">
+<meta property="og:url" content="http://lan2720.github.io/2015/10/21/排序代码分析之快速排序/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
+<meta property="og:description" content="快速排序的时间复杂度是$NlgN$，是几种排序算法中效率最高的，通常是用于排序的最佳选择，因此看到算法-第2.3节时，也忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序了。
+基本思想上一篇博客讲到了归并排序，其特点是先将数组递归的不断切分，切到不能再切，然后再merge到整个数组；而快速排序正好互补，它先将整个数组进行一些处理，选取出切分元素，再进行切分，再对子数组进行处理">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1ex92ujigaxj208o060dg0.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hakuna Matata">
-<meta name="twitter:description" content="属性GEEK, 冷静思考
-专注DeepLearning/NLP/CV
-从菜鸟做起，先行动，再谈梦想。">
+<meta name="twitter:title" content="排序代码分析之快速排序">
+<meta name="twitter:description" content="快速排序的时间复杂度是$NlgN$，是几种排序算法中效率最高的，通常是用于排序的最佳选择，因此看到算法-第2.3节时，也忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序了。
+基本思想上一篇博客讲到了归并排序，其特点是先将数组递归的不断切分，切到不能再切，然后再merge到整个数组；而快速排序正好互补，它先将整个数组进行一些处理，选取出切分元素，再进行切分，再对子数组进行处理">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -63,7 +61,7 @@
   };
 </script>
 
-  <title> Hakuna Matata </title>
+  <title> 排序代码分析之快速排序 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -91,9 +89,7 @@
 
 
 
-  <div class="container one-column 
-   page-home 
-">
+  <div class="container one-column page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -193,9 +189,9 @@
     <main id="main" class="main">
       <div class="main-inner">
         <div id="content" class="content"> 
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
@@ -206,9 +202,7 @@
           
           
             
-              <a class="post-title-link" href="/2015/10/21/排序代码分析之快速排序/" itemprop="url">
-                排序代码分析之快速排序
-              </a>
+              排序代码分析之快速排序
             
           
         </h1>
@@ -243,8 +237,7 @@
       
 
       
-        
-          <span itemprop="articleBody"><p>快速排序的时间复杂度是$NlgN$，是几种排序算法中效率最高的，通常是用于排序的最佳选择，因此看到<a href="http://algs4.cs.princeton.edu/23quicksort/" target="_blank" rel="external">算法-第2.3节</a>时，也忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序了。</p>
+        <span itemprop="articleBody"><p>快速排序的时间复杂度是$NlgN$，是几种排序算法中效率最高的，通常是用于排序的最佳选择，因此看到<a href="http://algs4.cs.princeton.edu/23quicksort/" target="_blank" rel="external">算法-第2.3节</a>时，也忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序了。</p>
 <h2 id="基本思想">基本思想</h2><p>上一篇博客讲到了归并排序，其特点是先将数组递归的不断切分，切到不能再切，然后再merge到整个数组；而快速排序正好互补，它先将整个数组进行一些处理，选取出切分元素，再进行切分，再对子数组进行处理，同样选取出切分元素，再切分，如此循环。<br>所以根据归并排序中所讲到的，快速排序中sort()函数同样没有实质性的“干活”，只是安排了partition()的正确顺序，然后partition()真正的改变原数组中元素的位置。</p>
 <h2 id="sort()函数">sort()函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a)</span> </span>&#123;</span><br><span class="line">    StdRandom.shuffle(a);</span><br><span class="line">    sort(a, <span class="number">0</span>, a.length - <span class="number">1</span>);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// quicksort the subarray from a[lo] to a[hi]</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (hi &lt;= lo) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> j = partition(a, lo, hi);</span><br><span class="line">    sort(a, lo, j-<span class="number">1</span>);</span><br><span class="line">    sort(a, j+<span class="number">1</span>, hi);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a, lo, hi)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>快排的sort()和归并排序的代码类似，一个对外的public sort()和一个内部实现排序的sort()。同样在partition之后的<code>hi &lt;= lo</code>（数组只有一个元素）时，return不再切分。然后记录下切分元素的位置j，最后分别对a[j]左边和右边的子数组再sort()。</p>
@@ -268,7 +261,6 @@
 <p><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1ex92ujigaxj208o060dg0.jpg" alt=""><br>i从lo开始，a[i]如果比v小，就将a[i]和a[lt]交换位置。所以，$<v$的元素从a[lo..lt-1]变到了a[lo..lt]，数量+1，lt++，原本a[lt]位置上的元素是$=v$的，交换到a[i]之后，还是和$=1$的元素相连，因此没有问题。 a[i]如果比v大，就将a[i]和a[gt]交换，那么$="">v$的元素从a[gt+1..hi]变到了a[gt..hi]，数量+1，但是gt—，原本a[gt]位置的元素处于没有被安排的状态，因此交换到a[i]之后，i不能++，因为这个新来的数接下来要被安排。<br>a[i]如果$=v$，a[i]还是处于相等的那一堆元素中，i继续++，i=gt是最后一个元素，直到i&gt;gt时，才算每个元素都被安排(比较)过，while终止。<br>退出while后，相当于原数组a完成了处理，找到了切分元素，且切分成了三部分，所以接下来对小于v和大于v的两个子数组再进行sort()</v$的元素从a[lo..lt-1]变到了a[lo..lt]，数量+1，lt++，原本a[lt]位置上的元素是$=v$的，交换到a[i]之后，还是和$=1$的元素相连，因此没有问题。></p>
 <p>三向切分的快速排序在有大量重复元素存在的情况下，比标准的快速排序效率高得多，将排序时间从线性对数级降到了线性级别。这也使得三向切分的快速排序成为了排序库函数的最佳算法选择——因为现实生活中包含大量重复元素的数组排序很常见。</p>
 </span>
-        
       
     </div>
 
@@ -276,684 +268,43 @@
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
             
-              <a class="post-title-link" href="/2015/10/21/排序代码分析之归并排序/" itemprop="url">
-                排序代码分析之归并排序
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-10-21T12:14:41+08:00" content="2015-10-21">
-            2015-10-21
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/10/21/排序代码分析之归并排序/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/21/排序代码分析之归并排序/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">纸上读来终觉浅，还是要自己动手总结一下才顿感收获颇多。</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/10/21/排序代码分析之归并排序/">
-              阅读全文 &raquo;
-            </a>
           </div>
-        
-      
-    </div>
 
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
+          <div class="post-nav-next post-nav-item">
             
-              <a class="post-title-link" href="/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/" itemprop="url">
-                《Deep Learning for NLP》lecture 3笔记
-              </a>
+              <a href="/2015/10/21/排序代码分析之归并排序/" rel="next">排序代码分析之归并排序</a>
             
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-30T10:15:46+08:00" content="2015-09-30">
-            2015-09-30
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">一点点啃下来并没有什么困难。实际上还是那句老话，杂七杂八的东西看多了知识也就在某个时间点触类旁通~</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/">
-              阅读全文 &raquo;
-            </a>
           </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
+        </div>
       
 
       
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/" itemprop="url">
-                《Deep Learning for NLP》lecture 2笔记
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T19:00:04+08:00" content="2015-09-29">
-            2015-09-29
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">一直想看没来得及看，现在真心觉得里面讲了很多好东西，值得反复学习。</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
+    <div class="post-spread">
       
     </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/28/linux下的文件内容乱码解决方案/" itemprop="url">
-                linux下的文件内容乱码解决方案
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-28T21:45:19+08:00" content="2015-09-28">
-            2015-09-28
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/28/linux下的文件内容乱码解决方案/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/28/linux下的文件内容乱码解决方案/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">windows下的文件放到ubuntu下打开全是乱码，小问题做个记录，That's it.</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/28/linux下的文件内容乱码解决方案/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/21/HMM基本概念解读/" itemprop="url">
-                HMM基本概念解读
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-21T22:00:00+08:00" content="2015-09-21">
-            2015-09-21
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/21/HMM基本概念解读/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/21/HMM基本概念解读/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">HMM听起来就自带神秘光环，如何demystify，娓娓道来。</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/21/HMM基本概念解读/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/" itemprop="url">
-                论文笔记《Traffic Flow Prediction With Big Data:A Deep Learning Approach》
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-21T00:51:58+08:00" content="2015-09-21">
-            2015-09-21
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">这篇论文还是很水的，没任何新东西，都是deeplearning中最基础的介绍，但是读来的目的只是告诉我用SAE来做traffic predict是可行的且效果不错。</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/21/论文笔记《Traffic-Flow-Prediction-With-Big-Data-A-Deep-Learning-Approach》/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/19/带GTX970显卡裸机装Ubuntu15-04并安装显卡驱动/" itemprop="url">
-                带GTX970显卡裸机装Ubuntu15.04并安装显卡驱动
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-19T23:17:00+08:00" content="2015-09-19">
-            2015-09-19
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/19/带GTX970显卡裸机装Ubuntu15-04并安装显卡驱动/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/19/带GTX970显卡裸机装Ubuntu15-04并安装显卡驱动/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">这一路真是辛苦，弄了一天，总算是知道问题出在哪了。</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/19/带GTX970显卡裸机装Ubuntu15-04并安装显卡驱动/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/19/Ubuntu14-10下安装搜狗输入法/" itemprop="url">
-                Ubuntu14.10下安装搜狗输入法
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-19T11:26:25+08:00" content="2015-09-19">
-            2015-09-19
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/19/Ubuntu14-10下安装搜狗输入法/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/19/Ubuntu14-10下安装搜狗输入法/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">搜狗输入法是linux下最好用的输入法</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/19/Ubuntu14-10下安装搜狗输入法/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              <a class="post-title-link" href="/2015/09/19/U盘安装ubuntu14-10的一大陷阱/" itemprop="url">
-                U盘安装ubuntu14.10的一大陷阱
-              </a>
-            
-          
-        </h1>
-      
-
-      <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-19T10:46:46+08:00" content="2015-09-19">
-            2015-09-19
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/19/U盘安装ubuntu14-10的一大陷阱/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/19/U盘安装ubuntu14-10的一大陷阱/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
-      </div>
-    </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        
-          <span itemprop="description">折腾了一晚上，终于把14.10装好了，可谓是linux引导程序引发的一场血案，不过通过装系统也学到了很多新东西。</span>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2015/09/19/U盘安装ubuntu14-10的一大陷阱/">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">&raquo;</a>
-  </nav>
+  </div>
 
  </div>
 
         
 
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/21/排序代码分析之快速排序/"
+                   data-title="排序代码分析之快速排序" data-url="http://lan2720.github.io/2015/10/21/排序代码分析之快速排序/">
+              </div>
+            
+          </div>
         
       </div>
 
@@ -970,6 +321,15 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
 
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
       
 
       <section class="site-overview">
@@ -1039,6 +399,17 @@
 
       </section>
 
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本思想"><span class="nav-number">1.</span> <span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sort()函数"><span class="nav-number">2.</span> <span class="nav-text">sort()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#partition()函数"><span class="nav-number">3.</span> <span class="nav-text">partition()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理含有大量重复值的数组"><span class="nav-number">4.</span> <span class="nav-text">处理含有大量重复值的数组</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
       
 
     </div>
@@ -1126,6 +497,165 @@
   <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
   
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
 
   <script type="text/javascript">
     $(document).ready(function () {
