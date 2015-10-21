@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="cnn,学习笔记," />
+  <meta name="keywords" content="算法," />
 
 
 
@@ -39,16 +39,15 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="cs213n讲解convolutional neural network很到位，用2012年的ImageNet实例加深理解。">
+<meta name="description" content="纸上读来终觉浅，还是要自己动手总结一下才顿感收获颇多。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CNN学习之进阶">
-<meta property="og:url" content="http://lan2720.github.io/2015/08/14/CNN学习之进阶/index.html">
+<meta property="og:title" content="排序代码分析之归并排序">
+<meta property="og:url" content="http://lan2720.github.io/2015/10/21/排序代码分析之归并排序/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="cs213n讲解convolutional neural network很到位，用2012年的ImageNet实例加深理解。">
-<meta property="og:image" content="http://cs231n.github.io/assets/cnn/stride.jpeg">
+<meta property="og:description" content="纸上读来终觉浅，还是要自己动手总结一下才顿感收获颇多。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="CNN学习之进阶">
-<meta name="twitter:description" content="cs213n讲解convolutional neural network很到位，用2012年的ImageNet实例加深理解。">
+<meta name="twitter:title" content="排序代码分析之归并排序">
+<meta name="twitter:description" content="纸上读来终觉浅，还是要自己动手总结一下才顿感收获颇多。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -58,7 +57,7 @@
   };
 </script>
 
-  <title> CNN学习之进阶 | Hakuna Matata </title>
+  <title> 排序代码分析之归并排序 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -199,7 +198,7 @@
           
           
             
-              CNN学习之进阶
+              排序代码分析之归并排序
             
           
         </h1>
@@ -208,8 +207,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-08-14T22:42:34+08:00" content="2015-08-14">
-            2015-08-14
+          <time itemprop="dateCreated" datetime="2015-10-21T12:14:41+08:00" content="2015-10-21">
+            2015-10-21
           </time>
         </span>
 
@@ -219,8 +218,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/08/14/CNN学习之进阶/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/14/CNN学习之进阶/" itemprop="commentsCount"></span>
+              <a href="/2015/10/21/排序代码分析之归并排序/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/21/排序代码分析之归并排序/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -234,50 +233,31 @@
       
 
       
-        <span itemprop="articleBody"><h2 id="构架">构架</h2><p>一个完整的CNN构架由三层构成：</p>
+        <span itemprop="articleBody"><p>好久没写博客了，最近都在忙于实验室的project，这两天有点闲工夫啃了啃Sedgewick的大作<a href="http://algs4.cs.princeton.edu/home/" target="_blank" rel="external">算法</a>，全书是基于Java讲的，正好我对java并不是很熟，所以一举两得学习一下大神写的代码。</p>
+<p>其中讲到归并排序的时候，发现一个挺有意思的地方，遂记录一下。<br>【注】这不是一篇归并排序的讲解文，如需要了解什么是归并排序，请移步<a href="https://zh.wikipedia.org/wiki/%E5%BD%92%E5%B9%B6%E6%8E%92%E5%BA%8F" target="_blank" rel="external">here</a></p>
+<h2 id="sort()方法">sort()方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// mergesort a[lo..hi] using auxiliary array aux[lo..hi]</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a, Comparable[] aux, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (hi &lt;= lo) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">    sort(a, aux, lo, mid);</span><br><span class="line">    sort(a, aux, mid + <span class="number">1</span>, hi);</span><br><span class="line">    merge(a, aux, lo, mid, hi);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="javadoc">/**</span><br><span class="line"> * Rearranges the array in ascending order, using the natural order.</span><br><span class="line"> *<span class="javadoctag"> @param</span> a the array to be sorted</span><br><span class="line"> */</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a)</span> </span>&#123;</span><br><span class="line">    Comparable[] aux = <span class="keyword">new</span> Comparable[a.length];</span><br><span class="line">    sort(a, aux, <span class="number">0</span>, a.length-<span class="number">1</span>);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码是Merge类中的两段sort()方法，一开始我觉得很奇怪，两个sort方法名相同，参数不同，这个类中难道还涉及了方法重载吗？其实定睛一看并不是，上面那段代码是private的，而下面是public，也就是对外公开的api。<br><em>为什么要这么做呢？</em>因为从用户的角度看，他只希望输入一个数据数组a，调用Merge.sort(a)就能进行排序，而不用指定额外任何参数；但是从程序猿的角度看，归并排序还需要辅助数组(aux[])，起始idx(lo)，终止idx(hi)，才能排序，但是这些参数不应该暴露给用户，因为用户不必知道实现细节，所以，代码中将归并排序的细节封装在一个私有的sort()方法中，然后在公开的sort()方法中调用这个私有的sort方法进行排序。</p>
+<p>可能很多java老手早就知道了这种漂亮优雅的实现，但是作为一个java初学者，感觉自己的exp突增10个点。</p>
+<h2 id="merge()方法">merge()方法</h2><p>除了sort方法，格外重要的就是merge()函数。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// stably merge a[lo .. mid] with a[mid+1 ..hi] using aux[lo .. hi]</span></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">merge</span><span class="params">(Comparable[] a, Comparable[] aux, <span class="keyword">int</span> lo, <span class="keyword">int</span> mid, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// precondition: a[lo .. mid] and a[mid+1 .. hi] are sorted subarrays</span></span><br><span class="line">        <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a, lo, mid)</span></span>;</span><br><span class="line">        <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a, mid+<span class="number">1</span>, hi)</span></span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// copy to aux[]</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = lo; k &lt;= hi; k++) &#123;</span><br><span class="line">            aux[k] = a[k]; </span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// merge back to a[]</span></span><br><span class="line">        <span class="keyword">int</span> i = lo, j = mid+<span class="number">1</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> k = lo; k &lt;= hi; k++) &#123;</span><br><span class="line">            <span class="keyword">if</span>      (i &gt; mid)              a[k] = aux[j++];</span><br><span class="line">            <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(j &gt; hi)</span>               a[k] </span>= aux[i++];</span><br><span class="line">            <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(less(aux[j], aux[i])</span>) a[k] </span>= aux[j++];</span><br><span class="line">            <span class="keyword">else</span>                           a[k] = aux[i++];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// postcondition: a[lo .. hi] is sorted</span></span><br><span class="line">        <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a, lo, hi)</span></span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>实际上，在归并排序的代码中，<strong>sort()函数</strong>什么实质的工作都没做，它只起到了一个<strong>分配任务</strong>的角色。实际干活的是merge()方法。为什么这么说呢？<br>因为sort()方法是递归的，只要<code>hi &gt; lo</code>的时候，就进行二分，分别对二分出的子数组继续sort()，可以看出当<code>hi &lt;= lo</code>之时，不再继续二分了，但是这个时候子数组中只有一个元素，仅一个元素你说还需要排序吗？所以sort()就是个呆逼，只会二分，根本没做其他的什么事。但是关键在于，sort()自己虽然没做啥事，但是它二分后会指挥别人去干活，也就是调用<strong>merge()去做事</strong>。<br>所以可以想象出merge()将两个一元素（显然排好序了）数组合并成一个二元素有序数组，再将两个二元素的有序数组合并成一个四元素的有序数组，再将两个四元素的数组合并成一个八元素的有序数组，以此类推。。就实现了归并排序。</p>
+<p>理清楚了这个思路，就看merge()究竟是如何将两个有序数组合并成一个更大的有序数组的呢？</p>
 <ol>
-<li>卷积层（Convolutional Layer）</li>
-<li>池化层（Pooling Layer）</li>
-<li>全连接层（Fully-Connected Layer）</li>
+<li>首先生成一个辅助数组aux[]<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// copy to aux[]</span></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> k = lo; k &lt;= hi; k++) &#123;</span><br><span class="line">      aux[k] = a[k]; </span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h2 id="举例">举例</h2><p>由一个具体的例子来详细说明。<br>a simple ConvNet for CIFAR-10 classification could have the architecture [INPUT - CONV - RELU - POOL - FC]. In more detail:</p>
-<h3 id="Overview_and_Intuition">Overview and Intuition</h3><p>卷积层的参数由一系列的可学习的filters构成。这里解释几个疑问：</p>
-<ul>
-<li>为什么叫一系列（a set of）<br>因为在上篇博客讲解的ufldl的小例子中，我们通过自编码器学习到了100个8*8的卷积核，这100个卷积核分别和整个原图进行卷积运算，得到100个feature map。所以这里的a set of就是指的100个。</li>
-<li>为什么是可学习的（learnable）<br>因为得到的卷积核是由自编码器，将原图中的8*8小区块作为输入学习到的特征，所以这些卷积核的权重值都是可学习的。</li>
-<li>为什么叫filters<br>network学习到的这些filters会在它们“看到”图片的某区域存在某一特征时被activate。简单来说，就是用这些卷积核来探测原图是否含有这些特征，有这些特征的都会被筛选（filter）出来。</li>
-</ul>
-<h3 id="Spatial_arrangement">Spatial arrangement</h3><p>我们已经知道了输入层和卷积层如何连接的，但是还没考虑输出层是如何构建的。<br>有3个超参数控制输出层：<strong>depth, stride, zero-padding</strong></p>
+<p>可以看到，只复制了原数组a[]的(lo, mid)和(mid+1, hi)部分，也就是说，当前的a[]中这两部分是有序的，只是分别有序而已，现在需要将它们逐一进行比较后，变成整体有序，也就是我们的目标。<br>那为什么要额外的进行拷贝呢？直接改变原数组不行吗？<br>下面举个例子，数组1 = [7， 8， 9]，数组2 = [4， 6， 11].第一眼就能看出需要将数组2的“4”放到数组1的“7”位置，但是如果这样做了，“7”还没有放到适当的位置，直接被新来的“4”覆盖，这就错了。你肯定会想，不直接覆盖，而是交换“4”和“7”的位置，“7”不就不会丢失了吗？但是“7”交换到数组2后，数组2 = [7， 6， 11]，也就打破了数组2原来已经有序的条件，同样也是不行的。<br>所以将两个有序部分复制给aux，让aux保存a原来[lo, hi]的信息，就能放心大胆的修改a数组了。虽然付出的代价是需要额外的空间，但是确实归并排序无法避免的。</p>
 <ol>
-<li>depth参数实际上就是上一篇博客中讲autoencoder的隐层个数（100个），depth表示学习到的特征参数矩阵的个数，也就是用来对原图进行卷积的卷积核个数。卷积之后得到的depth slices，后面再讲。</li>
-<li>stride是控制卷积核在滑动过程中的步幅的，如果每次滑动为1，感知域将有很多overlap，最后得到的feature map的维度也会更大，相反，滑动步幅大overlap就小，得到的输出（feature map）的维度就小。</li>
-<li>zero-padding的意思是在输入层的边界外围再用0填充。这样可以控制输出量的空间大小，比如有时候我们希望保持输出量的空间大小和输入层的空间大小一样。</li>
+<li>设置两个游标<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> i = lo, j = mid+<span class="number">1</span>;</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<p>有一个计算输出量空间大小的公式：输入层空间大小记为$W$，感知域（receptive field）的空间大小记为$F$，步幅stride记为$S$，零填充的数量记为$P$，那么输出量的空间大小为$(W+2P-F)/S+1$，这个公式很容易理解，画个示意图就知道了。如果计算得到的输出量大小不是一个整数，就要调整步幅$S$。</p>
-<h4 id="Use_of_zero-padding">Use of zero-padding</h4><p><img src="http://cs231n.github.io/assets/cnn/stride.jpeg" alt=""><br>看最左边的图，这个图中输入$W$=5，$S$=1，$F$=3，$P$=1，输出层也是（5+2*1-3）/1+1=5个神经元，这就使得输出量和输入层的空间大小保持一致了。但是，如果没有零填充的话，（5-3）/1+1=3，输出层只有3个神经元。这里暂时还不知道保持卷积层卷积前后神经元个数一致有什么好处，后面要细讲。</p>
-<h4 id="Constraints_on_strides">Constraints on strides</h4><p>步幅的设置受到$W$和$F$的限制，因为很可能计算出来的输出量神经元个数不是整数。</p>
-<h4 id="Real-world_example">Real-world example</h4><p>2012年Krizhevsky等人在ImageNet比赛上使用的图片为[227*227*3]。第一个卷积层，他们使用的是$F=11$，$S=4$ and no zero padding $P$=0，因为（227-11）/4+1=55，卷积层的深度$K=96$，所以卷积后的输出为[55*55*96]，这55*55*96个神经元中的每一个neuron都和输入图片的11×11×3的一块感知域相连。<br>卷积层最后的输出就为96个feature maps，得到每个feature map所用的卷积方式（输入的分块区域）是相同的，但是卷积核不同（$w$不同）。</p>
-<h3 id="Parameter_Sharing">Parameter Sharing</h3><p>上面ImageNet例子中，第一层卷积层有55×55×96=290,400个神经元，每个神经元由输入和11×11×3=363 weights + 1 bias卷积而来。所以单算第一个卷积层就有290,400×364=105,705,600个参数之多。<br>再看卷积核，共有96 unique set of weights (one for each depth slice)，一共有96*11*11*3=34,848个weights（每个卷积核都是11*11*3的，和输入的小区块同型）和96个biases，但是depth slice中每55*55个神经元都是共享the same weights卷积来的。</p>
-<blockquote>
-<p>$W_{ij}$ is the matrix connecting the $i^{th}$ input channel with the $j^{th}$ feature map.(input channel such as red, green and blue)</p>
-</blockquote>
-<p>那么，为什么可以权值共享呢？</p>
-<blockquote>
-<p> the parameter sharing assumption is relatively reasonable: If detecting a horizontal edge is important at some location in the image, it should intuitively be useful at some other location as well due to the translationally-invariant structure of images. There is therefore no need to relearn to detect a horizontal edge at every one of the 55*55 distinct locations in the Conv layer output volume.</p>
-</blockquote>
-<p>这段话的核心意思就是如果在图片中的某一个位置发现horizontal edge是一个很重要的特征，根据translationally-invariant性质可以得到这个特征在其他位置也useful，所以在图片的一块学习到了这个特征后不需要在55*55个小块中都relearn to detect这个特征。</p>
-<blockquote>
-<p>在某一小块中学习到的特征（用权重矩阵表示），可以直接用于检测任意位置的这个特征，不需要在每个位置都学习一次代表这个特征的权重矩阵。</p>
-</blockquote>
-<p>【注意】有的时候，权值共享的前提假设不make sense，一个现实的例子就是输入图片是faces that have been centered in the image（还没太明白是什么叫centered in the image）。但是对于人脸来说，眼睛特有的特征或头发特有的特征应该在不同的空间位置被学习到，此时就出现了一种新的模型Locally-Connected Layer.</p>
-<h2 id="池化层">池化层</h2><blockquote>
-<p>the trend in the literature is towards discarding the pooling layer in modern ConvNets</p>
-</blockquote>
-<p>由于池化层加入的目的是为了大幅减小representation的空间大小，从而也能够控制overfitting。但是现在有研究者提出抛弃池化层，仅仅重复卷积层，降低representation的维度直接由较大的stride来实现。</p>
-<h2 id="参考资料">参考资料</h2><ul>
-<li>cs231n-convolutional neural network<br><a href="http://cs231n.github.io/convolutional-networks/" target="_blank" rel="external">http://cs231n.github.io/convolutional-networks/</a></li>
-</ul>
-<p>下一篇博客从代码的角度理解CNN。</p>
+<p>为什么要设置游标呢？游标是什么用？<br>你想啊，现在有两个组内有序的数组，数组1 = [7， 8， 9， 10]，数组2 = [4， 6， 11， 12]，要想将两个数组再一次比较合并和一个数组的话，肯定是从每个数组的第一个元素开始，比较谁的第一个小就放在最终数组的第一个，然后依次这样比较。<br>所以，这里的i，j就是用来依次索引两个子数组中每个元素的。</p>
+<ol>
+<li>相互比较两数组中元素大小，给原数组a的[lo, hi]依次赋值<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// merge back to a[]</span></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> k = lo; k &lt;= hi; k++) &#123;</span><br><span class="line">    <span class="keyword">if</span>      (i &gt; mid)              a[k] = aux[j++];</span><br><span class="line">    <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(j &gt; hi)</span>               a[k] </span>= aux[i++];</span><br><span class="line">    <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(less(aux[j], aux[i])</span>) a[k] </span>= aux[j++];</span><br><span class="line">    <span class="keyword">else</span>                           a[k] = aux[i++];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>k是用来索引原数组的，从lo到hi。if的后两句表达的就是2中刚刚讲到的思路，从开头比较aux[i],aux[j]谁小，谁就赋值给a[k]，并且相应的i,j后移。但是前两个的条件是什么意思呢？<br>实际上，观察数组1 = [7， 8， 9， 10]，数组2 = [4， 6， 11， 12]，原数组会逐渐变成[4, 6, 7, 8, 9, 10]这样，那么可以看到数组1中的每个元素都被放到了原数组中，但是数组2还有两个元素11和12没有放到数组a中。<br>这种情况下，i已经超出了数组1的最大索引mid，变成mid+1了，如果还是比较less(aux[j], aux[i])，那比较的就是数组2中的两个元素，因为aux[i]总是小于aux[j]，因此比较的结果永远返回false，永远会执行a[k] = aux[i++]这句，这就大错特错了。<br>因为在比较less(aux[j], aux[i])这句之前，先判断这两个子数组是不是索引越界了，如果其中一个已越界，直接将另一个还存在元素的数组拷贝到数组a即可。</p>
+<h2 id="私有构造函数">私有构造函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This class should not be instantiated.</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">Merge</span><span class="params">()</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
+<p>Merge类的构造函数是这样写的。。第一次见到private修饰的构造函数，吃了个惊，百度了一下发现有人说如果类中的方法都是static的，那么private构造方法是个好主意，也就是防止类实例化出对象，仅用类名访问各个方法。</p>
 </span>
       
     </div>
@@ -286,9 +266,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/cnn/" rel="tag">#cnn</a>
-          
-            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
+            <a href="/tags/算法/" rel="tag">#算法</a>
           
         </div>
       
@@ -297,13 +275,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/08/20/范数正则化之L1和L2-Regularization/" rel="prev">范数正则化之L1和L2 Regularization</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/13/CNN学习之入门/" rel="next">CNN学习之入门</a>
+              <a href="/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/" rel="next">《Deep Learning for NLP》lecture 3笔记</a>
             
           </div>
         </div>
@@ -328,8 +304,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/08/14/CNN学习之进阶/"
-                   data-title="CNN学习之进阶" data-url="http://lan2720.github.io/2015/08/14/CNN学习之进阶/">
+              <div class="ds-thread" data-thread-key="2015/10/21/排序代码分析之归并排序/"
+                   data-title="排序代码分析之归并排序" data-url="http://lan2720.github.io/2015/10/21/排序代码分析之归并排序/">
               </div>
             
           </div>
@@ -433,7 +409,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#构架"><span class="nav-number">1.</span> <span class="nav-text">构架</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举例"><span class="nav-number">2.</span> <span class="nav-text">举例</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview_and_Intuition"><span class="nav-number">2.1.</span> <span class="nav-text">Overview and Intuition</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Spatial_arrangement"><span class="nav-number">2.2.</span> <span class="nav-text">Spatial arrangement</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Use_of_zero-padding"><span class="nav-number">2.2.1.</span> <span class="nav-text">Use of zero-padding</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Constraints_on_strides"><span class="nav-number">2.2.2.</span> <span class="nav-text">Constraints on strides</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Real-world_example"><span class="nav-number">2.2.3.</span> <span class="nav-text">Real-world example</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Parameter_Sharing"><span class="nav-number">2.3.</span> <span class="nav-text">Parameter Sharing</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#池化层"><span class="nav-number">3.</span> <span class="nav-text">池化层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">4.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sort()方法"><span class="nav-number">1.</span> <span class="nav-text">sort()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#merge()方法"><span class="nav-number">2.</span> <span class="nav-text">merge()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#私有构造函数"><span class="nav-number">3.</span> <span class="nav-text">私有构造函数</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
