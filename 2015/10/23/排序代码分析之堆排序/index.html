@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="问题解决," />
+  <meta name="keywords" content="算法," />
 
 
 
@@ -39,15 +39,18 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="repository access denied. access via a deployment key is read-only.">
+<meta name="description" content="堆排序是我们所知的唯一能够同时最优地利用空间和时间的方法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="bitbucket push origin出现权限问题">
-<meta property="og:url" content="http://lan2720.github.io/2015/08/26/bitbucket-push-origin出现权限问题/index.html">
+<meta property="og:title" content="排序代码分析之堆排序">
+<meta property="og:url" content="http://lan2720.github.io/2015/10/23/排序代码分析之堆排序/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="repository access denied. access via a deployment key is read-only.">
+<meta property="og:description" content="堆排序是我们所知的唯一能够同时最优地利用空间和时间的方法。">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1exae1e0fhij206h06oweu.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1exaehpa8jij207g06naae.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1exafjd29guj204v03qglp.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="bitbucket push origin出现权限问题">
-<meta name="twitter:description" content="repository access denied. access via a deployment key is read-only.">
+<meta name="twitter:title" content="排序代码分析之堆排序">
+<meta name="twitter:description" content="堆排序是我们所知的唯一能够同时最优地利用空间和时间的方法。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -57,7 +60,7 @@
   };
 </script>
 
-  <title> bitbucket push origin出现权限问题 | Hakuna Matata </title>
+  <title> 排序代码分析之堆排序 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -206,7 +209,7 @@
           
           
             
-              bitbucket push origin出现权限问题
+              排序代码分析之堆排序
             
           
         </h1>
@@ -215,8 +218,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-08-26T22:43:36+08:00" content="2015-08-26">
-            2015-08-26
+          <time itemprop="dateCreated" datetime="2015-10-23T01:49:57+08:00" content="2015-10-23">
+            2015-10-23
           </time>
         </span>
 
@@ -226,8 +229,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/08/26/bitbucket-push-origin出现权限问题/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/26/bitbucket-push-origin出现权限问题/" itemprop="commentsCount"></span>
+              <a href="/2015/10/23/排序代码分析之堆排序/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/23/排序代码分析之堆排序/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -241,13 +244,29 @@
       
 
       
-        <span itemprop="articleBody"><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">conq</span>: <span class="string">repository access denied. access via a deployment key is read-only.</span></span><br><span class="line"><span class="attribute">fatal</span>: <span class="string">Could not read from remote repository.</span></span><br><span class="line"></span><br><span class="line"><span class="livecodeserver">Please make sure you have <span class="operator">the</span> correct access rights</span><br><span class="line"><span class="operator">and</span> <span class="operator">the</span> repository exists.</span></span><br></pre></td></tr></table></figure>
-<p>Bitbucket在两个地方可以添加你的ssh key，分别在你的repository settings 和manage account中。</p>
-<p>repository中添加的ssh key称为deployment key，在account中添加的ssh key叫account key。</p>
-<p>如果repository中设置了你的account具有write以上的权限，那么使用account key才对该repository有write 权限。</p>
-<p>在repository中添加的ssh key（deployment key）是read-only。要想使用ssh的方式提交代码，你必须设置你的account key。</p>
-<p>如果你遇见了和我一样的问题：</p>
-<p>你需要去删除deployment key再把你的ssh key添加到你的account key中！</p>
+        <span itemprop="articleBody"><h2 id="sink()方法">sink()方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sink</span><span class="params">(Comparable[] pq, <span class="keyword">int</span> k, <span class="keyword">int</span> N)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">2</span>*k &lt;= N) &#123; <span class="comment">// </span></span><br><span class="line">        <span class="keyword">int</span> j = <span class="number">2</span>*k;</span><br><span class="line">        <span class="keyword">if</span> (j &lt; N &amp;&amp; less(pq, j, j+<span class="number">1</span>)) j++;</span><br><span class="line">        <span class="keyword">if</span> (!less(pq, k, j)) <span class="keyword">break</span>;</span><br><span class="line">        exch(pq, k, j);</span><br><span class="line">        k = j;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1exae1e0fhij206h06oweu.jpg" alt=""><br>代码要结合图才好理解。这个图中H元素现在比它的子结点P和S都小，所以要“下沉”，步骤是：</p>
+<ol>
+<li>比较它的两个子结点，找两者中较大者，与H对换位置。<br><em>为什么不是任意的和其中一个子结点对换位置就行呢？</em>因为如果和较小的子结点（假设是左结点）对换位置，对换后父节点（左结点）上的这个元素还是比右结点的元素小，因此还是不满足堆有序，所以要挑选两者中较小的，一次调整满足堆排序。</li>
+<li>找到两者中较大者的位置之后，上面代码中即为j，和父节点k比较，如果a[k]<a[j]就需要下沉；如果>=那就不需要变动，break退出while循环。</a[j]就需要下沉；如果></li>
+<li>父节点下沉之后，新的父节点位置为k=j</li>
+</ol>
+<p>就是这么easy～<br>但是有个问题，while循环的条件是while(2*k &lt;= N)也就是左子节点不超过N，但是如果左子节点=N，j+1就越界了啊，不过还好，还有一条限制是j &lt; N，所以放心j+1最大才是N。</p>
+<h2 id="swim()方法">swim()方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swim</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (k &gt; <span class="number">1</span> &amp;&amp; less(k/<span class="number">2</span>, k)) &#123;</span><br><span class="line">        exch(k, k/<span class="number">2</span>);</span><br><span class="line">        k = k/<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1exaehpa8jij207g06naae.jpg" alt=""><br>还是先上图，当前结点T比P和S都大，所以应该“上浮”。不过swim比sink更简单的一点是，swim不需要比较两个子节点的大小，直接与父节点比较大小即可。<br>while的条件是(k &gt; 1 &amp;&amp; less(k/2, k))，<em>为什么要k&gt;1？</em>因为只有子节点才存在上浮，第一个子节点也是2啊！然后再比较它和它的父节点的大小，如果比父节点大，才进入while循环上浮。</p>
+<h2 id="任意数组的堆化">任意数组的堆化</h2><h3 id="什么叫堆化？">什么叫堆化？</h3><p>堆是一个完全二叉树，分为最大堆和最小堆，最大堆的含义是父节点永远不小于其子节点，反之是最小堆。<br>堆虽然是个二叉树，但是它是由数组来表示的，也就是将完全二叉树按层级的顺序存储到数组中。<br>所以对于任意随机数组，我们都能为其中的元素构建一个满足堆条件的完全二叉树，生成一个新的符合堆排序的数组，也就是将数组“堆化”。<br>那么就会想了，任意拿到一个数组，从那个节点开始堆化呢？这是个问题。<br>一个聪明且高效的办法是<strong>从右至左用sink()函数构造子堆</strong>。<br>这就解决了上面的从哪开始堆化的问题：</p>
+<ul>
+<li>从右至左：从末尾的idx=N的元素开始</li>
+<li>用sink()函数：idx=N的元素是子节点，不能sink了，所以要sink只能是idx=N的父节点，也就是idx=N/2</li>
+</ul>
+<p>那么，总结成一句话就是，从右下角的子树开始检测其父节点，满足sink条件的就sink，不满足的就继续向左检查同级父节点。<br>明白了这个思路上代码！<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] pq)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> N = pq.length;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> k = N/<span class="number">2</span>; k &gt;= <span class="number">1</span>; k--)</span><br><span class="line">        sink(pq, k, N);</span><br><span class="line">    <span class="keyword">while</span> (N &gt; <span class="number">1</span>) &#123;</span><br><span class="line">        exch(pq, <span class="number">1</span>, N--);</span><br><span class="line">        sink(pq, <span class="number">1</span>, N);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>pq是需要堆化的数组，数组的长度为N，这个数组已经默认不用0位置，从1～N索引。<br>for()循环从最右下角的父节点（N/2）开始，一直到根节点（1），每次只减小1,，为什么呢？看图<br><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1exafjd29guj204v03qglp.jpg" alt=""><br>这是一个任意顺序的数组画出的二叉树（不满足堆排序的条件），最右下角的子树父节点idx=5，这个确定之后图中所有的父节点都是5依次减小直到1（E（5）-T（4）-R（3）-O（2）-S（1）），所以，每次只减1就能索引到所有的父节点了。<br>然后，sink()函数决定当前的k父节点下不下沉，for循环结束后，这个数组就堆化完成啦。</p>
+<h2 id="下沉排序">下沉排序</h2><p>上面的sort()代码中刚刚只讲到了for循环，就是堆化的过程，那么下面的那个while循环是什么作用呢？<br>实际上，堆排序分为两个阶段：先将随机数组堆化，再根据堆的特性给数组排好序<br>那么，很显然，后面的while循环就是给原数组排序的，具体思路是：</p>
+<ol>
+<li>堆化后的数组，根节点是最大数，如果每次拿出根节点，将根节点对象放到数组的末尾，依次是N，N-1，N-2，…，1的位置，那么数组不就从小到大排好顺序了吗？非常机智，这就是堆排序。</li>
+<li>只要堆中还有元素(个数N&gt;1)，就将根节点pq[1]拿出来，放到数组末尾N位置，即pq[N]，堆中的元素个数-1。原本位于pq[N]的值现在到了根节点，整个堆的顺序被破坏，所以需要将新的根节点sink(1)一下，恢复堆的顺序，恢复后，根节点又是剩余数中最大的那个了，所以继续交换到N-1的位置，如此循环。</li>
+</ol>
+<p>至此，堆排序就理解了。</p>
 </span>
       
     </div>
@@ -256,7 +275,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/问题解决/" rel="tag">#问题解决</a>
+            <a href="/tags/算法/" rel="tag">#算法</a>
           
         </div>
       
@@ -265,13 +284,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/14/贝叶斯分类的相关理论/" rel="prev">贝叶斯分类的相关理论</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/08/26/machinelearninginaction之决策树/" rel="next">machinelearninginaction之决策树</a>
+              <a href="/2015/10/21/排序代码分析之快速排序/" rel="next">排序代码分析之快速排序</a>
             
           </div>
         </div>
@@ -296,8 +313,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/08/26/bitbucket-push-origin出现权限问题/"
-                   data-title="bitbucket push origin出现权限问题" data-url="http://lan2720.github.io/2015/08/26/bitbucket-push-origin出现权限问题/">
+              <div class="ds-thread" data-thread-key="2015/10/23/排序代码分析之堆排序/"
+                   data-title="排序代码分析之堆排序" data-url="http://lan2720.github.io/2015/10/23/排序代码分析之堆排序/">
               </div>
             
           </div>
@@ -401,7 +418,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sink()方法"><span class="nav-number">1.</span> <span class="nav-text">sink()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#swim()方法"><span class="nav-number">2.</span> <span class="nav-text">swim()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#任意数组的堆化"><span class="nav-number">3.</span> <span class="nav-text">任意数组的堆化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#什么叫堆化？"><span class="nav-number">3.1.</span> <span class="nav-text">什么叫堆化？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下沉排序"><span class="nav-number">4.</span> <span class="nav-text">下沉排序</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
