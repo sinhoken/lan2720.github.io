@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="deeplearning,nlp,学习笔记," />
+  <meta name="keywords" content="算法," />
 
 
 
@@ -39,18 +39,17 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一点点啃下来并没有什么困难。实际上还是那句老话，杂七杂八的东西看多了知识也就在某个时间点触类旁通~">
+<meta name="description" content="二分查找是查找基本功。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《Deep Learning for NLP》lecture 3笔记">
-<meta property="og:url" content="http://lan2720.github.io/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/index.html">
+<meta property="og:title" content="基于有序数组的二分查找">
+<meta property="og:url" content="http://lan2720.github.io/2015/10/24/基于有序数组的二分查找/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="一点点啃下来并没有什么困难。实际上还是那句老话，杂七杂八的东西看多了知识也就在某个时间点触类旁通~">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1ewjspbm5p3j205n01k748.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1ewjt26nbedj208301dwef.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1ewk80ejfdjj2089013wef.jpg">
+<meta property="og:description" content="二分查找是查找基本功。">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fjw1exckybibj2j204f06q3yn.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1excl7652ddj204506taa7.jpg">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《Deep Learning for NLP》lecture 3笔记">
-<meta name="twitter:description" content="一点点啃下来并没有什么困难。实际上还是那句老话，杂七杂八的东西看多了知识也就在某个时间点触类旁通~">
+<meta name="twitter:title" content="基于有序数组的二分查找">
+<meta name="twitter:description" content="二分查找是查找基本功。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -60,7 +59,7 @@
   };
 </script>
 
-  <title> 《Deep Learning for NLP》lecture 3笔记 | Hakuna Matata </title>
+  <title> 基于有序数组的二分查找 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -209,7 +208,7 @@
           
           
             
-              《Deep Learning for NLP》lecture 3笔记
+              基于有序数组的二分查找
             
           
         </h1>
@@ -218,8 +217,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-30T10:15:46+08:00" content="2015-09-30">
-            2015-09-30
+          <time itemprop="dateCreated" datetime="2015-10-24T23:38:12+08:00" content="2015-10-24">
+            2015-10-24
           </time>
         </span>
 
@@ -229,8 +228,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/" itemprop="commentsCount"></span>
+              <a href="/2015/10/24/基于有序数组的二分查找/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/24/基于有序数组的二分查找/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -244,21 +243,45 @@
       
 
       
-        <span itemprop="articleBody"><p>课程链接：<a href="http://cs224d.stanford.edu/" target="_blank" rel="external">cs224d</a></p>
-<h2 id="Softmax函数">Softmax函数</h2><p>之前的blog中也讲过softmax，但是到底什么是softmax，它衡量的是什么东西呢？<br>softmax函数其实和logistic regression中的sigmoid函数一样，它属于<strong>激活函数</strong>，但是它只能用在多分类任务中做激活函数。<br>它的功能是接受一个输入x，输出其属于每一分类的概率，由于它输出的每一个分类都是概率，所以值在(0,1)之间，且总和为1。这个输出的分类由一个概率计算公式决定，如下：<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1ewjspbm5p3j205n01k748.jpg" alt=""><br>这里的权重矩阵$W\in R^{C×d}$，输入$x\in R^{d×1}$，所以输出就$\in R^{C×1}$共C个类别的概率。</p>
-<h2 id="目标函数（损失函数）：Negative_Log_Likelihood">目标函数（损失函数）：Negative Log Likelihood</h2><p>softmax仅仅是激活函数，输出的类别概率越大越好，但是由于我们需要进行梯度下降，所以要转变成最小化问题，就有了<strong>negative log likelihood</strong>，听起来高大上实际就是对概率取了个$-logP$而已。<br>对一个类别y：<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1ewjt26nbedj208301dwef.jpg" alt=""><br>我们的目标就是将这个函数最小化。</p>
-<h3 id="疑问：这算是损失函数吗，都没有真实label呢？">疑问：这算是损失函数吗，都没有真实label呢？</h3><p>这个问题我刚开始也有，但是仔细想想计算概率P的时候已经用到了x的真实lable-y，所以以上公式是隐含的比较了真实值和预测值的。</p>
-<h2 id="推广：cross_entropy">推广：cross entropy</h2><p>之前说交叉熵只能用于二分类问题，其实正相反，它和NLL在多分类上的推广：<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1ewk80ejfdjj2089013wef.jpg" alt=""><br>$q(c)$是每一个类别的概率vector，上面计算过。<br>单分类时：<br>$p(c)$是one-hot label：[0, 0, …, 1, 0, 0, …, 0]，只有正确的类别是1，其他为0<br>显然$H(p,q)$就简化成了NLL<br>多分类时：<br>$p(c)$不仅仅属于一个类别，因此不是one-hot，$H(p,q)$也就计算了多个分类的概率之和</p>
-<blockquote>
-<p>cross entropy实际上是NLL在多类别分类中的推广</p>
-</blockquote>
-<p>这里的“多类别”指的是每一个instance不止属于一个class，可以同属于多个class的分类。</p>
-<h2 id="word_vector的问题">word vector的问题</h2><p>比如一个简单的word classification问题。<br>有两种选择：</p>
+        <span itemprop="articleBody"><p>algs4中讲到了用一对平行的数组来实现符号表（symbol table），就需要实现put()和get()两个方法，两者都涉及到对某一给定的key在有序数组中的查找，比较高效的方法即<a href="http://algs4.cs.princeton.edu/31elementary/" target="_blank" rel="external">二分查找</a>。</p>
+<h2 id="BinarySearchST类的成员变量和构造函数">BinarySearchST类的成员变量和构造函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinarySearchST</span>&lt;<span class="title">Key</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&lt;<span class="title">Key</span>&gt;, <span class="title">Value</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INIT_CAPACITY = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">private</span> Key[] keys;</span><br><span class="line">    <span class="keyword">private</span> Value[] vals;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> N = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="javadoc">/**</span><br><span class="line">     * Initializes an empty symbol table.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BinarySearchST</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(INIT_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="javadoc">/**</span><br><span class="line">     * Initializes an empty symbol table with the specified initial capacity.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BinarySearchST</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123; </span><br><span class="line">        keys = (Key[]) <span class="keyword">new</span> Comparable[capacity]; </span><br><span class="line">        vals = (Value[]) <span class="keyword">new</span> Object[capacity]; </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在类的定义处<code>BinarySearchST&lt;Key extends Comparable&lt;Key&gt;, Value&gt;</code>即使用了泛型，并且注明了Key实现了Comparable接口。<br>同样，可以看到后面的keys定义中new出的是一个Comparable类型的对象组成的数组，后来转成Key[]；vals new出的是Object类型的对象数组，因为只有键进行比较（方便进行排序），value不需要有比较方法。keys和vals是两个关键的平行数组。</p>
+<h2 id="rank()方法">rank()方法</h2><p>这份实现的核心是rank()方法，它返回表中小于给定键的键的数量，也就是说如果键key存在当前的符号表中，它在有序数组中的idx；如果键key不在当前的符号表中，返回它应该插入位置的idx。<br>话不多说，上代码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rank</span><span class="params">(Key key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lo = <span class="number">0</span>, hi = N-<span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span> (lo &lt;= hi) &#123; </span><br><span class="line">        <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>; </span><br><span class="line">        <span class="keyword">int</span> cmp = key.compareTo(keys[mid]);</span><br><span class="line">        <span class="keyword">if</span>      (cmp &lt; <span class="number">0</span>) hi = mid - <span class="number">1</span>; </span><br><span class="line">        <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(cmp &gt; <span class="number">0</span>)</span> lo </span>= mid + <span class="number">1</span>; </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> mid; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> lo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<ol>
+<li>首先，定义两个指针，lo指向数组开头元素，hi指向数组末尾元素。</li>
+<li>只有<code>lo&gt;hi</code>时才跳出循环，跳出循环也就是当前的keys数组中没有找到指定的key，那么就返回key应该插入的idx，也就是lo。为什么是lo稍后再解释。</li>
+<li>进入循环中，找到中间索引mid，我们要找的目标Key对象key，和keys[mid]这个Key对象进行比较，根据比较的大小，确定下一步的查找方向。<em>为什么能比较大小？</em>因为Key类实现了Comparable接口，所以调用compareTo()方法即可。</li>
+<li>如果key小于keys[mid]，也就是key应该排在mid前，所以hi=mid-1，圈定前半个数组元素。</li>
+<li>如果key大于keys[mid]，同上，应该往mid后面找lo=mid+1。</li>
+<li>如果key等于keysp[mid]，说明正好找到，直接返回mid。</li>
+</ol>
+<p>好，至此就只剩一个问题了，如果keys中不存在key这个键应该返回什么idx呢？<br>有两种情况：</p>
 <ul>
-<li>在训练过程中不更新word vectors，只训练softmax的$W$矩阵</li>
-<li>既更新$W$，也根据特定任务更新word vectors</li>
+<li>lo=hi=mid之后，cmp&lt;0，hi=mid-1，如下图所示</li>
 </ul>
-<p>那么第二种方法有什么优缺点呢？<br>pro：更好的适应了训练数据<br>con：使得泛化能力变差。因为在vector space中words根据specified-task进行了移动，softmax相应的predict出的类别也会有变化，那些没有在当前任务中进行update的那些words就被分到错误的类别。</p>
+<p><img src="http://ww1.sinaimg.cn/large/901f9a6fjw1exckybibj2j204f06q3yn.jpg" alt=""><br>这时，我们的目标key=6，不在keys中，但是要插入的话，应该在5之后，也就是现在7的idx，而现在指针lo指向7，因此return lo即可</p>
+<ul>
+<li>lo=hi=mid之后，cmp&gt;0，lo=mid+1，如下图所示<br><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1excl7652ddj204506taa7.jpg" alt=""><br>我们的目标key=8，目标键不在keys中，但是应该插入在7之后，也就是现在11的idx，而现在lo指向11，还是return lo</li>
+</ul>
+<p>所以退出while循环后，两种情况均返回lo！</p>
+<h2 id="get()方法">get()方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Value <span class="title">get</span><span class="params">(Key key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> i = rank(key); </span><br><span class="line">    <span class="keyword">if</span> (i &lt; N &amp;&amp; keys[i].compareTo(key) == <span class="number">0</span>) <span class="keyword">return</span> vals[i];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>分析完rank()之后，再看get()方法就没任何障碍了。</p>
+<ol>
+<li>如果本身符号表中就不存在任何键值对，那么肯定找不到目标key，不浪费时间直接返回null</li>
+<li>否则，就用rank()去二分查找目标key。要么找到，返回key现在的idx；要么找不到，但是返回应该插入的idx</li>
+<li><code>if (i &lt; N &amp;&amp; keys[i].compareTo(key) == 0)</code>这句就是检测返回的idx对应的key究竟是不是目标key，因为没找到我们也会返回一个应该插入的idx位置，但是keys中现在这个idx上的键并不是我们要找的key</li>
+<li>如果确实对应上了目标键，就返回它在vals数组中对应的值vals[i]</li>
+<li>如果对应不上，说明目标key不存在符号表中，仍返回null</li>
+</ol>
+<h2 id="put()">put()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Key key, Value val)</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (val == <span class="keyword">null</span>) &#123;</span><br><span class="line">        delete(key);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i = rank(key);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// key is already in table</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt; N &amp;&amp; keys[i].compareTo(key) == <span class="number">0</span>) &#123;</span><br><span class="line">        vals[i] = val;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// insert new key-value pair</span></span><br><span class="line">    <span class="keyword">if</span> (N == keys.length) resize(<span class="number">2</span>*keys.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = N; j &gt; i; j--)  &#123;</span><br><span class="line">        keys[j] = keys[j-<span class="number">1</span>];</span><br><span class="line">        vals[j] = vals[j-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    keys[i] = key;</span><br><span class="line">    vals[i] = val;</span><br><span class="line">    N++;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">check</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>如果设置了val=null，也就是用户自行想删除这个key，那么调用delete(key)方法</li>
+<li>如果val不为空，就看这个key是否已经存在keys中。如果存在，返回idx；如果不存在，返回应该插入的idx，这正是rank()完成的工作</li>
+<li>接下来就是两种情况：如果key已经存在，直接修改vals[i] = val即可；如果key不存在，就需要将当前的键值对插入到合适的i位置</li>
+<li>因为要在idx=i插入新元素，因此当前的i~(N-1)的全部键值对都要向后移动一个空格以容纳新对象</li>
+<li>for循环完成了移动之后，key和val就可以赋值到现在的keys[i]和vals[i]了</li>
+<li>键值对总数N++</li>
+</ol>
 </span>
       
     </div>
@@ -267,11 +290,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/deeplearning/" rel="tag">#deeplearning</a>
-          
-            <a href="/tags/nlp/" rel="tag">#nlp</a>
-          
-            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
+            <a href="/tags/算法/" rel="tag">#算法</a>
           
         </div>
       
@@ -280,13 +299,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/21/排序代码分析之归并排序/" rel="prev">排序代码分析之归并排序</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/" rel="next">《Deep Learning for NLP》lecture 2笔记</a>
+              <a href="/2015/10/23/排序代码分析之堆排序/" rel="next">排序代码分析之堆排序</a>
             
           </div>
         </div>
@@ -311,8 +328,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/"
-                   data-title="《Deep Learning for NLP》lecture 3笔记" data-url="http://lan2720.github.io/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/">
+              <div class="ds-thread" data-thread-key="2015/10/24/基于有序数组的二分查找/"
+                   data-title="基于有序数组的二分查找" data-url="http://lan2720.github.io/2015/10/24/基于有序数组的二分查找/">
               </div>
             
           </div>
@@ -416,7 +433,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Softmax函数"><span class="nav-number">1.</span> <span class="nav-text">Softmax函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#目标函数（损失函数）：Negative_Log_Likelihood"><span class="nav-number">2.</span> <span class="nav-text">目标函数（损失函数）：Negative Log Likelihood</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#疑问：这算是损失函数吗，都没有真实label呢？"><span class="nav-number">2.1.</span> <span class="nav-text">疑问：这算是损失函数吗，都没有真实label呢？</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推广：cross_entropy"><span class="nav-number">3.</span> <span class="nav-text">推广：cross entropy</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#word_vector的问题"><span class="nav-number">4.</span> <span class="nav-text">word vector的问题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BinarySearchST类的成员变量和构造函数"><span class="nav-number">1.</span> <span class="nav-text">BinarySearchST类的成员变量和构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rank()方法"><span class="nav-number">2.</span> <span class="nav-text">rank()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#get()方法"><span class="nav-number">3.</span> <span class="nav-text">get()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#put()"><span class="nav-number">4.</span> <span class="nav-text">put()</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
