@@ -1,0 +1,734 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。" />
+
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="相对于有序数组，二叉查找树的查找和插入都是对数级别的了，但是无法保证平衡。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉查找树的代码实现">
+<meta property="og:url" content="http://lan2720.github.io/2015/10/26/二叉查找树的代码实现/index.html">
+<meta property="og:site_name" content="Hakuna Matata">
+<meta property="og:description" content="相对于有序数组，二叉查找树的查找和插入都是对数级别的了，但是无法保证平衡。">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1excpteymfsj205b04mjrl.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1exdnu47hdjj20ht03yglw.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1exdsvhn8usj205r03974a.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1exdu5yzp0cj206a0dvab1.jpg">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二叉查找树的代码实现">
+<meta name="twitter:description" content="相对于有序数组，二叉查找树的查找和插入都是对数级别的了，但是无法保证平衡。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> 二叉查找树的代码实现 | Hakuna Matata </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9df4ceec6aad0e521753edbb3b445837";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Hakuna Matata</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-深度学习资源">
+          <a href="/深度学习资源" rel="section">
+            <i class="menu-item-icon icon-next-深度学习资源"></i> <br />
+            深度学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-机器学习资源">
+          <a href="/机器学习资源" rel="section">
+            <i class="menu-item-icon icon-next-机器学习资源"></i> <br />
+            机器学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-其他资源">
+          <a href="/其他资源" rel="section">
+            <i class="menu-item-icon icon-next-其他资源"></i> <br />
+            其他资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-常用工具">
+          <a href="/常用工具" rel="section">
+            <i class="menu-item-icon icon-next-常用工具"></i> <br />
+            常用工具
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              二叉查找树的代码实现
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2015-10-26T00:48:53+08:00" content="2015-10-26">
+            2015-10-26
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2015/10/26/二叉查找树的代码实现/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/26/二叉查找树的代码实现/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="天生特性">天生特性</h2><p>一棵二叉查找树代表了一组键（及其相应的值）的<em>集合</em>，而同一个集合可以用多棵不同的二叉查找树表示。只要一棵二叉查找树的所有键投影到一条直线上后，保证一个结点的左子树中的键出现在它的左边，右子树中的树出现在它的右边即可。<br><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1excpteymfsj205b04mjrl.jpg" alt=""><br>这个特性使得二叉查找树拥有天生的<strong>灵活性</strong>。</p>
+<h2 id="查找：get()">查找：get()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Value <span class="title">get</span><span class="params">(Key key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> get(root, key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Value <span class="title">get</span><span class="params">(Node x, Key key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> cmp = key.compareTo(x.key);</span><br><span class="line">    <span class="keyword">if</span>      (cmp &lt; <span class="number">0</span>) <span class="keyword">return</span> get(x.left, key);</span><br><span class="line">    <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(cmp &gt; <span class="number">0</span>)</span> return <span class="title">get</span><span class="params">(x.right, key)</span></span>;</span><br><span class="line">    <span class="keyword">else</span>              <span class="keyword">return</span> x.val;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>和之前一篇博客中讲到的一样，get()有对内私有api和对外api，对外的api参数更简洁，直接调用了私有api，方便用户使用而无需传递和算法实现相关的参数，保证完美的封装性。<br><em>代码的思路也很清晰</em>：因为是递归查找，所以必须要有一个递归出口，这个出口就是左右子树的node为null（没有左右子树）时，表示查找不到目标key，返回null。如果node不为空，就将目标key和当前node的key进行比较，来确定是往左子树找还是往右子树找，如果正好当前node.key是目标key，那么直接返回node.val即可。</p>
+<h2 id="插入：put()">插入：put()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Key key, Value val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (val == <span class="keyword">null</span>) &#123;</span><br><span class="line">        delete(key);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    root = put(root, key, val);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">check</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">put</span><span class="params">(Node x, Key key, Value val)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">new</span> Node(key, val, <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">int</span> cmp = key.compareTo(x.key);</span><br><span class="line">    <span class="keyword">if</span>      (cmp &lt; <span class="number">0</span>) x.left  = put(x.left,  key, val); <span class="comment">// 进入子树，沿着树向下走</span></span><br><span class="line">    <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(cmp &gt; <span class="number">0</span>)</span> x.right </span>= put(x.right, key, val);</span><br><span class="line">    <span class="keyword">else</span>              x.val   = val;</span><br><span class="line">    x.N = <span class="number">1</span> + size(x.left) + size(x.right); <span class="comment">// 已经从子树返回了，沿着树向上爬</span></span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样，插入的实现也是用了私有和对外api，这样实现的好处就不再赘述了。<br>先讲私有的put()方法。</p>
+<ol>
+<li>如果当前的node的左子树或者右子树为null(已经没有左右子树)时，创建一个新的node</li>
+<li>如果左右子树还不为null也就是还在继续向下查找的时候，当前node的key和要插入的新node的key进行比较</li>
+<li>如果新node的key比当前的node的key小，那么就将这个新node往左子树插，但是具体插在哪个位置还不确定，所以递归调用put(x.left, key, val)方法，进一步查找合适的插入位置</li>
+<li>如果新node的key比当前的node的key大，那么就将这个新node往右子树插，同上</li>
+<li>如果当前的node.key和要插入的新node.key相等的话，也就是说我们找到了这个要插入的key，直接修改当前node的val即可</li>
+<li>不管最终新node插入到哪个位置，最后都要更新当前node的N。<code>x.N = 1 + size(x.left) + size(x.right)</code>的意思是当前node作为root时，这棵数总共拥有的结点数为N。如果新node插入到了当前root的左子树，那么size(x.left)会加1，所以最后的root.N也会加1；如果新node插入到了当前root的右子树，那么size(x.right)会加1，同样最后的root.N会加1；如果新node正好修改的是root.val，也就是没有new Node，size(x.left)和size(x.right)都没改变，所以最后的root.N也就没变</li>
+<li><em>返回值</em>：可以看到是哪个node调用的put()最后还是返回这个node的引用，这样的返回值保证了修改调用者的信息。而一层层地调用也就一层层不断修改每一层的结点信息，也等同于说put()一个node要修改它经过的路径上的所有node的信息</li>
+</ol>
+<p>对比put()和get()方法发现插入的实现难度和查找差不多，所以可以得出二叉查找树的第二个重要特性——<strong>简洁性</strong></p>
+<h2 id="二叉查找树和快速排序的关系">二叉查找树和快速排序的关系</h2><p><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1exdnu47hdjj20ht03yglw.jpg" alt=""><br>从二叉查找树的模型分析而言，它和快速排序几乎就是“双胞胎”。树的根结点就是快速排序中的第一个切分元素（左侧的键都比它小，右侧的键都比它大），而这对于所有的子树同样适用，这和快速排序中对子数组的传递排序完全对应。</p>
+<h2 id="二叉查找树的一些性质">二叉查找树的一些性质</h2><p><em>查找随机键的成本</em>：比二分查找高约39%。但是，事实证明额外的成本是值得的。<br><em>插入一个新键的成本</em>：是对数级别，二分查找的插入操作访问数组的次数是线性级别的。</p>
+<h2 id="deleteMin()">deleteMin()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteMin</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) <span class="keyword">throw</span> <span class="keyword">new</span> NoSuchElementException(<span class="string">"Symbol table underflow"</span>);</span><br><span class="line">    root = deleteMin(root);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">check</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> Node <span class="title">deleteMin</span><span class="params">(Node x)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (x.left == <span class="keyword">null</span>) <span class="keyword">return</span> x.right;</span><br><span class="line">    x.left = deleteMin(x.left);</span><br><span class="line">    x.N = size(x.left) + size(x.right) + <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">return</span> x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>很显然，一整棵树中最小的肯定是最左边的那个子结点。所以，目标就是不停的找，找到一个node没有左结点的时候，它就是整棵树的最左结点了，也就是这里的<code>if (x.left == null)</code>，但是找到最小结点后如何删除呢？<br><img src="http://ww1.sinaimg.cn/large/901f9a6fgw1exdsvhn8usj205r03974a.jpg" alt=""><br>如图，最左结点是A，A下面还有一串右子树，C作为根节点的那串子树中的每一个结点都比E小，当A被删除后，这串子树就应该作为E的左子树（Node E.left）了。<br>再说，如果A存在左子树，那么deleteMin(Node A)的返回值就应该是Node A，这个返回值由第9行代码可知赋值给了Node E.left；也就是说，现在A不存在了，我们还是需要返回一个正确的node引用给Node E.left赋值，根据上面说的，自然返回Node A的右子树，也就是x.right</p>
+<h2 id="delete()">delete()</h2><p>二叉查找树的<strong>难点</strong>就是delete()方法，这里就不讲解代码了。主要讲思路：</p>
+<ol>
+<li>将指向即将被删除的结点的链接保存为t</li>
+<li>将x指向它的后继结点min(t.right)</li>
+<li>将x的右链接指向deleteMin(t.right)，也就是在删除后所有结点仍然都大于x.key的子二叉查找树</li>
+<li>将x的左链接（本为空）设为t.left</li>
+</ol>
+<p>结合下图就能理解了：<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1exdu5yzp0cj206a0dvab1.jpg" alt=""></p>
+<p>这种方法可以正确地删除一个结点，但是它的一个缺陷是可能会在某些应用中产生<em>性能问题</em>。因为选用后继结点是一个随意的决定，且没有考虑树的对称性。<br>可以使用它的前驱结点吗？实际上，前驱结点和后继结点的选择应该是随机的。</p>
+<h2 id="select()">select()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Iterable&lt;Key&gt; <span class="title">keys</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> keys(min(), max());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> Iterable&lt;Key&gt; <span class="title">keys</span><span class="params">(Key lo, Key hi)</span> </span>&#123;</span><br><span class="line">    Queue&lt;Key&gt; queue = <span class="keyword">new</span> Queue&lt;Key&gt;();</span><br><span class="line">    keys(root, queue, lo, hi);</span><br><span class="line">    <span class="keyword">return</span> queue;</span><br><span class="line">&#125; </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">keys</span><span class="params">(Node x, Queue&lt;Key&gt; queue, Key lo, Key hi)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (x == <span class="keyword">null</span>) <span class="keyword">return</span>; </span><br><span class="line">    <span class="keyword">int</span> cmplo = lo.compareTo(x.key); </span><br><span class="line">    <span class="keyword">int</span> cmphi = hi.compareTo(x.key); </span><br><span class="line">    <span class="keyword">if</span> (cmplo &lt; <span class="number">0</span>) keys(x.left, queue, lo, hi); </span><br><span class="line">    <span class="keyword">if</span> (cmplo &lt;= <span class="number">0</span> &amp;&amp; cmphi &gt;= <span class="number">0</span>) queue.enqueue(x.key); </span><br><span class="line">    <span class="keyword">if</span> (cmphi &gt; <span class="number">0</span>) keys(x.right, queue, lo, hi); </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p> 选择键在[lo, hi]范围内的所有的keys，将它们放入队列中。<br> 思路其实还是相似。</p>
+<ol>
+<li>如果lo &lt; x.key，说明x的左子树中有一部分结点符合条件，因此继续调用keys(x.left, queue, lo, hi)</li>
+<li>将x的左子树中全部符合条件的key都放入queue后，如果x.key符合条件，直接enqueue</li>
+<li>最后如果hi &gt; x.key，说明x的右子树中存在一部分结点符合条件，继续调用keys(x.right, queue, lo, hi)</li>
+</ol>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/10/24/基于有序数组的二分查找/" rel="next">基于有序数组的二分查找</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2015/10/26/二叉查找树的代码实现/"
+                   data-title="二叉查找树的代码实现" data-url="http://lan2720.github.io/2015/10/26/二叉查找树的代码实现/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="http://www.alchemyapi.com/sites/default/files/deepLearningAI500.png" alt="Lan" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Lan</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">33</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">24</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lan2720" target="_blank">Github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/loafer-527" target="_blank">Zhihu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/u/2417990255" target="_blank">Weibo</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#天生特性"><span class="nav-number">1.</span> <span class="nav-text">天生特性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#查找：get()"><span class="nav-number">2.</span> <span class="nav-text">查找：get()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#插入：put()"><span class="nav-number">3.</span> <span class="nav-text">插入：put()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉查找树和快速排序的关系"><span class="nav-number">4.</span> <span class="nav-text">二叉查找树和快速排序的关系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉查找树的一些性质"><span class="nav-number">5.</span> <span class="nav-text">二叉查找树的一些性质</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deleteMin()"><span class="nav-number">6.</span> <span class="nav-text">deleteMin()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#delete()"><span class="nav-number">7.</span> <span class="nav-text">delete()</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#select()"><span class="nav-number">8.</span> <span class="nav-text">select()</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp; 
+  <span itemprop="copyrightYear">2015</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan2720"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
