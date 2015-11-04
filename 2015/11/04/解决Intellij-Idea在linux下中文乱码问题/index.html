@@ -251,15 +251,15 @@
 </blockquote>
 <p>之前默认的font是ubuntu，很好看，换成微软雅黑整个界面丑了不止一个档次！所以，如果只是想让源码中的中文能正常显示的话，只能另寻他路。</p>
 <h2 id="Solution">Solution</h2><p>一个快速而有效的方法是：</p>
-<ol>
+<ul>
 <li>在<a href="http://www.myfontfree.com/microsoft-yahei-myfontfreecom66f594.htm" target="_blank" rel="external">这里</a>点download下载yahei字体的ttf</li>
 <li>在ubuntu 下可以执行下面操作安装该字体</li>
-</ol>
+</ul>
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir <span class="regexp">/usr/</span>share<span class="regexp">/fonts/</span>truetype/yahei</span><br><span class="line">sudo cp yahei.ttf  <span class="regexp">/usr/</span>share<span class="regexp">/fonts/</span>truetype/yahei</span><br><span class="line">fc-cache -f -v</span><br></pre></td></tr></table></figure>
 <p>这里的yahei.ttf是刚刚下载的文件的名字</p>
-<ol>
+<ul>
 <li>重启Intellij Idea，发现中文已经可以正常显示了！</li>
-</ol>
+</ul>
 </span>
       
     </div>
