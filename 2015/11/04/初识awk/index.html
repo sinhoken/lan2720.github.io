@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="deeplearning,nlp,学习笔记," />
+  <meta name="keywords" content="linux," />
 
 
 
@@ -39,24 +39,15 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="一直想看没来得及看，现在真心觉得里面讲了很多好东西，值得反复学习。">
+<meta name="description" content="grep, awk, sed此乃linux三大神器。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《Deep Learning for NLP》lecture 2笔记">
-<meta property="og:url" content="http://lan2720.github.io/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/index.html">
+<meta property="og:title" content="初识awk">
+<meta property="og:url" content="http://lan2720.github.io/2015/11/04/初识awk/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="一直想看没来得及看，现在真心觉得里面讲了很多好东西，值得反复学习。">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1ewj9m6t4j9j20c7029dfy.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1ewj9pt8b72j20bz03b3yu.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1ewjbn7rl1lj205y01ot8o.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1ewjduj3c6dj20ll02wt9c.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1ewjdvzf5jaj206z01bmx3.jpg">
-<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fgw1ewjf97smv9j20m301caag.jpg">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1ewjfa4u3hoj20h2017gls.jpg">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1ewjfnfsmyzj20ru01i0ta.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1ewjg6xfbu0j20pe0gujxu.jpg">
+<meta property="og:description" content="grep, awk, sed此乃linux三大神器。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《Deep Learning for NLP》lecture 2笔记">
-<meta name="twitter:description" content="一直想看没来得及看，现在真心觉得里面讲了很多好东西，值得反复学习。">
+<meta name="twitter:title" content="初识awk">
+<meta name="twitter:description" content="grep, awk, sed此乃linux三大神器。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -66,7 +57,7 @@
   };
 </script>
 
-  <title> 《Deep Learning for NLP》lecture 2笔记 | Hakuna Matata </title>
+  <title> 初识awk | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -215,7 +206,7 @@
           
           
             
-              《Deep Learning for NLP》lecture 2笔记
+              初识awk
             
           
         </h1>
@@ -224,8 +215,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-09-29T19:00:04+08:00" content="2015-09-29">
-            2015-09-29
+          <time itemprop="dateCreated" datetime="2015-11-04T10:40:32+08:00" content="2015-11-04">
+            2015-11-04
           </time>
         </span>
 
@@ -235,8 +226,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/" itemprop="commentsCount"></span>
+              <a href="/2015/11/04/初识awk/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/初识awk/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -250,24 +241,13 @@
       
 
       
-        <span itemprop="articleBody"><p>今天看了青年才俊Richard Socher讲的cs224d，Socher是stanford毕业的PhD，后来创办了MetaMind，很是牛逼。</p>
-<p>言归正传，lecture2中最重要的部分就是介绍<strong>word2vec</strong>.</p>
-<h2 id="什么是word2vec">什么是word2vec</h2><p>搞nlp的人都知道word2vec，2013年被google的一帮人搞出来之后，受到了极大的赞誉，word2vec也被用到nlp的各种应用中。它的思想很简单：<em>将word表征成实数值向量</em>。在用deeplearning的方法训练得到这些词向量后，很容易找到与某个词相近的词。所以这里并不限定是word，而是具有一定意义的单元块。比如<a href="http://erikbern.com/2013/11/02/model-benchmarks/" target="_blank" rel="external">国外音乐网站</a>就拿用户的听歌记录来训练，这里与word对应的就是歌曲编号，每首歌曲都能用一个实数值向量表示，因此就能找到与这首歌相似的歌曲，为用户推荐。类似的应用还有很多。</p>
-<p>Mikolov等人首次提出word2vec的论文<a href="http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf" target="_blank" rel="external">Distributed Representations of Words and Phrases<br>and their Compositionality</a>，有时间做个详读。</p>
-<h2 id="Main_idea_of_word2vec">Main idea of word2vec</h2><ul>
-<li>对每个词，都能预测其周边的词。</li>
-<li>更快速更简单的并入一个新句子或者新文章中，或者在词汇表中新加一个词。</li>
-</ul>
-<h2 id="Details">Details</h2><p>aim：预测每个词前后c个相邻词<br>objective function：最大化上下文词出现的log(p).<img src="http://ww1.sinaimg.cn/large/901f9a6fgw1ewj9m6t4j9j20c7029dfy.jpg" alt=""></p>
-<p>问题就在于<strong>怎么计算这个概率$p(w_{t+j}|w_t)$</strong>了。<br>第一个最简单的公式是<img src="http://ww2.sinaimg.cn/large/901f9a6fgw1ewj9pt8b72j20bz03b3yu.jpg" alt=""><br>明眼的人都看出来了，这个概率计算的公式就是softmax。Mikolov原文中也是这么写的，但是有些messy。<br>简化一下，<img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ewjbn7rl1lj205y01ot8o.jpg" alt=""><br>$v_c$：the vector of the center word<br>计算机中的<code>log</code>都是<strong>e</strong>为底的。<br>公式有了，training过程中每次还要更新$v_c$，就需要求得$\frac{\partial }{\partial v_c} J(\theta)$，也就是要求$\frac{\partial }{\partial v_c} logP $<br><img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ewjduj3c6dj20ll02wt9c.jpg" alt=""><br>后面的一项：<img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ewjdvzf5jaj206z01bmx3.jpg" alt=""> 首先记log为f，记求和公式为$z=g(v_c)$<br>那么，<br><img src="http://ww2.sinaimg.cn/large/901f9a6fgw1ewjf97smv9j20m301caag.jpg" alt=""><br>其中<img src="http://ww4.sinaimg.cn/large/901f9a6fgw1ewjfa4u3hoj20h2017gls.jpg" alt=""><br>所以，最后的最后<img src="http://ww1.sinaimg.cn/large/901f9a6fgw1ewjfnfsmyzj20ru01i0ta.jpg" alt=""><br>但是这个方法的缺点是当我们的vocabulary很大（$W$很大,几百万）时，每次update一个word vector都需要将整个vocabulary的概率相加，非常慢。</p>
-<h3 id="对比">对比</h3><p>目前存在很多生成word vector表示的方法，分为两大类：count-based and prediction<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ewjg6xfbu0j20pe0gujxu.jpg" alt=""><br>但是各有优缺点，很好的结合了两种优点的模型是<strong>GloVe</strong>。<br>课程里列出了GloVe的三大优点：</p>
-<ul>
-<li>Fast training</li>
-<li>Scalable to huge corpora</li>
-<li>Good performance even with small corpus, and small vectors.</li>
-</ul>
-<p>【注】但是目前还没有了解过GloVe以及这两大类型的区别，有时间再看。</p>
-<h2 id="GloVe">GloVe</h2></span>
+        <span itemprop="articleBody"><h2 id="Problem">Problem</h2><p>今天项目中有个数据需要进行简单的统计，distrcit.txt文件中每一行是地图上的nodeId和它所对应的区划，格式如下:<br><figure class="highlight 1c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">-<span class="number">1430779066</span><span class="preprocessor">#浦东新区</span></span><br><span class="line"><span class="number">850287516</span><span class="preprocessor">#静安区</span></span><br><span class="line"><span class="number">1641955586</span><span class="preprocessor">#闸北区</span></span><br><span class="line"><span class="number">1870104229</span><span class="preprocessor">#杨浦区</span></span><br></pre></td></tr></table></figure></p>
+<p>一共将近四万行的数据，我也懒得写个python脚本去统计每个区包含有多少个node了，于是上网搜awk命令，果然给了一个so easy的解决方案。</p>
+<h2 id="Solution">Solution</h2><figure class="highlight applescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F '<span class="comment">#' '&#123;a[$2]++&#125;END&#123;for(j in a) print j,a[j]&#125;' district.txt</span></span><br></pre></td></tr></table></figure>
+<p>输出的结果如下：<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">嘉定区 1832</span><br><span class="line">闸北区 2719</span><br><span class="line">普陀区 2664</span><br><span class="line">宝山区 555</span><br><span class="line">浦东新区 11728</span><br><span class="line">徐汇区 2528</span><br><span class="line">虹口区 3339</span><br><span class="line">长宁区 1723</span><br><span class="line">杨浦区 4050</span><br><span class="line">静安区 816</span><br><span class="line">闵行区 2904</span><br><span class="line">黄浦区 3284</span><br><span class="line">松江区 205</span><br><span class="line">青浦区 186</span><br></pre></td></tr></table></figure></p>
+<p>简直perfect。这一次真正领略到awk的强大功力，改天深入了解一下神器awk。</p>
+<p><a href="http://www.linuxawk.com/awk%E6%95%99%E7%A8%8B" target="_blank" rel="external">awk教程</a></p>
+</span>
       
     </div>
 
@@ -275,11 +255,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/deeplearning/" rel="tag">#deeplearning</a>
-          
-            <a href="/tags/nlp/" rel="tag">#nlp</a>
-          
-            <a href="/tags/学习笔记/" rel="tag">#学习笔记</a>
+            <a href="/tags/linux/" rel="tag">#linux</a>
           
         </div>
       
@@ -288,13 +264,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/09/30/《Deep-Learning-for-NLP》lecture-3笔记/" rel="prev">《Deep Learning for NLP》lecture 3笔记</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/28/linux下的文件内容乱码解决方案/" rel="next">linux下的文件内容乱码解决方案</a>
+              <a href="/2015/11/04/解决Intellij-Idea在linux下中文乱码问题/" rel="next">解决Intellij Idea在linux下中文乱码问题</a>
             
           </div>
         </div>
@@ -319,8 +293,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/"
-                   data-title="《Deep Learning for NLP》lecture 2笔记" data-url="http://lan2720.github.io/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/">
+              <div class="ds-thread" data-thread-key="2015/11/04/初识awk/"
+                   data-title="初识awk" data-url="http://lan2720.github.io/2015/11/04/初识awk/">
               </div>
             
           </div>
@@ -424,7 +398,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是word2vec"><span class="nav-number">1.</span> <span class="nav-text">什么是word2vec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Main_idea_of_word2vec"><span class="nav-number">2.</span> <span class="nav-text">Main idea of word2vec</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Details"><span class="nav-number">3.</span> <span class="nav-text">Details</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#对比"><span class="nav-number">3.1.</span> <span class="nav-text">对比</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GloVe"><span class="nav-number">4.</span> <span class="nav-text">GloVe</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem"><span class="nav-number">1.</span> <span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">2.</span> <span class="nav-text">Solution</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
