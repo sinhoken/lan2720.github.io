@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="算法," />
+  <meta name="keywords" content="装机," />
 
 
 
@@ -39,17 +39,36 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="二分查找是查找基本功。">
+<meta name="description" content="ProblemIntellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。重要的事情说三遍
+但是打开project的源码发现之前写的中文注释乱码：
+
+中文变成了口口口口口
+
+网上搜到的大部分答案说
+
+进入File Settings 里的 Appearance项，选中Override default">
 <meta property="og:type" content="article">
-<meta property="og:title" content="基于有序数组的二分查找">
-<meta property="og:url" content="http://lan2720.github.io/2015/10/24/基于有序数组的二分查找/index.html">
+<meta property="og:title" content="解决Intellij Idea在linux下中文乱码问题">
+<meta property="og:url" content="http://lan2720.github.io/2015/11/04/解决Intellij-Idea在linux下中文乱码问题/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="二分查找是查找基本功。">
-<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fjw1exckybibj2j204f06q3yn.jpg">
-<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1excl7652ddj204506taa7.jpg">
+<meta property="og:description" content="ProblemIntellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。重要的事情说三遍
+但是打开project的源码发现之前写的中文注释乱码：
+
+中文变成了口口口口口
+
+网上搜到的大部分答案说
+
+进入File Settings 里的 Appearance项，选中Override default">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="基于有序数组的二分查找">
-<meta name="twitter:description" content="二分查找是查找基本功。">
+<meta name="twitter:title" content="解决Intellij Idea在linux下中文乱码问题">
+<meta name="twitter:description" content="ProblemIntellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。重要的事情说三遍
+但是打开project的源码发现之前写的中文注释乱码：
+
+中文变成了口口口口口
+
+网上搜到的大部分答案说
+
+进入File Settings 里的 Appearance项，选中Override default">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -59,7 +78,7 @@
   };
 </script>
 
-  <title> 基于有序数组的二分查找 | Hakuna Matata </title>
+  <title> 解决Intellij Idea在linux下中文乱码问题 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -208,7 +227,7 @@
           
           
             
-              基于有序数组的二分查找
+              解决Intellij Idea在linux下中文乱码问题
             
           
         </h1>
@@ -217,8 +236,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-24T23:38:12+08:00" content="2015-10-24">
-            2015-10-24
+          <time itemprop="dateCreated" datetime="2015-11-04T10:18:11+08:00" content="2015-11-04">
+            2015-11-04
           </time>
         </span>
 
@@ -228,8 +247,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/10/24/基于有序数组的二分查找/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/24/基于有序数组的二分查找/" itemprop="commentsCount"></span>
+              <a href="/2015/11/04/解决Intellij-Idea在linux下中文乱码问题/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/04/解决Intellij-Idea在linux下中文乱码问题/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -243,44 +262,25 @@
       
 
       
-        <span itemprop="articleBody"><p>algs4中讲到了用一对平行的数组来实现符号表（symbol table），就需要实现put()和get()两个方法，两者都涉及到对某一给定的key在有序数组中的查找，比较高效的方法即<a href="http://algs4.cs.princeton.edu/31elementary/" target="_blank" rel="external">二分查找</a>。</p>
-<h2 id="BinarySearchST类的成员变量和构造函数">BinarySearchST类的成员变量和构造函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">BinarySearchST</span>&lt;<span class="title">Key</span> <span class="keyword">extends</span> <span class="title">Comparable</span>&lt;<span class="title">Key</span>&gt;, <span class="title">Value</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INIT_CAPACITY = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">private</span> Key[] keys;</span><br><span class="line">    <span class="keyword">private</span> Value[] vals;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> N = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="javadoc">/**</span><br><span class="line">     * Initializes an empty symbol table.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BinarySearchST</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>(INIT_CAPACITY);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="javadoc">/**</span><br><span class="line">     * Initializes an empty symbol table with the specified initial capacity.</span><br><span class="line">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">BinarySearchST</span><span class="params">(<span class="keyword">int</span> capacity)</span> </span>&#123; </span><br><span class="line">        keys = (Key[]) <span class="keyword">new</span> Comparable[capacity]; </span><br><span class="line">        vals = (Value[]) <span class="keyword">new</span> Object[capacity]; </span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在类的定义处<code>BinarySearchST&lt;Key extends Comparable&lt;Key&gt;, Value&gt;</code>即使用了泛型，并且注明了Key实现了Comparable接口。<br>同样，可以看到后面的keys定义中new出的是一个Comparable类型的对象组成的数组，后来转成Key[]；vals new出的是Object类型的对象数组，因为只有键进行比较（方便进行排序），value不需要有比较方法。keys和vals是两个关键的平行数组。</p>
-<h2 id="rank()方法">rank()方法</h2><p>这份实现的核心是rank()方法，它返回表中小于给定键的键的数量，也就是说如果键key存在当前的符号表中，它在有序数组中的idx；如果键key不在当前的符号表中，返回它应该插入位置的idx。<br>话不多说，上代码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">rank</span><span class="params">(Key key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> lo = <span class="number">0</span>, hi = N-<span class="number">1</span>; </span><br><span class="line">    <span class="keyword">while</span> (lo &lt;= hi) &#123; </span><br><span class="line">        <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>; </span><br><span class="line">        <span class="keyword">int</span> cmp = key.compareTo(keys[mid]);</span><br><span class="line">        <span class="keyword">if</span>      (cmp &lt; <span class="number">0</span>) hi = mid - <span class="number">1</span>; </span><br><span class="line">        <span class="function"><span class="keyword">else</span> <span class="title">if</span> <span class="params">(cmp &gt; <span class="number">0</span>)</span> lo </span>= mid + <span class="number">1</span>; </span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">return</span> mid; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="keyword">return</span> lo;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+        <span itemprop="articleBody"><h2 id="Problem">Problem</h2><p>Intellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。Intellij Idea是最好的Java IDE。。重要的事情说三遍</p>
+<p>但是打开project的源码发现之前写的中文注释乱码：</p>
+<blockquote>
+<p>中文变成了口口口口口</p>
+</blockquote>
+<p>网上搜到的大部分答案说</p>
+<blockquote>
+<p>进入File Settings 里的 Appearance项，选中Override default fonts by ，把 Name 设置为 微软雅黑</p>
+</blockquote>
+<p>之前默认的font是ubuntu，很好看，换成微软雅黑整个界面丑了不止一个档次！所以，如果只是想让源码中的中文能正常显示的话，只能另寻他路。</p>
+<h2 id="Solution">Solution</h2><p>一个快速而有效的方法是：</p>
 <ol>
-<li>首先，定义两个指针，lo指向数组开头元素，hi指向数组末尾元素。</li>
-<li>只有<code>lo&gt;hi</code>时才跳出循环，跳出循环也就是当前的keys数组中没有找到指定的key，那么就返回key应该插入的idx，也就是lo。为什么是lo稍后再解释。</li>
-<li>进入循环中，找到中间索引mid，我们要找的目标Key对象key，和keys[mid]这个Key对象进行比较，根据比较的大小，确定下一步的查找方向。<em>为什么能比较大小？</em>因为Key类实现了Comparable接口，所以调用compareTo()方法即可。</li>
-<li>如果key小于keys[mid]，也就是key应该排在mid前，所以hi=mid-1，圈定前半个数组元素。</li>
-<li>如果key大于keys[mid]，同上，应该往mid后面找lo=mid+1。</li>
-<li>如果key等于keysp[mid]，说明正好找到，直接返回mid。</li>
+<li>在<a href="http://www.myfontfree.com/microsoft-yahei-myfontfreecom66f594.htm" target="_blank" rel="external">这里</a>点download下载yahei字体的ttf</li>
+<li>在ubuntu 下可以执行下面操作安装该字体<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir /usr/share/fonts/truetype/yahei&#10;sudo cp yahei.ttf  /usr/share/fonts/truetype/yahei&#10;fc-cache -f -v</span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<p>好，至此就只剩一个问题了，如果keys中不存在key这个键应该返回什么idx呢？<br>有两种情况：</p>
-<ul>
-<li>lo=hi=mid之后，cmp&lt;0，hi=mid-1，如下图所示</li>
-</ul>
-<p><img src="http://ww1.sinaimg.cn/large/901f9a6fjw1exckybibj2j204f06q3yn.jpg" alt=""><br>这时，我们的目标key=6，不在keys中，但是要插入的话，应该在5之后，也就是现在7的idx，而现在指针lo指向7，因此return lo即可</p>
-<ul>
-<li>lo=hi=mid之后，cmp&gt;0，lo=mid+1，如下图所示<br><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1excl7652ddj204506taa7.jpg" alt=""><br>我们的目标key=8，目标键不在keys中，但是应该插入在7之后，也就是现在11的idx，而现在lo指向11，还是return lo</li>
-</ul>
-<p>所以退出while循环后，两种情况均返回lo！</p>
-<h2 id="get()方法">get()方法</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Value <span class="title">get</span><span class="params">(Key key)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (isEmpty()) <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">int</span> i = rank(key); </span><br><span class="line">    <span class="keyword">if</span> (i &lt; N &amp;&amp; keys[i].compareTo(key) == <span class="number">0</span>) <span class="keyword">return</span> vals[i];</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>分析完rank()之后，再看get()方法就没任何障碍了。</p>
+<p>这里的yahei.ttf是刚刚下载的文件的名字</p>
 <ol>
-<li>如果本身符号表中就不存在任何键值对，那么肯定找不到目标key，不浪费时间直接返回null</li>
-<li>否则，就用rank()去二分查找目标key。要么找到，返回key现在的idx；要么找不到，但是返回应该插入的idx</li>
-<li><code>if (i &lt; N &amp;&amp; keys[i].compareTo(key) == 0)</code>这句就是检测返回的idx对应的key究竟是不是目标key，因为没找到我们也会返回一个应该插入的idx位置，但是keys中现在这个idx上的键并不是我们要找的key</li>
-<li>如果确实对应上了目标键，就返回它在vals数组中对应的值vals[i]</li>
-<li>如果对应不上，说明目标key不存在符号表中，仍返回null</li>
-</ol>
-<h2 id="put()">put()</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">put</span><span class="params">(Key key, Value val)</span>  </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (val == <span class="keyword">null</span>) &#123;</span><br><span class="line">        delete(key);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> i = rank(key);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// key is already in table</span></span><br><span class="line">    <span class="keyword">if</span> (i &lt; N &amp;&amp; keys[i].compareTo(key) == <span class="number">0</span>) &#123;</span><br><span class="line">        vals[i] = val;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// insert new key-value pair</span></span><br><span class="line">    <span class="keyword">if</span> (N == keys.length) resize(<span class="number">2</span>*keys.length);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> j = N; j &gt; i; j--)  &#123;</span><br><span class="line">        keys[j] = keys[j-<span class="number">1</span>];</span><br><span class="line">        vals[j] = vals[j-<span class="number">1</span>];</span><br><span class="line">    &#125;</span><br><span class="line">    keys[i] = key;</span><br><span class="line">    vals[i] = val;</span><br><span class="line">    N++;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">check</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>如果设置了val=null，也就是用户自行想删除这个key，那么调用delete(key)方法</li>
-<li>如果val不为空，就看这个key是否已经存在keys中。如果存在，返回idx；如果不存在，返回应该插入的idx，这正是rank()完成的工作</li>
-<li>接下来就是两种情况：如果key已经存在，直接修改vals[i] = val即可；如果key不存在，就需要将当前的键值对插入到合适的i位置</li>
-<li>因为要在idx=i插入新元素，因此当前的i~(N-1)的全部键值对都要向后移动一个空格以容纳新对象</li>
-<li>for循环完成了移动之后，key和val就可以赋值到现在的keys[i]和vals[i]了</li>
-<li>键值对总数N++</li>
+<li>重启Intellij Idea，发现中文已经可以正常显示了！</li>
 </ol>
 </span>
       
@@ -290,7 +290,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法/" rel="tag">#算法</a>
+            <a href="/tags/装机/" rel="tag">#装机</a>
           
         </div>
       
@@ -299,13 +299,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/26/二叉查找树的代码实现/" rel="prev">二叉查找树的代码实现</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/23/排序代码分析之堆排序/" rel="next">排序代码分析之堆排序</a>
+              <a href="/2015/10/28/初识红黑树/" rel="next">初识红黑树</a>
             
           </div>
         </div>
@@ -330,8 +328,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/10/24/基于有序数组的二分查找/"
-                   data-title="基于有序数组的二分查找" data-url="http://lan2720.github.io/2015/10/24/基于有序数组的二分查找/">
+              <div class="ds-thread" data-thread-key="2015/11/04/解决Intellij-Idea在linux下中文乱码问题/"
+                   data-title="解决Intellij Idea在linux下中文乱码问题" data-url="http://lan2720.github.io/2015/11/04/解决Intellij-Idea在linux下中文乱码问题/">
               </div>
             
           </div>
@@ -435,7 +433,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#BinarySearchST类的成员变量和构造函数"><span class="nav-number">1.</span> <span class="nav-text">BinarySearchST类的成员变量和构造函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#rank()方法"><span class="nav-number">2.</span> <span class="nav-text">rank()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#get()方法"><span class="nav-number">3.</span> <span class="nav-text">get()方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#put()"><span class="nav-number">4.</span> <span class="nav-text">put()</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Problem"><span class="nav-number">1.</span> <span class="nav-text">Problem</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Solution"><span class="nav-number">2.</span> <span class="nav-text">Solution</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="linux," />
+  <meta name="keywords" content="Hexo,next" />
 
 
 
@@ -39,15 +39,21 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="windows下的文件放到ubuntu下打开全是乱码，小问题做个记录，That&apos;s it.">
-<meta property="og:type" content="article">
-<meta property="og:title" content="linux下的文件内容乱码解决方案">
-<meta property="og:url" content="http://lan2720.github.io/2015/09/28/linux下的文件内容乱码解决方案/index.html">
+<meta name="description" content="属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Hakuna Matata">
+<meta property="og:url" content="http://lan2720.github.io/archives/2015/11/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="windows下的文件放到ubuntu下打开全是乱码，小问题做个记录，That&apos;s it.">
+<meta property="og:description" content="属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="linux下的文件内容乱码解决方案">
-<meta name="twitter:description" content="windows下的文件放到ubuntu下打开全是乱码，小问题做个记录，That&apos;s it.">
+<meta name="twitter:title" content="Hakuna Matata">
+<meta name="twitter:description" content="属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -57,7 +63,7 @@
   };
 </script>
 
-  <title> linux下的文件内容乱码解决方案 | Hakuna Matata </title>
+  <title> 归档 | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -85,7 +91,7 @@
 
 
 
-  <div class="container one-column page-post-detail">
+  <div class="container one-column  page-archive ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -194,117 +200,63 @@
       <div class="main-inner">
         <div id="content" class="content"> 
 
-  <div id="posts" class="posts-expand">
+  <section id="posts" class="posts-collapse">
+    <span class="archive-move-on"></span>
+
+    <span class="archive-page-counter">
+      
+      
+       
+      
+      OK! 目前共计 35 篇日志。 继续努力。
+    </span>
+
     
 
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+      
+      
+      
+
+      
+        
+        <div class="collection-title">
+          <h2 class="archive-year motion-element" id="archive-year-2015">2015</h2>
+        </div>
+      
+      
+
+      
+
+  <article class="post post-type-normal"itemscope itemtype="http://schema.org/Article">
     <header class="post-header">
 
-      
-      
-        <h1 class="post-title" itemprop="name headline">
-          
-          
-            
-              linux下的文件内容乱码解决方案
-            
-          
-        </h1>
-      
+      <h1 class="post-title">
+        
+            <a class="post-title-link" href="/2015/11/04/解决Intellij-Idea在linux下中文乱码问题/" itemprop="url">
+              <span itemprop="name">解决Intellij Idea在linux下中文乱码问题</span>
+            </a>
+        
+      </h1>
 
       <div class="post-meta">
-        <span class="post-time">
-          发表于
-          <time itemprop="dateCreated" datetime="2015-09-28T21:45:19+08:00" content="2015-09-28">
-            2015-09-28
-          </time>
-        </span>
-
-        
-
-        
-          
-            <span class="post-comments-count">
-              &nbsp; | &nbsp;
-              <a href="/2015/09/28/linux下的文件内容乱码解决方案/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/28/linux下的文件内容乱码解决方案/" itemprop="commentsCount"></span>
-              </a>
-            </span>
-          
-        
+        <time class="post-time" datetime="2015-11-04T02:18:11.000Z" itemprop="dateCreated" content="2015-11-04"> 11-04 </time>
       </div>
+
     </header>
-
-    <div class="post-body">
-
-      
-      
-
-      
-        <span itemprop="articleBody"><p>最近project中遇到一个小问题，从网站上抓取来的数据是GBK编码。而我平时的开发环境是ubuntu，队友给的数据在linux下打开全是乱码，要转换成UTF-8才行。</p>
-<p>搜到最佳的解决办法就是用<code>iconv</code>命令，一个专门用来转换文件的编码方式的命令。</p>
-<h2 id="常用参数">常用参数</h2><ul>
-<li>要看支持的字符编码有哪些，就可以用-l参数得到 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -l</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<ul>
-<li>从一种编码方式（from）转换到另一种编码方式（to）<br> 例如：从linux下显示乱码的GBK编码方式，转换成linux下的UTF-8编码。 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iconv -f GBK -t UTF-<span class="number">8</span> inputfile -o outputfile</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p>也可以用<code>enconv</code>命令，<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enconv -L zh_CN -x UTF-<span class="number">8</span> filename</span><br></pre></td></tr></table></figure></p>
-</span>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/linux/" rel="tag">#linux</a>
-          
-        </div>
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/09/29/《Deep-Learning-for-NLP》lecture-2笔记/" rel="prev">《Deep Learning for NLP》lecture 2笔记</a>
-            
-          </div>
-
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/09/21/HMM基本概念解读/" rel="next">HMM基本概念解读</a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
   </article>
 
 
 
-    <div class="post-spread">
-      
-    </div>
-  </div>
+    
+
+  </section>
+
+  
 
  </div>
 
         
 
-        
-          <div class="comments" id="comments">
-            
-              <div class="ds-thread" data-thread-key="2015/09/28/linux下的文件内容乱码解决方案/"
-                   data-title="linux下的文件内容乱码解决方案" data-url="http://lan2720.github.io/2015/09/28/linux下的文件内容乱码解决方案/">
-              </div>
-            
-          </div>
         
       </div>
 
@@ -321,15 +273,6 @@
   <aside id="sidebar" class="sidebar">
     <div class="sidebar-inner">
 
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
       
 
       <section class="site-overview">
@@ -400,17 +343,6 @@
       </section>
 
       
-        <section class="post-toc-wrap sidebar-panel-active">
-          <div class="post-toc-indicator-top post-toc-indicator"></div>
-          <div class="post-toc">
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#常用参数"><span class="nav-number">1.</span> <span class="nav-text">常用参数</span></a></li></ol></div>
-            
-          </div>
-          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
-        </section>
-      
 
     </div>
   </aside>
@@ -451,6 +383,12 @@
 
   
   
+  
+    <script type="text/javascript">
+      postMotionOptions = {stagger: 100, drag: true};
+    </script>
+  
+
   
     
 
@@ -498,163 +436,10 @@
 
   
   
-<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
-
-
-<script type="text/javascript" id="sidebar.toc.highlight">
-  $(document).ready(function () {
-    var tocSelector = '.post-toc';
-    var $tocSelector = $(tocSelector);
-    var activeCurrentSelector = '.active-current';
-
-    $tocSelector
-      .on('activate.bs.scrollspy', function () {
-        var $currentActiveElement = $(tocSelector + ' .active').last();
-
-        removeCurrentActiveClass();
-        $currentActiveElement.addClass('active-current');
-
-        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
-      })
-      .on('clear.bs.scrollspy', function () {
-        removeCurrentActiveClass();
-      });
-
-    function removeCurrentActiveClass () {
-      $(tocSelector + ' ' + activeCurrentSelector)
-        .removeClass(activeCurrentSelector.substring(1));
-    }
-
-    function processTOC () {
-      getTOCMaxHeight();
-      toggleTOCOverflowIndicators();
-    }
-
-    function getTOCMaxHeight () {
-      var height = $('.sidebar').height() -
-                   $tocSelector.position().top -
-                   $('.post-toc-indicator-bottom').height();
-
-      $tocSelector.css('height', height);
-
-      return height;
-    }
-
-    function toggleTOCOverflowIndicators () {
-      tocOverflowIndicator(
-        '.post-toc-indicator-top',
-        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
-      );
-
-      tocOverflowIndicator(
-        '.post-toc-indicator-bottom',
-        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
-      )
-    }
-
-    $(document).on('sidebar.motion.complete', function () {
-      processTOC();
-    });
-
-    $('body').scrollspy({ target: tocSelector });
-    $(window).on('resize', function () {
-      if ( $('.sidebar').hasClass('sidebar-active') ) {
-        processTOC();
-      }
-    });
-
-    onScroll($tocSelector);
-
-    function onScroll (element) {
-      element.on('mousewheel DOMMouseScroll', function (event) {
-          var oe = event.originalEvent;
-          var delta = oe.wheelDelta || -oe.detail;
-
-          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
-          event.preventDefault();
-
-          toggleTOCOverflowIndicators();
-      });
-    }
-
-    function tocOverflowIndicator (indicator, action) {
-      var $indicator = $(indicator);
-      var opacity = action === 'show' ? 0.4 : 0;
-      $indicator.velocity ?
-        $indicator.velocity('stop').velocity({
-          opacity: opacity
-        }, { duration: 100 }) :
-        $indicator.stop().animate({
-          opacity: opacity
-        }, 100);
-    }
-
-  });
-</script>
-
-<script type="text/javascript" id="sidebar.nav">
-  $(document).ready(function () {
-    var html = $('html');
-    var TAB_ANIMATE_DURATION = 200;
-    var hasVelocity = $.isFunction(html.velocity);
-
-    $('.sidebar-nav li').on('click', function () {
-      var item = $(this);
-      var activeTabClassName = 'sidebar-nav-active';
-      var activePanelClassName = 'sidebar-panel-active';
-      if (item.hasClass(activeTabClassName)) {
-        return;
-      }
-
-      var currentTarget = $('.' + activePanelClassName);
-      var target = $('.' + item.data('target'));
-
-      hasVelocity ?
-        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
-          target
-            .velocity('stop')
-            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
-            .addClass(activePanelClassName);
-        }) :
-        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
-          currentTarget.hide();
-          target
-            .stop()
-            .css({'opacity': 0, 'display': 'block'})
-            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
-              currentTarget.removeClass(activePanelClassName);
-              target.addClass(activePanelClassName);
-            });
-        });
-
-      item.siblings().removeClass(activeTabClassName);
-      item.addClass(activeTabClassName);
-    });
-
-    $('.post-toc a').on('click', function (e) {
-      e.preventDefault();
-      var targetSelector = escapeSelector(this.getAttribute('href'));
-      var offset = $(targetSelector).offset().top;
-      hasVelocity ?
-        html.velocity('stop').velocity('scroll', {
-          offset: offset  + 'px',
-          mobileHA: false
-        }) :
-        $('html, body').stop().animate({
-          scrollTop: offset
-        }, 500);
-    });
-
-    // Expand sidebar on post detail page by default, when post has a toc.
-    var $tocContent = $('.post-toc-content');
-    if (isDesktop() && CONFIG.sidebar === 'post') {
-      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
-        displaySidebar();
-      }
-    }
-  });
-</script>
-
+    <script type="text/javascript" id="motion.page.archive">
+      $('.archive-year').velocity('transition.slideLeftIn');
+    </script>
+  
 
 
   <script type="text/javascript">
