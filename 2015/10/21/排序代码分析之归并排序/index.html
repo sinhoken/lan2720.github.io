@@ -266,6 +266,7 @@
 <p>k是用来索引原数组的，从lo到hi。if的后两句表达的就是2中刚刚讲到的思路，从开头比较aux[i],aux[j]谁小，谁就赋值给a[k]，并且相应的i,j后移。但是前两个的条件是什么意思呢？<br>实际上，观察数组1 = [7， 8， 9， 10]，数组2 = [4， 6， 11， 12]，原数组会逐渐变成[4, 6, 7, 8, 9, 10]这样，那么可以看到数组1中的每个元素都被放到了原数组中，但是数组2还有两个元素11和12没有放到数组a中。<br>这种情况下，i已经超出了数组1的最大索引mid，变成mid+1了，如果还是比较less(aux[j], aux[i])，那比较的就是数组2中的两个元素，因为aux[i]总是小于aux[j]，因此比较的结果永远返回false，永远会执行a[k] = aux[i++]这句，这就大错特错了。<br>因为在比较less(aux[j], aux[i])这句之前，先判断这两个子数组是不是索引越界了，如果其中一个已越界，直接将另一个还存在元素的数组拷贝到数组a即可。</p>
 <h2 id="构造函数私有化">构造函数私有化</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// This class should not be instantiated.</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="title">Merge</span><span class="params">()</span> </span>&#123; &#125;</span><br></pre></td></tr></table></figure>
 <p>Merge类的构造函数是这样写的。。第一次见到private修饰的构造函数，吃了个惊，百度了一下发现有人说如果类中的方法都是static的，那么private构造方法是个好主意，也就是防止类实例化出对象，仅用类名访问各个方法。</p>
+<p>最后附上根据《算法导论》中讲解的归并排序方法实现的代码<a href="https://gist.github.com/lan2720/d68934337fa228778e39" target="_blank" rel="external">here</a></p>
 </span>
       
     </div>
