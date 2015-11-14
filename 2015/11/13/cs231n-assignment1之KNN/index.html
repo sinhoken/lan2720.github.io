@@ -267,6 +267,15 @@
 <p>还有最后一个困难：<br>得到了k个lables，如何优雅的计算出最多的那个lable呢？<br><code>from collections import Counter</code>是个好帮手！<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="prompt">&gt;&gt;</span>&gt; c = <span class="constant">Counter</span>(<span class="string">'abcdeabcdabcaba'</span>)  <span class="comment"># count elements from a string</span></span><br><span class="line"><span class="prompt">&gt;&gt;</span>&gt; c.most_common(<span class="number">3</span>)                <span class="comment"># three most common elements</span></span><br><span class="line">[(<span class="string">'a'</span>, <span class="number">5</span>), (<span class="string">'b'</span>, <span class="number">4</span>), (<span class="string">'c'</span>, <span class="number">3</span>)]</span><br></pre></td></tr></table></figure></p>
 <p>Counter能直接统计每个元素的个数，存成key value的形式，用<code>most_common(1)</code>函数取到最common的那个，也就是y_pred[i]</p>
 <h3 id="总结">总结</h3><p>至此所有的坑都踩完了，结论就是numpy一定要精通，有一些很神奇的操作，之后theano中也经常会涉及到。</p>
+<p>用KNN测量的两个instances之间的距离仅仅只考虑了图片背景和颜色信息，相同pixel上颜色相近的就认为两者距离更近，而没有考虑图片语义信息，因此效果不好。</p>
+<h3 id="实际应用中的KNN">实际应用中的KNN</h3><ul>
+<li>预处理数据：图片的像素本身是均匀的，不会出现大范围的不同分布，因此也就没有涉及到预处理，但是实际中如果数据不是图片就需要进行这一步骤</li>
+<li>如果数据维度很高，考虑PCA降维</li>
+<li>交叉验证是computation expensive的，所以在数据量不是特别小的时候，直接随机分出validation data和train data，比例为70%-90%，视hyperparameter的多少而定。如果数据量小，且时间不是一个特别大的问题，最好使用cross validation（more folds the better, but more expensive）</li>
+<li>用validation data选出合适的hyperparameter，也就是这里的k和距离公式（L1，L2）</li>
+<li>如果KNN训练的太慢，考虑使用Approximate Nearest Neighbor library(eg. FLANN)加速，但是accuracy可能下降</li>
+<li>记录下最好结果的超参数。validation data在寻找到超参数之后就被舍弃了，在最终的分类器中只用train data训练而不将validation data加进去，最后用test data测试，accuracy是测试集的准确率</li>
+</ul>
 </span>
       
     </div>
@@ -418,7 +427,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L2_distance"><span class="nav-number">1.</span> <span class="nav-text">L2 distance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compute_distances_with_no_loop"><span class="nav-number">2.</span> <span class="nav-text">compute distances with no loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#predict"><span class="nav-number">3.</span> <span class="nav-text">predict</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坑1"><span class="nav-number">3.1.</span> <span class="nav-text">坑1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坑2"><span class="nav-number">3.2.</span> <span class="nav-text">坑2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#L2_distance"><span class="nav-number">1.</span> <span class="nav-text">L2 distance</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#compute_distances_with_no_loop"><span class="nav-number">2.</span> <span class="nav-text">compute distances with no loop</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#predict"><span class="nav-number">3.</span> <span class="nav-text">predict</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#坑1"><span class="nav-number">3.1.</span> <span class="nav-text">坑1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#坑2"><span class="nav-number">3.2.</span> <span class="nav-text">坑2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">3.3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实际应用中的KNN"><span class="nav-number">3.4.</span> <span class="nav-text">实际应用中的KNN</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
