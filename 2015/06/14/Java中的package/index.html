@@ -45,6 +45,7 @@
 <meta property="og:url" content="http://lan2720.github.io/2015/06/14/Java中的package/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
 <meta property="og:description" content="整理一下java中包的用法，都是基本的认识和操作。">
+<meta property="og:updated_time" content="2015-08-09T13:28:23.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java中的package">
 <meta name="twitter:description" content="整理一下java中包的用法，都是基本的认识和操作。">
@@ -270,11 +271,11 @@
 </table>
 <p>开发完成后，各自的模块都测试正常，但是合并成完整系统时，问题出现了——存在两个User类。怎么办?<br>这个时候，Java通过<strong>软件包</strong>完美解决了这个问题。</p>
 <h2 id="如何给一个类打包?">如何给一个类打包?</h2><p>package的使用<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> jianan;</span><br><span class="line">        </span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String args[])</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">"Hello Package"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>编译的时候<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ javac -<span class="keyword">d</span> . <span class="keyword">Test</span>.java</span><br></pre></td></tr></table></figure></p>
+<p>编译的时候<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ javac -d . Test.java</span><br></pre></td></tr></table></figure></p>
 <p>-d<br>:    根据包名生成文件夹(文件夹的名字为jianan)</p>
 <p>.<br>:    在当前目录生成文件夹</p>
 <p>Test.java<br>:    编译生成Test.class的类，放在jianan文件夹下</p>
-<p>这样打包后，一个类的全名是<code>&quot;包名&quot; + &quot;.&quot; + &quot;类名&quot;</code><br>因此，编译后，执行这个Test类时，应该是<br><figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$ </span>java jianan.<span class="constant">Test</span></span><br></pre></td></tr></table></figure></p>
+<p>这样打包后，一个类的全名是<code>&quot;包名&quot; + &quot;.&quot; + &quot;类名&quot;</code><br>因此，编译后，执行这个Test类时，应该是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ java jianan.Test</span><br></pre></td></tr></table></figure></p>
 <p>因为，打包后这个类的名字就发生了改变——“jianan.Test”</p>
 <h2 id="包名的命名规范">包名的命名规范</h2><ol>
 <li>要求包名所有的字母都要小写</li>

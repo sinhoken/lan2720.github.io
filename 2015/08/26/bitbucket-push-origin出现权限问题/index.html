@@ -45,6 +45,7 @@
 <meta property="og:url" content="http://lan2720.github.io/2015/08/26/bitbucket-push-origin出现权限问题/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
 <meta property="og:description" content="repository access denied. access via a deployment key is read-only.">
+<meta property="og:updated_time" content="2015-08-26T14:48:46.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="bitbucket push origin出现权限问题">
 <meta name="twitter:description" content="repository access denied. access via a deployment key is read-only.">
@@ -241,7 +242,7 @@
       
 
       
-        <span itemprop="articleBody"><figure class="highlight http"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">conq</span>: <span class="string">repository access denied. access via a deployment key is read-only.</span></span><br><span class="line"><span class="attribute">fatal</span>: <span class="string">Could not read from remote repository.</span></span><br><span class="line"></span><br><span class="line"><span class="livecodeserver">Please make sure you have <span class="operator">the</span> correct access rights</span><br><span class="line"><span class="operator">and</span> <span class="operator">the</span> repository exists.</span></span><br></pre></td></tr></table></figure>
+        <span itemprop="articleBody"><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conq: repository access denied. access via a deployment key is read-only.&#10;fatal: Could not read from remote repository.&#10;&#10;Please make sure you have the correct access rights&#10;and the repository exists.</span><br></pre></td></tr></table></figure>
 <p>Bitbucket在两个地方可以添加你的ssh key，分别在你的repository settings 和manage account中。</p>
 <p>repository中添加的ssh key称为deployment key，在account中添加的ssh key叫account key。</p>
 <p>如果repository中设置了你的account具有write以上的权限，那么使用account key才对该repository有write 权限。</p>

@@ -45,6 +45,7 @@
 <meta property="og:url" content="http://lan2720.github.io/2015/09/19/带GTX970显卡裸机装Ubuntu15-04并安装显卡驱动/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
 <meta property="og:description" content="这一路真是辛苦，弄了一天，总算是知道问题出在哪了。">
+<meta property="og:updated_time" content="2015-09-22T10:49:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="带GTX970显卡裸机装Ubuntu15.04并安装显卡驱动">
 <meta name="twitter:description" content="这一路真是辛苦，弄了一天，总算是知道问题出在哪了。">
@@ -242,7 +243,7 @@
 
       
         <span itemprop="articleBody"><h2 id="安装系统">安装系统</h2><p>一开始，我拿着自己的U盘做了一个14.04的启动盘，无法引导系统：按下开机键后，选择install ubuntu就一直黑屏。随后又试过14.10和15.04，均不行，遂借了舍友的U盘，发现只有14.10能够顺利引导安装，但是蛋疼的是cuda toolkit7.5或6.5都只支持14.02或15.02，中间这个夹心饼干的14.10是没有对应cuda库的，欲哭无泪。。但是我想到先装14.10，然后升级到15.02好了。</p>
-<p>顺利装好14.10后，在终端运行<br><figure class="highlight stata"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo <span class="keyword">update</span>-manager -<span class="literal">d</span></span><br></pre></td></tr></table></figure></p>
+<p>顺利装好14.10后，在终端运行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo update-manager -d</span><br></pre></td></tr></table></figure></p>
 <p>弹出对话框按提示就能升级到15.04了。</p>
 <p>辛辛苦苦装完了15.04，重启，黑屏，显示器显示“无信号”，然后继续黑屏，又回到了无法开机的节奏。。。心中顿时千万头草泥马奔过。</p>
 <p>冷静之后，在网上搜到说要修改boot parameter，也就是要在开机时进到grub。</p>

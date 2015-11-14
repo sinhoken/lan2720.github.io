@@ -45,6 +45,7 @@
 <meta property="og:url" content="http://lan2720.github.io/2015/11/04/解决Intellij-Idea在linux下中文乱码问题/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
 <meta property="og:description" content="Intellij Idea是最好的Java IDE，Intellij Idea是最好的Java IDE，Intellij Idea是最好的Java IDE。。重要的事情说三遍">
+<meta property="og:updated_time" content="2015-11-04T02:23:27.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="解决Intellij Idea在linux下中文乱码问题">
 <meta name="twitter:description" content="Intellij Idea是最好的Java IDE，Intellij Idea是最好的Java IDE，Intellij Idea是最好的Java IDE。。重要的事情说三遍">
@@ -255,7 +256,7 @@
 <li>在<a href="http://www.myfontfree.com/microsoft-yahei-myfontfreecom66f594.htm" target="_blank" rel="external">这里</a>点download下载yahei字体的ttf</li>
 <li>在ubuntu 下可以执行下面操作安装该字体</li>
 </ul>
-<figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir <span class="regexp">/usr/</span>share<span class="regexp">/fonts/</span>truetype/yahei</span><br><span class="line">sudo cp yahei.ttf  <span class="regexp">/usr/</span>share<span class="regexp">/fonts/</span>truetype/yahei</span><br><span class="line">fc-cache -f -v</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo mkdir /usr/share/fonts/truetype/yahei&#10;sudo cp yahei.ttf  /usr/share/fonts/truetype/yahei&#10;fc-cache -f -v</span><br></pre></td></tr></table></figure>
 <p>这里的yahei.ttf是刚刚下载的文件的名字</p>
 <ul>
 <li>重启Intellij Idea，发现中文已经可以正常显示了！</li>

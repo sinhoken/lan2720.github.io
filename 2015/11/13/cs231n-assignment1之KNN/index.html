@@ -49,6 +49,7 @@
 <meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1exzkvxt3eoj20x0098wh5.jpg">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1exzkxp7vtyj20ap02s0sv.jpg">
 <meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fgw1exzl0nl3qvj205q01cjr7.jpg">
+<meta property="og:updated_time" content="2015-11-14T03:30:37.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n-assignment1之KNN">
 <meta name="twitter:description" content="cs213n的作业都那么有意义，╮(╯▽╰)╭">
@@ -264,7 +265,7 @@
 <p>因此现在dists不再是array了，是matrix类型。所以后面取的dists[i,:]也是matrix，shape=(1,50000)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">labels = self.y_train[np.argsort(dists[i,:])].flatten()</span><br><span class="line">closest_y = labels[:k]</span><br></pre></td></tr></table></figure></p>
 <p>如果这个地方没注意的话，<code>y_train[np.argsort(dists[i,:])]</code>中y_train是一个(50000,)的array，argsort得到的还是与dists[i,:]同型的(1,50000)matrix，最后列表索引取到的是(1,50000)的array！简直神奇。。<br>既然是(1,50000)的array就要进行<code>flatten</code>，变成(50000,0)的array，才能进行[:k]切片。否则，[:5]取到的还是整个(1,50000)的array。</p>
 <h3 id="坑2">坑2</h3><p>选出距离最小的k个train instances：<code>np.argsort(dists[i])</code>返回这一行从小到大排序的idx<br>得到了一组idx<strong>批量</strong>取出其lables：<code>y_lables[np.argsort(dists[i])]</code>索引可以是一组数，又长知识了。</p>
-<p>还有最后一个困难：<br>得到了k个lables，如何优雅的计算出最多的那个lable呢？<br><code>from collections import Counter</code>是个好帮手！<br><figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="prompt">&gt;&gt;</span>&gt; c = <span class="constant">Counter</span>(<span class="string">'abcdeabcdabcaba'</span>)  <span class="comment"># count elements from a string</span></span><br><span class="line"><span class="prompt">&gt;&gt;</span>&gt; c.most_common(<span class="number">3</span>)                <span class="comment"># three most common elements</span></span><br><span class="line">[(<span class="string">'a'</span>, <span class="number">5</span>), (<span class="string">'b'</span>, <span class="number">4</span>), (<span class="string">'c'</span>, <span class="number">3</span>)]</span><br></pre></td></tr></table></figure></p>
+<p>还有最后一个困难：<br>得到了k个lables，如何优雅的计算出最多的那个lable呢？<br><code>from collections import Counter</code>是个好帮手！<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#62;&#62;&#62; c = Counter(&#39;abcdeabcdabcaba&#39;)  # count elements from a string&#10;&#62;&#62;&#62; c.most_common(3)                # three most common elements&#10;[(&#39;a&#39;, 5), (&#39;b&#39;, 4), (&#39;c&#39;, 3)]</span><br></pre></td></tr></table></figure></p>
 <p>Counter能直接统计每个元素的个数，存成key value的形式，用<code>most_common(1)</code>函数取到最common的那个，也就是y_pred[i]</p>
 <h3 id="总结">总结</h3><p>至此所有的坑都踩完了，结论就是numpy一定要精通，有一些很神奇的操作，之后theano中也经常会涉及到。</p>
 <p>用KNN测量的两个instances之间的距离仅仅只考虑了图片背景和颜色信息，相同pixel上颜色相近的就认为两者距离更近，而没有考虑图片语义信息，因此效果不好。</p>
