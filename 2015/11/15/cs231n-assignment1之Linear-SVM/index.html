@@ -30,7 +30,7 @@
 
 
 
-  <meta name="keywords" content="算法," />
+  <meta name="keywords" content="cs231n," />
 
 
 
@@ -39,17 +39,24 @@
   <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
 
 
-<meta name="description" content="忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序。">
+<meta name="description" content="svm loss求导想了一整个晚上，烧脑烧脑。。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="排序代码分析之快速排序">
-<meta property="og:url" content="http://lan2720.github.io/2015/10/21/排序代码分析之快速排序/index.html">
+<meta property="og:title" content="cs231n-assignment1之Linear SVM">
+<meta property="og:url" content="http://lan2720.github.io/2015/11/15/cs231n-assignment1之Linear-SVM/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
-<meta property="og:description" content="忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序。">
-<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1ex92ujigaxj208o060dg0.jpg">
-<meta property="og:updated_time" content="2015-10-21T15:06:32.000Z">
+<meta property="og:description" content="svm loss求导想了一整个晚上，烧脑烧脑。。">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1ey0util5vrj20dx02cdg2.jpg">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fgw1ey0uv73nfcj209301d3yj.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1ey0vc0snmnj20rp02ygmg.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fgw1ey0util5vrj20dx02cdg2.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1ey1egiue6wj20ac01haa4.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1ey1hgo6xdfj20hd014dg0.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1ey1h0c82khj202f04qjra.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1ey1i3qypepj20c601ijrt.jpg">
+<meta property="og:updated_time" content="2015-11-15T04:15:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="排序代码分析之快速排序">
-<meta name="twitter:description" content="忍不住想总结一下这个被誉为20世纪科学和工程领域的十大算法之一的快速排序。">
+<meta name="twitter:title" content="cs231n-assignment1之Linear SVM">
+<meta name="twitter:description" content="svm loss求导想了一整个晚上，烧脑烧脑。。">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -59,7 +66,7 @@
   };
 </script>
 
-  <title> 排序代码分析之快速排序 | Hakuna Matata </title>
+  <title> cs231n-assignment1之Linear SVM | Hakuna Matata </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -208,7 +215,7 @@
           
           
             
-              排序代码分析之快速排序
+              cs231n-assignment1之Linear SVM
             
           
         </h1>
@@ -217,8 +224,8 @@
       <div class="post-meta">
         <span class="post-time">
           发表于
-          <time itemprop="dateCreated" datetime="2015-10-21T22:46:51+08:00" content="2015-10-21">
-            2015-10-21
+          <time itemprop="dateCreated" datetime="2015-11-15T12:12:33+08:00" content="2015-11-15">
+            2015-11-15
           </time>
         </span>
 
@@ -228,8 +235,8 @@
           
             <span class="post-comments-count">
               &nbsp; | &nbsp;
-              <a href="/2015/10/21/排序代码分析之快速排序/#comments" itemprop="discussionUrl">
-                <span class="post-comments-count ds-thread-count" data-thread-key="2015/10/21/排序代码分析之快速排序/" itemprop="commentsCount"></span>
+              <a href="/2015/11/15/cs231n-assignment1之Linear-SVM/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2015/11/15/cs231n-assignment1之Linear-SVM/" itemprop="commentsCount"></span>
               </a>
             </span>
           
@@ -243,30 +250,39 @@
       
 
       
-        <span itemprop="articleBody"><p>快速排序的时间复杂度是$NlgN$，是几种排序算法中效率最高的，通常是用于排序的最佳选择，因此看到<a href="http://algs4.cs.princeton.edu/23quicksort/" target="_blank" rel="external">算法-第2.3节</a>时，也忍不住想总结一下快速排序了。</p>
-<h2 id="基本思想">基本思想</h2><p>上一篇博客讲到了归并排序，其特点是先将数组递归的不断切分，切到不能再切，然后再merge到整个数组；而快速排序正好互补，它先将整个数组进行一些处理，选取出切分元素，再进行切分，再对子数组进行处理，同样选取出切分元素，再切分，如此循环。<br>所以根据归并排序中所讲到的，快速排序中sort()函数同样没有实质性的“干活”，只是安排了partition()的正确顺序，然后partition()真正的改变原数组中元素的位置。</p>
-<h2 id="sort()函数">sort()函数</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a)</span> </span>&#123;</span><br><span class="line">    StdRandom.shuffle(a);</span><br><span class="line">    sort(a, <span class="number">0</span>, a.length - <span class="number">1</span>);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// quicksort the subarray from a[lo] to a[hi]</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (hi &lt;= lo) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> j = partition(a, lo, hi);</span><br><span class="line">    sort(a, lo, j-<span class="number">1</span>);</span><br><span class="line">    sort(a, j+<span class="number">1</span>, hi);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a, lo, hi)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>快排的sort()和归并排序的代码类似，一个对外的public sort()和一个内部实现排序的sort()。同样在partition之后的<code>hi &lt;= lo</code>（数组只有一个元素）时，return不再切分。然后记录下切分元素的位置j，最后分别对a[j]左边和右边的子数组再sort()。</p>
-<h2 id="partition()函数">partition()函数</h2><p>切分的策略有很多，一般就选取a[lo]作为<em>切分元素</em><br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// partition the subarray a[lo..hi] so that a[lo..j-1] &lt;= a[j] &lt;= a[j+1..hi]</span></span><br><span class="line"><span class="comment">// and return the index j.</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">partition</span><span class="params">(Comparable[] a, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i = lo;</span><br><span class="line">    <span class="keyword">int</span> j = hi + <span class="number">1</span>;</span><br><span class="line">    Comparable v = a[lo];</span><br><span class="line">    <span class="keyword">while</span> (<span class="keyword">true</span>) &#123; </span><br><span class="line"></span><br><span class="line">        <span class="comment">// find item on lo to swap</span></span><br><span class="line">        <span class="keyword">while</span> (less(a[++i], v))</span><br><span class="line">            <span class="keyword">if</span> (i == hi) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// find item on hi to swap</span></span><br><span class="line">        <span class="keyword">while</span> (less(v, a[--j]))</span><br><span class="line">            <span class="keyword">if</span> (j == lo) <span class="keyword">break</span>;      <span class="comment">// redundant since a[lo] acts as sentinel</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// check if pointers cross</span></span><br><span class="line">        <span class="keyword">if</span> (i &gt;= j) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">        exch(a, i, j);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// put partitioning item v at a[j]</span></span><br><span class="line">    exch(a, lo, j);</span><br><span class="line"></span><br><span class="line">    <span class="comment">// now, a[lo .. j-1] &lt;= a[j] &lt;= a[j+1 .. hi]</span></span><br><span class="line">    <span class="keyword">return</span> j;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>重点来了，可以看到这段代码中有三个break语句，三个条件一旦满足其一，就会跳出while循环，所以可以称为<strong>终止条件</strong>，还不满足终止条件的情况下，说明还没有找到切分元素的合适位置，则将继续进行以下三个操作</p>
+        <span itemprop="articleBody"><h2 id="输入数据处理">输入数据处理</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Subsample the data for more efficient code execution in this exercise.</span></span><br><span class="line">num_training = <span class="number">49000</span></span><br><span class="line">num_validation = <span class="number">1000</span></span><br><span class="line">num_test = <span class="number">1000</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Our validation set will be num_validation points from the original</span></span><br><span class="line"><span class="comment"># training set.</span></span><br><span class="line">mask = range(num_training, num_training + num_validation)</span><br><span class="line">X_val = X_train[mask]</span><br><span class="line">y_val = y_train[mask]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Our training set will be the first num_train points from the original</span></span><br><span class="line"><span class="comment"># training set.</span></span><br><span class="line">mask = range(num_training)</span><br><span class="line">X_train = X_train[mask]</span><br><span class="line">y_train = y_train[mask]</span><br><span class="line"></span><br><span class="line"><span class="comment"># We use the first num_test points of the original test set as our</span></span><br><span class="line"><span class="comment"># test set.</span></span><br><span class="line">mask = range(num_test)</span><br><span class="line">X_test = X_test[mask]</span><br><span class="line">y_test = y_test[mask]</span><br></pre></td></tr></table></figure>
+<p>将数据分成validation dataset/training dataset/test dataset<br>所以validation dataset的维度为(1000, 32, 32, 3)，train dataset(49000, 32, 32, 3)<br>接下来需要将数据展开成D-dimensions，即(49000, 3072)<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Preprocessing: reshape the image data into rows</span></span><br><span class="line">X_train = np.reshape(X_train, (X_train.shape[<span class="number">0</span>], -<span class="number">1</span>))</span><br><span class="line">X_val = np.reshape(X_val, (X_val.shape[<span class="number">0</span>], -<span class="number">1</span>))</span><br><span class="line">X_test = np.reshape(X_test, (X_test.shape[<span class="number">0</span>], -<span class="number">1</span>))</span><br></pre></td></tr></table></figure></p>
+<p>-1：指代了X_train.shape[0]之后的所有的维度<br>转化后：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Training data shape:  (<span class="number">49000</span>, <span class="number">3072</span>)</span><br><span class="line">Validation data shape:  (<span class="number">1000</span>, <span class="number">3072</span>)</span><br><span class="line">Test data shape:  (<span class="number">1000</span>, <span class="number">3072</span>)</span><br></pre></td></tr></table></figure></p>
+<p>但是我们根据公式<img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ey0util5vrj20dx02cdg2.jpg" alt=""><br>为了便于矩阵操作，需要将<img src="http://ww1.sinaimg.cn/large/901f9a6fgw1ey0uv73nfcj209301d3yj.jpg" alt="">中的bias项整合到$W$中，且$X$中增加一项$x_0=1$，因此Training data等的维度应该变成(:, 3073)，使用<code>np.hstack</code>水平堆叠一个全1列。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># third: append the bias dimension of ones (i.e. bias trick) so that our SVM</span></span><br><span class="line"><span class="comment"># only has to worry about optimizing a single weight matrix W.</span></span><br><span class="line"><span class="comment"># Also, lets transform both data matrices so that each image is a column.</span></span><br><span class="line">X_train = np.hstack([X_train, np.ones((X_train.shape[<span class="number">0</span>], <span class="number">1</span>))]).T</span><br><span class="line">X_val = np.hstack([X_val, np.ones((X_val.shape[<span class="number">0</span>], <span class="number">1</span>))]).T</span><br><span class="line">X_test = np.hstack([X_test, np.ones((X_test.shape[<span class="number">0</span>], <span class="number">1</span>))]).T</span><br></pre></td></tr></table></figure></p>
+<p>并且将X_train等进行转置，使得每一<code>列</code>是一个instance（转置前每一行是一个instance，共49000行）<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">print</span> X_train.shape, X_val.shape, X_test.shape</span><br><span class="line"><span class="prompt">&gt;&gt;&gt; </span>(<span class="number">3073</span>, <span class="number">49000</span>) (<span class="number">3073</span>, <span class="number">1000</span>) (<span class="number">3073</span>, <span class="number">1000</span>)</span><br></pre></td></tr></table></figure></p>
+<h2 id="计算Loss">计算Loss</h2><p>用SVM loss的公式直接求取<br><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ey0vc0snmnj20rp02ygmg.jpg" alt=""><br>$W$的维度是(10, 3073)，这也就是上面为什么要将$X_train$转置成(3073,:)的原因了。(为了能够点乘)<br>$y$的维度是(49000,)<br>用代码实现的时候分这么几个步骤：</p>
 <ul>
-<li>保证&gt;=v的数全都处于v的右边</li>
-<li>保证&lt;=v的数全都处于v的左边</li>
-<li>i，j不断向中间移动，直到相遇</li>
+<li>求出$f(x_i;W)_j$:比较简单，scores=$W.dot(X_train)$得到的shape=(10,49000)</li>
+<li>从$f(x_i;W)_j$中取出每个instances的correct_score：这个地方我想了很久，以前觉得数组的索引只能是数，还是我太naive，实际上是可以传入数组去批量索引的。<code>correct_scores = scores[y, np.arange(num_train)]</code>，得到的是(49000,)的array</li>
+<li>margins = scores - correct_scores + 1(delta)</li>
+<li>只计算$j\neq y_i$的值，所以margins[y, np.arange(num_train)] = 0</li>
+<li>求element-wise的最大值：margins = np.maximum(np.zeros(num_class, num_train), margins)</li>
+<li>对全部的margins求和：双求和符号表示对行列的所有元素都求和，也就是loss=np.sum(margins)</li>
+<li>对loss平均：loss /= num_train</li>
+<li>loss += 0.5*reg*np.sum(W*W)(对应位置的元素平方)</li>
 </ul>
-<p>当i，j相遇的时候，说明此时a[j]右边的数都大于v，a[j]左边的数都小于v了，因此跳出索引移动的while循环，进行最后一次移动——将a[lo]（也就是v）和a[j]互换位置。最后，就得到了一个partition后的数组a[lo .. j-1] &lt;= a[j] &lt;= a[j+1 .. hi]，partition的位置为j。</p>
-<h2 id="处理含有大量重复值的数组">处理含有大量重复值的数组</h2><p>实际应用中经常会出现含有大量重复元素的数组，例如我们可能需要将大量人员资料按照生日排序，或是按照性别区别开来。在这些情况下，我们实现的快速排序的性能还有很大的提升空间。例如，一个元素全部重复的子数组就不需要继续排序了，但我们的算法还会继续将这些数组切分成更小的数组。<br>一个简单的想法是将数组切分成三部分：分别是小于/等于/大于切分元素的子数组。<br>以下介绍“三向切分的快速排序”代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// quicksort the subarray a[lo .. hi] using 3-way partitioning</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">sort</span><span class="params">(Comparable[] a, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span> </span>&#123; </span><br><span class="line">    <span class="keyword">if</span> (hi &lt;= lo) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">int</span> lt = lo, gt = hi;</span><br><span class="line">    Comparable v = a[lo];</span><br><span class="line">    <span class="keyword">int</span> i = lo;</span><br><span class="line">    <span class="keyword">while</span> (i &lt;= gt) &#123;</span><br><span class="line">        <span class="keyword">int</span> cmp = a[i].compareTo(v);</span><br><span class="line">        <span class="keyword">if</span>      (cmp &lt; <span class="number">0</span>) exch(a, lt++, i++);</span><br><span class="line">        <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) exch(a, i, gt--);</span><br><span class="line">        <span class="keyword">else</span>              i++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// a[lo..lt-1] &lt; v = a[lt..gt] &lt; a[gt+1..hi]. </span></span><br><span class="line">    sort(a, lo, lt-<span class="number">1</span>);</span><br><span class="line">    sort(a, gt+<span class="number">1</span>, hi);</span><br><span class="line">    <span class="function"><span class="keyword">assert</span> <span class="title">isSorted</span><span class="params">(a, lo, hi)</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>整个代码维护了三个指针，</p>
+<h2 id="margins矩阵对$W$求导">margins矩阵对$W$求导</h2><p><img src="http://ww3.sinaimg.cn/large/901f9a6fgw1ey0util5vrj20dx02cdg2.jpg" alt="">【公式1】，这个公式对$w$求导</p>
+<blockquote>
+<p>最后得到的$dW$是(10, 3073)，那么对于每个类$j \neq y_i$，$dW_j += x_i$(3073,)，同时对$j=y_i$，$dW_j -=x_i$</p>
+</blockquote>
 <ul>
-<li>lt：使得a[lo..lt-1]中的元素都<strong>小于</strong>v</li>
-<li>gt：使得a[gt+1..hi]中的元素都大于v</li>
-<li>i：使得a[lt..i-1]中的元素都等于v</li>
+<li>通过scores(10, 49000)将score&gt;0的全记为1，得到binary，意思是$max(0, w<em>j^Tx_i-w^T</em>{y<em>i}x_i+\Delta)$取得是$w_j^Tx_i-w^T</em>{y_i}x_i+\Delta$，这样$dW$才不为0需要计算</li>
+<li>计入计算的全为1，就能知道减去多少个$w^T_{y_i}x_i$，<code>col_sum = np.sum(binary, axis = 0)</code>，为(49000,)</li>
+<li>批量赋值每一个正确的分类需要减去的$x_i$的个数：binary[y, np.arange(num_train)] = -col_sum</li>
+<li>binary现在是(10,49000)，$X$是(3073,49000)，dot(binary, X.T)即可得到$dW$</li>
 </ul>
-<p>最后a[i..gt]中的元素还未确定，也就是说当i == gt时，所有的元素都确定了位置，终止。<br>选定第一个元素作为切分元素：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Comparable v = a[lo];</span><br></pre></td></tr></table></figure></p>
-<p>开始循环调整元素位置：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (i &lt;= gt) &#123; <span class="comment">// 终止条件：i&gt;gt</span></span><br><span class="line">    <span class="keyword">int</span> cmp = a[i].compareTo(v);</span><br><span class="line">    <span class="keyword">if</span>      (cmp &lt; <span class="number">0</span>) exch(a, lt++, i++);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (cmp &gt; <span class="number">0</span>) exch(a, i, gt--);</span><br><span class="line">    <span class="keyword">else</span>              i++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1ex92ujigaxj208o060dg0.jpg" alt=""></p>
-<p>i从lo开始，a[i]如果比v小，就将a[i]和a[lt]交换位置。所以，<v的元素从a[lo..lt-1]变到了a[lo..lt]，数量+1，lt++，原本a[lt]位置上的元素是=v的，交换到a[i]之后，还是和=1的元素相连，因此没有问题。 a[i]如果比v大，就将a[i]和a[gt]交换，那么="">v的元素从a[gt+1..hi]变到了a[gt..hi]，数量+1，但是gt- -，原本a[gt]位置的元素处于没有被安排的状态，因此交换到a[i]之后，i不能++，因为这个新来的数接下来要被安排。<br>a[i]如果=v，a[i]还是处于相等的那一堆元素中，i继续++，i=gt是最后一个元素，直到i&gt;gt时，才算每个元素都被安排(比较)过，while终止。<br>退出while后，相当于原数组a完成了处理，找到了切分元素，且切分成了三部分，所以接下来对小于v和大于v的两个子数组再进行sort()</v的元素从a[lo..lt-1]变到了a[lo..lt]，数量+1，lt++，原本a[lt]位置上的元素是=v的，交换到a[i]之后，还是和=1的元素相连，因此没有问题。></p>
-<p>三向切分的快速排序在有大量重复元素存在的情况下，比标准的快速排序效率高得多，将排序时间从线性对数级降到了线性级别。这也使得三向切分的快速排序成为了排序库函数的最佳算法选择——因为现实生活中包含大量重复元素的数组排序很常见。</p>
+<p><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1ey1egiue6wj20ac01haa4.jpg" alt="">【公式2】<br>利用这个公式计算出了$margins<em>{ji}$，组成了(10, train_num)的margins数组，描述了每个instances在每个class上的“unhappy”程度。loss也就是对这个矩阵求和再平均得到的。<br>dW初始化全0，在margins数组中，为0的位置求导也为0不去管它，对&gt;0的位置比如margins[j, i](既然margins&gt;0，j必然不是正确的分类，correct的分类在code中已经将其margins=0)，由公式可知$margins[j,i] = scores[j,i]-scores[correct,i]+delta=w_j^Tx_i-w^T</em>{y<em>i}x_i+\Delta$(j表示class，i表示instance)，那么$margins[j,i]$对$w$求导就同时对两个$w$求导，一个是$w_j$，一个是$w</em>{correct}$，也就是同时修改了dW中的两个位置：$dW<em>j=x_i$，$dW</em>{correct}=-x_{i}$(3073,)。且看公式1，是对每一个符合要求的class的unhappy程度求和得到loss的过程，相当于<img src="http://ww2.sinaimg.cn/large/901f9a6fjw1ey1hgo6xdfj20hd014dg0.jpg" alt="">（假设correct=1，省略delta没写出来）每个instance的$Loss_i$对$w$求导后，得到如下图所示的数组:<br><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1ey1h0c82khj202f04qjra.jpg" alt=""><br>虽然表示成vector的形式，但是实际上$x_i$都是3073维的，所以这个数组是(10,3073)的。另外，$w$作用了全部的training data，所以需要累加每个$x_i$，最后再/num_train来average，也就得到了$dW$<br>真艰难，这个过程我想了一晚上，终于捋顺了。还差一步，用程序语言表达出来才行：<br>1.将margins中&gt;0的位置全部找出来赋值为1，也就是这些位置只+1$x_i$<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">binary = margins <span class="comment"># margins.shape = (10,num_train)</span></span><br><span class="line">binary[margins&gt;<span class="number">0</span>] = <span class="number">1</span></span><br></pre></td></tr></table></figure></p>
+<p>2.对每一列，也就是每一个instance，统计有多少个1，也就是确定减去多少个$x_{correct}$<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">col_sum = np.sum(binary, axis = 0) # col_sum.shape = (num_train,)</span><br></pre></td></tr></table></figure></p>
+<p>3.给binary中$x<em>{correct}$部分赋值-col_sum，即减去$x</em>{correct}$的个数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">binary[y, np.arange(num_train)] = -col_sum # 0 --&#62; -col_sum</span><br></pre></td></tr></table></figure></p>
+<p>4.binary和x点乘<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dW = binary.dot(X.T) # X.T.shape = (num_train, 3073)</span><br></pre></td></tr></table></figure></p>
+<p>5.dW累加了所有的instance，最后取平均<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dW /= num_train</span><br></pre></td></tr></table></figure></p>
+<h2 id="测试">测试</h2><p>测了一下速度，矩阵运算快了3倍，略屌。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># Complete the implementation of svm_loss_vectorized, and compute the gradient&#10;# of the loss function in a vectorized way.&#10;&#10;# The naive implementation and the vectorized implementation should match, but&#10;# the vectorized version should still be much faster.&#10;tic = time.time()&#10;_, grad_naive = svm_loss_naive(W, X_train, y_train, 0.00001)&#10;toc = time.time()&#10;print &#39;Naive loss and gradient: computed in %fs&#39; % (toc - tic)&#10;&#10;tic = time.time()&#10;_, grad_vectorized = svm_loss_vectorized(W, X_train, y_train, 0.00001)&#10;toc = time.time()&#10;print &#39;Vectorized loss and gradient: computed in %fs&#39; % (toc - tic)&#10;&#10;# The loss is a single number, so it is easy to compare the values computed&#10;# by the two implementations. The gradient on the other hand is a matrix, so&#10;# we use the Frobenius norm to compare them.&#10;difference = np.linalg.norm(grad_naive - grad_vectorized, ord=&#39;fro&#39;)&#10;print &#39;difference: %f&#39; % difference</span><br></pre></td></tr></table></figure></p>
+<p><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1ey1i3qypepj20c601ijrt.jpg" alt=""></p>
 </span>
       
     </div>
@@ -275,7 +291,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法/" rel="tag">#算法</a>
+            <a href="/tags/cs231n/" rel="tag">#cs231n</a>
           
         </div>
       
@@ -284,13 +300,11 @@
         <div class="post-nav">
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/23/排序代码分析之堆排序/" rel="prev">排序代码分析之堆排序</a>
-            
           </div>
 
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/10/21/排序代码分析之归并排序/" rel="next">排序代码分析之归并排序</a>
+              <a href="/2015/11/13/cs231n-assignment1之KNN/" rel="next">cs231n-assignment1之KNN</a>
             
           </div>
         </div>
@@ -315,8 +329,8 @@
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/10/21/排序代码分析之快速排序/"
-                   data-title="排序代码分析之快速排序" data-url="http://lan2720.github.io/2015/10/21/排序代码分析之快速排序/">
+              <div class="ds-thread" data-thread-key="2015/11/15/cs231n-assignment1之Linear-SVM/"
+                   data-title="cs231n-assignment1之Linear SVM" data-url="http://lan2720.github.io/2015/11/15/cs231n-assignment1之Linear-SVM/">
               </div>
             
           </div>
@@ -420,7 +434,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本思想"><span class="nav-number">1.</span> <span class="nav-text">基本思想</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sort()函数"><span class="nav-number">2.</span> <span class="nav-text">sort()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#partition()函数"><span class="nav-number">3.</span> <span class="nav-text">partition()函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#处理含有大量重复值的数组"><span class="nav-number">4.</span> <span class="nav-text">处理含有大量重复值的数组</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#输入数据处理"><span class="nav-number">1.</span> <span class="nav-text">输入数据处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算Loss"><span class="nav-number">2.</span> <span class="nav-text">计算Loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#margins矩阵对$W$求导"><span class="nav-number">3.</span> <span class="nav-text">margins矩阵对$W$求导</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#测试"><span class="nav-number">4.</span> <span class="nav-text">测试</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
