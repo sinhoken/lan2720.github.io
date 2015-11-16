@@ -45,7 +45,7 @@
 <meta property="og:url" content="http://lan2720.github.io/2015/11/16/cs231n-assignment1之Softmax/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
 <meta property="og:description" content="当矩阵遇上了求导，一不小心就会出错，可见theano这样的自动求导神器为什么会被推崇吧，着实有其必要性。">
-<meta property="og:updated_time" content="2015-11-16T02:39:19.000Z">
+<meta property="og:updated_time" content="2015-11-16T02:51:52.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n-assignment1之Softmax">
 <meta name="twitter:description" content="当矩阵遇上了求导，一不小心就会出错，可见theano这样的自动求导神器为什么会被推崇吧，着实有其必要性。">
@@ -246,9 +246,10 @@
 <h2 id="关于softmax">关于softmax</h2><p>请参看<a href="http://cs231n.github.io/linear-classify/#softmax" target="_blank" rel="external">cs231n教程</a>，Karpathy真的是个小天才，对问题看的很透彻，讲解起来也能直点要害，对理解softmax的本质很有帮助。<br>主要点是这么三个：</p>
 <ul>
 <li>还是像前面一样，我们将$W\cdot X$看成是每个instance在每个类上的scores。在后面的神经网络中对应神经元的输入$Z$</li>
-<li>有了每个instances在每一类上的scores自然想到需要衡量正确的分类和scores，就有了loss function。Softmax classifier的loss function是cross entropy loss：$L_i=-log\left(\frac {e^{f_c}}{\sum_j e^{f_j}}\right)$</li>
+<li>有了每个instances在每一类上的scores自然想到需要衡量正确的分类和scores，就有了loss function。Softmax classifier的loss function是cross entropy loss：$L_i=-log\left(\frac {e^{f_c}}{\sum_j e^{f_j}}\right)$【公式1】</li>
 <li>对于神经元来说，根据由上式有，输入$Z$，输出是$f_j(Z)=\frac {e^{z_j}}{\sum_k e^{z_k}}$，然后将输出与correct class比较得到loss</li>
 </ul>
+<h2 id="Avoid_Numeric_Instability">Avoid Numeric Instability</h2><p>上面谈到的$scores = W\cdot X$我们不能确定scores的数值会不会出现特别大的情况，如果特别大的话，$e^{y_c}$和$\sum_j e^{f_j}$就会特别大，将会出现numerical unstable的情况而无法计算。因此一般要对scores进行<em>normalization</em>：<code>scores -= np.max(scores)</code>每一个score都减去最大的那个score，使得所有的数值都&lt;=0且数值不会像之前那么大。</p>
 <h2 id="论踩坑">论踩坑</h2></span>
       
     </div>
@@ -400,7 +401,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于softmax"><span class="nav-number">1.</span> <span class="nav-text">关于softmax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#论踩坑"><span class="nav-number">2.</span> <span class="nav-text">论踩坑</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#关于softmax"><span class="nav-number">1.</span> <span class="nav-text">关于softmax</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Avoid_Numeric_Instability"><span class="nav-number">2.</span> <span class="nav-text">Avoid Numeric Instability</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#论踩坑"><span class="nav-number">3.</span> <span class="nav-text">论踩坑</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
