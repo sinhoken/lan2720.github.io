@@ -45,7 +45,7 @@
 <meta property="og:url" content="http://lan2720.github.io/2015/11/16/cs231n-assignment1之Softmax/index.html">
 <meta property="og:site_name" content="Hakuna Matata">
 <meta property="og:description" content="当矩阵遇上了求导，一不小心就会出错，可见theano这样的自动求导神器为什么会被推崇吧，着实有其必要性。">
-<meta property="og:updated_time" content="2015-11-16T02:35:10.000Z">
+<meta property="og:updated_time" content="2015-11-16T02:37:06.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cs231n-assignment1之Softmax">
 <meta name="twitter:description" content="当矩阵遇上了求导，一不小心就会出错，可见theano这样的自动求导神器为什么会被推崇吧，着实有其必要性。">
@@ -246,7 +246,7 @@
 <h2 id="关于softmax">关于softmax</h2><p>请参看<a href="http://cs231n.github.io/linear-classify/#softmax" target="_blank" rel="external">cs231n教程</a>，Karpathy真的是个小天才，对问题看的很透彻，讲解起来也能直点要害，对理解softmax的本质很有帮助。<br>主要点是这么三个：</p>
 <ul>
 <li>还是像前面一样，我们将$W\cdot X$看成是每个instance在每个类上的scores。在后面的神经网络中对应神经元的输入$Z$</li>
-<li>有了每个instances在每一类上的scores自然想到需要衡量正确的分类和scores，就有了loss function。Softmax classifier的loss function是cross entropy loss：$L_i=-log\left(\frac {e^{f_i}}{\sum_j e^{f_j}}\right)$</li>
+<li>有了每个instances在每一类上的scores自然想到需要衡量正确的分类和scores，就有了loss function。Softmax classifier的loss function是cross entropy loss：$L<em>i=-log\left(\frac {e^{f</em>{yi}}}{\sum_j e^{f_j}}\right)$</li>
 <li>对于神经元来说，根据由上式有，输入$Z$，输出是$f_j(Z)=\frac {e^{z_j}}{\sum_k e^{z_k}}$，然后将输出与correct class比较得到loss</li>
 </ul>
 <h2 id="论踩坑">论踩坑</h2></span>
