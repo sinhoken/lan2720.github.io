@@ -1,0 +1,723 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。" />
+
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="二叉树问题在编程面试中被公认为最难的几种题型之一，和序列化组合在一起时确实挺值得思考，个人的一点风趣讲解希望帮助到更多的人。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉树的序列化和反序列化">
+<meta property="og:url" content="http://lan2720.github.io/2016/02/19/二叉树的序列化和反序列化/index.html">
+<meta property="og:site_name" content="Hakuna Matata">
+<meta property="og:description" content="二叉树问题在编程面试中被公认为最难的几种题型之一，和序列化组合在一起时确实挺值得思考，个人的一点风趣讲解希望帮助到更多的人。">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1f14q2h1zipj20b008m74l.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f14smcn41kj20za0biq6u.jpg">
+<meta property="og:updated_time" content="2016-02-19T10:03:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="二叉树的序列化和反序列化">
+<meta name="twitter:description" content="二叉树问题在编程面试中被公认为最难的几种题型之一，和序列化组合在一起时确实挺值得思考，个人的一点风趣讲解希望帮助到更多的人。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> 二叉树的序列化和反序列化 | Hakuna Matata </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9df4ceec6aad0e521753edbb3b445837";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Hakuna Matata</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-深度学习资源">
+          <a href="/深度学习资源" rel="section">
+            <i class="menu-item-icon icon-next-深度学习资源"></i> <br />
+            深度学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-机器学习资源">
+          <a href="/机器学习资源" rel="section">
+            <i class="menu-item-icon icon-next-机器学习资源"></i> <br />
+            机器学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-其他资源">
+          <a href="/其他资源" rel="section">
+            <i class="menu-item-icon icon-next-其他资源"></i> <br />
+            其他资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-常用工具">
+          <a href="/常用工具" rel="section">
+            <i class="menu-item-icon icon-next-常用工具"></i> <br />
+            常用工具
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              二叉树的序列化和反序列化
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-02-19T17:57:38+08:00" content="2016-02-19">
+            2016-02-19
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/02/19/二叉树的序列化和反序列化/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/02/19/二叉树的序列化和反序列化/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="背景">背景</h2><p>序列化和反序列化在客户端-服务器端或者进程间通信时经常被用到，说白了也就是将二叉树这样一个实例结构按一个约定的规则记录成文件（字符串），然后就能进行传输了。</p>
+<p>所以搞清楚二叉树的序列化和反序列化问题是很有实际意义的，在工作中也可能用到。</p>
+<p>二叉树问题在编程面试中被公认为最难的几种题型之一，它很容易和其他数据结构结合在一起考察，比如栈和队列，BFS和DFS，递归等。说到递归，程序猿经常就容易在边界确定时犯错，甚至出现整个递归函数想不清楚等问题，面对递归问题无从下手。因此二叉树问题要多写多看反复思考，这个过程也是对思维严谨度和代码实现能力的一种提升。</p>
+<h2 id="两种方法">两种方法</h2><p>一种是根据二叉树的深度优先遍历(DFS)进行序列化和反序列化过程，里面又涉及到先序遍历、中序遍历和后序遍历三种。<br>这里以<strong>先序遍历</strong>为例（后面两种是相似的）<br>另一种是根据二叉树的广度优先遍历(BFS)，也称为<strong>层级遍历</strong>。<br>用什么方法进行序列化就用什么方法进行反序列化，要对应起来才能从序列化字符串中重建出正确的二叉树。</p>
+<h2 id="法1：先序遍历对二叉树进行序列化">法1：先序遍历对二叉树进行序列化</h2><p>有时间再详述。</p>
+<h2 id="法1：先序遍历对二叉树进行反序列化">法1：先序遍历对二叉树进行反序列化</h2><p>有时间再详述。</p>
+<h2 id="法2：层遍历对二叉树进行序列化">法2：层遍历对二叉树进行序列化</h2><p>有时间再详述。</p>
+<h2 id="法2：层遍历对二叉树进行反序列化">法2：层遍历对二叉树进行反序列化</h2><p>重点来了。<br>这里有一个通过层遍历序列化得到的字符串levelStr，规则就是遇到节点是null的话打印#!，不空则打印节点值+”!”。</p>
+<blockquote>
+<p>3!5!2!1!#!#!4!#!#!#!#!</p>
+</blockquote>
+<p>需要构建出一个像这样的二叉树<br><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1f14q2h1zipj20b008m74l.jpg" alt=""><br>java中的String对象是不能提取每一个数字的，因此转成字符串数组<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String[] values = levelStr.split(<span class="string">"!"</span>);</span><br><span class="line">values = [<span class="string">"3"</span>, <span class="string">"5"</span>, <span class="string">"2"</span>, <span class="string">"1"</span>, <span class="string">"#"</span>, <span class="string">"#"</span>, <span class="string">"4"</span>, <span class="string">"#"</span>, <span class="string">"#"</span>, <span class="string">"#"</span>, <span class="string">"#"</span>];</span><br></pre></td></tr></table></figure></p>
+<h3 id="如何建立正确的思路">如何建立正确的思路</h3><p>对照这个图，再仔细看看values，来想一下构造过程。<br>首先，构造整棵树的根节点3，也就用到了values[0]。然后看values数组中3后面紧跟的两位，发现它们都不是“#”，因此依次构造左节点5和右节点2。<br>这个时候发现，需要再次回到节点5，构造节点5的孩子了，但是我们现在在节点2，如何回到节点5呢？因此我们意识到，需要把每一层构造过的节点保存下来，到构造下一层的节点时还需要用这些构造过的节点，才能找到它们的孩子！而且是先构造的节点先保存，在下一层开始时要最先使用，后构造的节点后保存，想到了什么？队列！（先进先出）<br>Great，很自然的想到每一层构造出的节点都要加入到一个queue中，构造下一层的时候，我们只需要依次从queue中拿出一个个父节点，就能继续构造它们的子节点了！<br>而且，对于节点5的右孩子，是空，显然这个空就没有后续的任何节点了，我们的queue中保存的是下一层还有孩子的节点（队列方便了下一层节点的构造），所以空节点不入队。<br>一开始，我们考虑第一层构造出的节点，也就是根节点values[0]，构造完了就将它放入队列中，方便第二层节点的构造。<br>想到这里，就写出了如下代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定义节点类</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">int</span> val;</span><br><span class="line">    <span class="keyword">public</span> TreeNode left = <span class="keyword">null</span>;</span><br><span class="line">    <span class="keyword">public</span> TreeNode right = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(<span class="keyword">int</span> value)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.val = value;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">reconByLevelString</span><span class="params">(String levelStr)</span></span>&#123;</span><br><span class="line">    String[] values = bfsStr.split(<span class="string">"!"</span>);</span><br><span class="line">    Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">    TreeNode head = <span class="keyword">new</span> TreeNode(Integer.valueOf(values[<span class="number">0</span>]));</span><br><span class="line">    queue.offer(head);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>看着上面这段代码我们想一个极端的边界情况，那就是<code>levelStr = &quot;#!&quot;</code>（整棵树是null），那么values[0]=”#”，第4行就会报错，因为这个字符串根本就找不到对应的数字。不仅是这种头结点的情况，values数组中还存在很多”#”，如果每个都这样不假思索的构造就会报出很多错，怎么办呢？<br>构造节点前，判断一下values[i]是不是等于”#”不就好了？<br>没错，因此代码修改成下面这样：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">reconByLevelString</span><span class="params">(String levelStr)</span></span>&#123;</span><br><span class="line">        String[] values = bfsStr.split(<span class="string">"!"</span>);</span><br><span class="line">        Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">if</span>(values[<span class="number">0</span>].equals(<span class="string">"#"</span>))&#123;</span><br><span class="line">            TreeNode head  = <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            TreeNode head = <span class="keyword">new</span> TreeNode(Integer.valueOf(values[<span class="number">0</span>]));</span><br><span class="line">        &#125;</span><br><span class="line">        queue.offer(head);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样改之后确实没有问题了，但是你想，刚才讲过values数组中的每一个str都需要构造出对应的节点，如果每个都这么判断程序就出现大量的冗余代码，因此，为了避免代码重复，我们将节点的构造过程封装在另一个函数中，每次只需要调用那个函数就能轻松的判断并构造出正确的节点。再者，既然values中的每一个节点都需要构造，就应该定义一个变量index来索引values中当前构造的节点的位置，构造下一个节点的时候只需要index++就行了，方便！<br>根据这个思路，再次修改代码：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">reconByLevelString</span><span class="params">(String levelStr)</span></span>&#123;</span><br><span class="line">        String[] values = bfsStr.split(<span class="string">"!"</span>);</span><br><span class="line">        Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">        TreeNode head = generateNodeByStr(values[index++]);</span><br><span class="line">        <span class="keyword">if</span> (head != <span class="keyword">null</span>)&#123; <span class="comment">// 队列中只加入非空节点</span></span><br><span class="line">            queue.offer(head);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 构造新节点时的判断函数，返回构造好的新节点</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">generateNodeByStr</span><span class="params">(String str)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(str.equals(<span class="string">"#"</span>))&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> TreeNode(Integer.valueOf(str);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这样一来，代码的思路更加清晰，结构也合理多了，每一行都有理有据，别人问你为什么这么写而不那样写的时候能理直气壮的说出理由！再回头看第一段代码时，感觉那时的思路简直就是胡思乱想。</p>
+<h3 id="走上正路后的继续思考">走上正路后的继续思考</h3><p>我们利用values数组构建了整棵树的第一个节点，也就是根节点，然后像我们之前想的那样，将这个节点放入队列中，为了构造第二层节点做准备。<br>现在，我们就要开始构造第二层、第三层…节点了。<br>怎么做呢？既然我们将之前构造过的节点放入队列是为了构造下一层，当构造下一层的时候，我们首先要做的事就是从队列中取出我们要的父节点！<br>因此，怎么想就怎么写代码<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">TreeNode root = <span class="keyword">null</span>;</span><br><span class="line"><span class="keyword">while</span>(!queue.isEmpty())&#123;</span><br><span class="line">    root = queue.poll(); <span class="comment">// 取出队首节点，作为当前构造下一层的父节点</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>然后，通过这个父节点root，我们可以从values[]中取出对应的值，构造它的两个孩子root.left和root.right，思路到哪就写到哪，因此就有了<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!queue.isEmpty())&#123;</span><br><span class="line">    root = queue.poll(); <span class="comment">// 取出队首节点，作为当前构造下一层的父节点</span></span><br><span class="line">    root.left = generateNodeByStr(values[index++]);</span><br><span class="line">    root.right = generateNodeByStr(values[index++]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>成功构造出第二层节点！此时很开心，接下来是否就大功告成一劳永逸了呢？并没有，因为我们新构造了节点，还没有将它们放到queue中呢，不放到queue中，第二层节点是构造好了，第三层节点就再也构造不出来了！因此，你不假思索地敲上两行代码，<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!queue.isEmpty())&#123;</span><br><span class="line">    root = queue.poll(); <span class="comment">// 取出队首节点，作为当前构造下一层的父节点</span></span><br><span class="line">    root.left = generateNodeByStr(values[index++]);</span><br><span class="line">    root.right = generateNodeByStr(values[index++]);</span><br><span class="line">    queue.offer(root.left);</span><br><span class="line">    queue.offer(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>这下总行了吧，第三层节点也能找到了。别急，回想我们开头说的思路，如果我们发现values[index]=”#”，那么root的孩子就是空节点，我们用generateNodeByStr()构造了一个空节点，这个空节点的下一层是不会再构造出任何节点的，因此遇到这种情况，新构造出的节点并不需要放入队列中，上述代码没有进行这个判断，因此不对，继续改<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!queue.isEmpty())&#123;</span><br><span class="line">    root = queue.poll(); <span class="comment">// 取出队首节点，作为当前构造下一层的父节点</span></span><br><span class="line">    root.left = generateNodeByStr(values[index++]);</span><br><span class="line">    root.right = generateNodeByStr(values[index++]);</span><br><span class="line">    <span class="keyword">if</span>(root.left != <span class="keyword">null</span>)</span><br><span class="line">        queue.offer(root.left);</span><br><span class="line">    <span class="keyword">if</span>(root.right != <span class="keyword">null</span>)</span><br><span class="line">        queue.offer(root.right);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>好，这下是没有错误了，最后返回整棵树的头结点head。<br>完整代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TreeNode</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">int</span> val;</span><br><span class="line">        <span class="keyword">public</span> TreeNode left = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">public</span> TreeNode right = <span class="keyword">null</span>;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">TreeNode</span><span class="params">(<span class="keyword">int</span> value)</span></span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.val = value;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line"><span class="function"><span class="keyword">public</span> TreeNode <span class="title">reconByLevelString</span><span class="params">(String levelStr)</span></span>&#123;</span><br><span class="line">        String[] values = levelStr.split(<span class="string">"!"</span>);</span><br><span class="line">        Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br><span class="line">        <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">        TreeNode head = generateNodeByStr(values[index++]);</span><br><span class="line">        <span class="keyword">if</span>(head != <span class="keyword">null</span>)</span><br><span class="line">            queue.offer(head);</span><br><span class="line">        TreeNode root = <span class="keyword">null</span>;</span><br><span class="line">        <span class="keyword">while</span>(!queue.isEmpty())&#123;</span><br><span class="line">            root = queue.poll();</span><br><span class="line">            root.left = generateNodeByStr(values[index++]);</span><br><span class="line">            root.right = generateNodeByStr(values[index++]);</span><br><span class="line">            <span class="keyword">if</span>(root.left != <span class="keyword">null</span>)&#123;</span><br><span class="line">                queue.offer(root.left);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(root.right != <span class="keyword">null</span>)&#123;</span><br><span class="line">                queue.offer(root.right);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> head;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> TreeNode <span class="title">generateNodeByStr</span><span class="params">(String str)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(str.equals(<span class="string">"#"</span>))&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">new</span> TreeNode(Integer.valueOf(str));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>再对照着开头的那棵树回想一下整个反序列化的过程。。。</p>
+<h3 id="Java语法点总结">Java语法点总结</h3><p>1.Java中Queue是个抽象类，不能构造实例来使用，如果我们的需求只是一个普通的队列的话，用LinkedList即可，它实现了Queue的接口，因此new一个队列时应该：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Queue&lt;TreeNode&gt; queue = <span class="keyword">new</span> LinkedList&lt;&gt;();</span><br></pre></td></tr></table></figure></p>
+<p>2.Queue中只提供了如下方法：<br><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f14smcn41kj20za0biq6u.jpg" alt=""><br>但是如果要判断队列是否为空，也可以调用isEmpty()方法，像这样<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(!queue.isEmpty())&#123;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.poll()：从队首取出元素<br>4.offer(node)：向队尾加入元素node</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag">#算法</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/12/26/浅谈主成分分析/" rel="next">浅谈主成分分析</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/02/19/二叉树的序列化和反序列化/"
+                   data-title="二叉树的序列化和反序列化" data-url="http://lan2720.github.io/2016/02/19/二叉树的序列化和反序列化/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="http://www.alchemyapi.com/sites/default/files/deepLearningAI500.png" alt="Lan" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Lan</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">27</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lan2720" target="_blank">Github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/loafer-527" target="_blank">Zhihu</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.weibo.com/u/2417990255" target="_blank">Weibo</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景"><span class="nav-number">1.</span> <span class="nav-text">背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两种方法"><span class="nav-number">2.</span> <span class="nav-text">两种方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法1：先序遍历对二叉树进行序列化"><span class="nav-number">3.</span> <span class="nav-text">法1：先序遍历对二叉树进行序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法1：先序遍历对二叉树进行反序列化"><span class="nav-number">4.</span> <span class="nav-text">法1：先序遍历对二叉树进行反序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法2：层遍历对二叉树进行序列化"><span class="nav-number">5.</span> <span class="nav-text">法2：层遍历对二叉树进行序列化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法2：层遍历对二叉树进行反序列化"><span class="nav-number">6.</span> <span class="nav-text">法2：层遍历对二叉树进行反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如何建立正确的思路"><span class="nav-number">6.1.</span> <span class="nav-text">如何建立正确的思路</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#走上正路后的继续思考"><span class="nav-number">6.2.</span> <span class="nav-text">走上正路后的继续思考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Java语法点总结"><span class="nav-number">6.3.</span> <span class="nav-text">Java语法点总结</span></a></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan2720"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
