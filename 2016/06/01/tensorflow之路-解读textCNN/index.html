@@ -1,0 +1,776 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。" />
+
+
+
+  <meta name="keywords" content="tensorflow," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="要做一件大事。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tensorflow之路-解读textCNN">
+<meta property="og:url" content="http://lan2720.github.io/2016/06/01/tensorflow之路-解读textCNN/index.html">
+<meta property="og:site_name" content="Hakuna Matata">
+<meta property="og:description" content="要做一件大事。">
+<meta property="og:image" content="http://student.zjzk.cn/course_ware/web_xlyjytjx/images/inserpic/p156.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1f4fob0lawuj205c00twec.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1f4fofta3spj20kx03d75x.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f4for8htfzj20kw01q0th.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f4fq01g0mcj208a01l744.jpg">
+<meta property="og:updated_time" content="2016-06-01T07:11:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="tensorflow之路-解读textCNN">
+<meta name="twitter:description" content="要做一件大事。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> tensorflow之路-解读textCNN | Hakuna Matata </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9df4ceec6aad0e521753edbb3b445837";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Hakuna Matata</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-深度学习资源">
+          <a href="/深度学习资源" rel="section">
+            <i class="menu-item-icon icon-next-深度学习资源"></i> <br />
+            深度学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-机器学习资源">
+          <a href="/机器学习资源" rel="section">
+            <i class="menu-item-icon icon-next-机器学习资源"></i> <br />
+            机器学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-其他资源">
+          <a href="/其他资源" rel="section">
+            <i class="menu-item-icon icon-next-其他资源"></i> <br />
+            其他资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-常用工具">
+          <a href="/常用工具" rel="section">
+            <i class="menu-item-icon icon-next-常用工具"></i> <br />
+            常用工具
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              tensorflow之路-解读textCNN
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-06-01T15:10:27+08:00" content="2016-06-01">
+            2016-06-01
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/06/01/tensorflow之路-解读textCNN/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/06/01/tensorflow之路-解读textCNN/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h2 id="Ox00:_Motivation">Ox00: Motivation</h2><p>最近在研究<a href="http://www.people.fas.harvard.edu/~yoonkim/" target="_blank" rel="external">Yoon Kim</a>的一篇经典之作<a href="http://www.people.fas.harvard.edu/~yoonkim/data/emnlp_2014.pdf" target="_blank" rel="external">Convolutional Neural Networks for Sentence Classification</a>，这篇文章可以说是cnn模型用于文本分类的开山之作（其实第一个用的不是他，但是Kim提出了几个variants，并有详细的调参）</p>
+<p><a href="http://www.wildml.com/" target="_blank" rel="external">wildml</a>对这篇paper有一个tensorflow的实现，具体参见<a href="http://www.wildml.com/2015/12/implementing-a-cnn-for-text-classification-in-tensorflow/" target="_blank" rel="external">here</a>。其实blog已经写的很详细了，但是对于刚入手tensorflow的新人来说代码可能仍存在一些细节不太容易理解，我也是初学，就简单总结下自己的理解，如果对读者有帮助那将是极好的。</p>
+<h2 id="Ox01:_Start!">Ox01: Start!</h2><p>我主要对TextCNN这个类进行解读，具体代码在<a href="https://github.com/dennybritz/cnn-text-classification-tf/blob/master/text_cnn.py" target="_blank" rel="external">这里</a>。</p>
+<blockquote>
+<p>研究别人代码时，时常问自己几个问题，由问题切入，在读的过程中找答案，这种方式我个人认为是最efficient的</p>
+</blockquote>
+<h3 id="1_这个class的主要作用是什么？">1 这个class的主要作用是什么？</h3><p>TextCNN类搭建了一个最basic的CNN模型，有input layer，convolutional layer，max-pooling layer和最后输出的softmax layer。<br>但是又因为整个模型是用于<strong>文本</strong>的(而非CNN的传统处理对象：图像)，因此在cnn的操作上相对应地做了一些小调整：</p>
+<ul>
+<li>对于文本任务，输入层自然使用了word embedding来做input data representation。</li>
+<li>接下来是卷积层，大家在图像处理中经常看到的卷积核都是正方形的，比如4*4，然后在整张image上沿宽和高逐步移动进行卷积操作。但是nlp中输入的“image”是一个词矩阵，比如n个words，每个word用200维的vector表示的话，这个”image”就是n*200的矩阵，卷积核只在高度上已经滑动，在宽度上和word vector的维度一致（=200），也就是说每次窗口滑动过的位置都是完整的单词，不会将几个单词的一部分“vector”进行卷积，这也保证了word作为语言中最小粒度的合理性。（当然，如果研究的粒度是character-level而不是word-level，需要另外的方式处理）</li>
+<li>由于卷积核和word embedding的宽度一致，一个卷积核对于一个sentence，卷积后得到的结果是一个vector， shape=（sentence_len - filter_window + 1, 1），那么，在max-pooling后得到的就是一个scalar。所以，这点也是和图像卷积的不同之处，需要注意一下。</li>
+<li>正是由于max-pooling后只是得到一个scalar，在nlp中，会实施多个filter_window_size（比如3,4,5个words的宽度分别作为卷积的窗口大小），每个window_size又有num_filters个（比如64个）卷积核。一个卷积核得到的只是一个scalar太孤单了，智慧的人们就将相同window_size卷积出来的num_filter个scalar组合在一起，组成这个window_size下的feature_vector。</li>
+<li>最后再将所有window_size下的feature_vector也组合成一个single vector，作为最后一层softmax的输入。</li>
+</ul>
+<blockquote>
+<p>重要的事情说三遍：一个卷积核对于一个句子，convolution后得到的是一个vector；max-pooling后，得到的是一个scalar。</p>
+</blockquote>
+<p>如果对上述讲解还有什么不理解的地方，请移步wildml的另一篇<a href="http://www.wildml.com/2015/11/understanding-convolutional-neural-networks-for-nlp/" target="_blank" rel="external">blog</a>，包教包会。</p>
+<p>说了这么多，总结一下这个类的作用就是：搭建一个用于文本数据的CNN模型！</p>
+<h3 id="2_一些参数">2 一些参数</h3><p>既然TextCNN类是基于YoonKim的思路搭建的，那么我们接下来一个很重要的步骤就是将paper中提到的各种参数设置都整理出来，有一些参数是关于模型的，有一些参数是关于training的，比如epoch等，这类参数就和模型本身无关，以此来确定我们的TextCNN类需要传递哪些参数来初始化。</p>
+<p>赶紧把<a href="http://www.people.fas.harvard.edu/~yoonkim/data/emnlp_2014.pdf" target="_blank" rel="external">paper</a>打开，来仔细找找参数吧。<br>3.1节Hyperparameters and Training部分讲到一些，还有一部分在Table1中：</p>
+<h4 id="关于model">关于model</h4><ul>
+<li>filter windows: <strong>[3,4,5]</strong></li>
+<li>filter maps: <strong>100</strong> for each filter window</li>
+<li>dropout rate: <strong>0.5</strong></li>
+<li>l2 constraint: <strong>3</strong></li>
+<li>randomly select <strong>10%</strong> of training data as dev set(early stopping)</li>
+<li>word2vec(google news) as initial input, dim = <strong>300</strong></li>
+<li>sentence of length: n, padding where necessary</li>
+<li>number of target classes</li>
+<li>dataset size</li>
+<li>vocabulary size</li>
+</ul>
+<h4 id="关于training">关于training</h4><ul>
+<li>mini batch size: <strong>50</strong></li>
+<li><strong>shuffuled</strong> mini batch</li>
+<li><strong>Adadelta</strong> update rule: similar results to Adagrad but required fewer epochs</li>
+<li>Test method: standard train/test split ot CV</li>
+</ul>
+<h3 id="3_Dropout注意事项">3 Dropout注意事项</h3><p>正则是解决过拟合的问题，在最后一层softmax的时候是full-connected layer，因此容易产生过拟合。<br>策略就是在：<br>在<strong>训练</strong>阶段，对max-pooling layer的输出实行一些dropout，以概率p激活，激活的部分传递给softmax层。<br>在<strong>测试</strong>阶段，w已经学好了，但是不能直接用于unseen sentences，要乘以p之后再用，这个阶段没有dropout了全部输出给softmax层。</p>
+<h3 id="4_Embedding_Layer">4 Embedding Layer</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Embedding layer</span></span><br><span class="line"><span class="keyword">with</span> tf.device(<span class="string">'/cpu:0'</span>), tf.name_scope(<span class="string">"embedding"</span>):</span><br><span class="line">    W = tf.Variable(</span><br><span class="line">        tf.random_uniform([vocab_size, embedding_size], -<span class="number">1.0</span>, <span class="number">1.0</span>),</span><br><span class="line">        name=<span class="string">"W"</span>)</span><br><span class="line">    self.embedded_chars = tf.nn.embedding_lookup(W, self.input_x)</span><br><span class="line">    self.embedded_chars_expanded = tf.expand_dims(self.embedded_chars, -<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+<p>存储全部word vector的矩阵$W$初始化时是随机random出来的，也就是paper中的第一种模型CNN-rand<br>训练过程中并不是每次都会使用全部的vocabulary，而只是产生一个batch（batch中都是sentence，每个sentence标记了出现哪些word(最大长度为sequence_length)，因此batch相当于一个二维列表），这个batch就是input_x。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self.input_x = tf.placeholder(tf.int32, [<span class="keyword">None</span>, sequence_length], name=<span class="string">"input_x"</span>)</span><br></pre></td></tr></table></figure></p>
+<p><code>tf.nn.embedding_lookup</code>:查找input_x中所有的ids，获取它们的word vector。batch中的每个sentence的每个word都要查找。所以得到的embedded_chars的shape应该是<code>[None, sequence_length, embedding_size]（1）</code></p>
+<p>但是，输入的word vectors得到之后，下一步就是输入到卷积层，用到<code>tf.nn.conv2d</code>函数，<br>再看看conv2d的参数列表：<br>input: [batch, in_height, in_width, in_channels]（2）<br>filter: [filter_height, filter_width, in_channels, out_channels]（3）<br>对比（1）（2）可以发现，就差一个in_channels了，而最simple的版本也就只有1通道（Yoon的第四个模型用到了multichannel）<br>因此需要expand dim来适应conv2d的input要求，万能的tensorflow已经提供了这样的功能：</p>
+<blockquote>
+<p>This operation is useful if you want to add a batch dimension to a single element. For example, if you have a single image of shape [height, width, channels], you can make it a batch of 1 image with expand_dims(image, 0), which will make the shape [1, height, width, channels].<br>Example:<br># ‘t’ is a tensor of shape [2]<br>shape(expand_dims(t, -1)) ==&gt; [2, 1]</p>
+</blockquote>
+<p>因此只需要<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tf.expand_dims(self.embedded_chars, -<span class="number">1</span>)</span><br></pre></td></tr></table></figure></p>
+<p>就能在embedded_chars后面加一个in_channels=1</p>
+<h3 id="5_Conv_and_Max-pooling">5 Conv and Max-pooling</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Create a convolution + maxpool layer for each filter size</span></span><br><span class="line">pooled_outputs = []</span><br><span class="line"><span class="keyword">for</span> i, filter_size <span class="keyword">in</span> enumerate(filter_sizes):</span><br><span class="line">    <span class="keyword">with</span> tf.name_scope(<span class="string">"conv-maxpool-%s"</span> % filter_size):</span><br><span class="line">        <span class="comment"># Convolution Layer</span></span><br><span class="line">        filter_shape = [filter_size, embedding_size, <span class="number">1</span>, num_filters]</span><br><span class="line">        W = tf.Variable(tf.truncated_normal(filter_shape, stddev=<span class="number">0.1</span>), name=<span class="string">"W"</span>)</span><br><span class="line">        b = tf.Variable(tf.constant(<span class="number">0.1</span>, shape=[num_filters]), name=<span class="string">"b"</span>)</span><br><span class="line">        conv = tf.nn.conv2d(</span><br><span class="line">            self.embedded_chars_expanded,</span><br><span class="line">            W,</span><br><span class="line">            strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">            padding=<span class="string">"VALID"</span>,</span><br><span class="line">            name=<span class="string">"conv"</span>)</span><br><span class="line">        <span class="comment"># Apply nonlinearity</span></span><br><span class="line">        h = tf.nn.relu(tf.nn.bias_add(conv, b), name=<span class="string">"relu"</span>)</span><br><span class="line">        <span class="comment"># Maxpooling over the outputs</span></span><br><span class="line">        pooled = tf.nn.max_pool(</span><br><span class="line">            h,</span><br><span class="line">            ksize=[<span class="number">1</span>, sequence_length - filter_size + <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">            strides=[<span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>, <span class="number">1</span>],</span><br><span class="line">            padding=<span class="string">'VALID'</span>,</span><br><span class="line">            name=<span class="string">"pool"</span>)</span><br><span class="line">        pooled_outputs.append(pooled)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Combine all the pooled features</span></span><br><span class="line">num_filters_total = num_filters * len(filter_sizes)</span><br><span class="line">self.h_pool = tf.concat(<span class="number">3</span>, pooled_outputs)</span><br><span class="line">self.h_pool_flat = tf.reshape(self.h_pool, [-<span class="number">1</span>, num_filters_total])</span><br></pre></td></tr></table></figure>
+<p>首先，对filter_sizes中的每一个filter_window_size都要进行卷积（每一种size都要产生num_filters那么多个filter maps），所以外层就是一个大的for循环。</p>
+<p>继续，看到了一个比较陌生的函数<code>tf.name_scope(&#39;xxx&#39;)</code><br>这个函数的作用参见<a href="https://www.tensorflow.org/versions/r0.8/api_docs/python/framework.html#Graph.name_scope" target="_blank" rel="external">官方文档</a></p>
+<p>由于在for循环内部，filter_size是固定了的，因此可以结合（3）：[filter_height, filter_width, in_channels, out_channels]得到，filter_shape = [filter_size, embedding_size, 1, num_filters]<br>之所以要弄清楚filter shape是因为要对filter的权重矩阵w进行初始化：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">W = tf.Variable(tf.truncated_normal(filter_shape, stddev=<span class="number">0.1</span>), name=<span class="string">"W"</span>)</span><br></pre></td></tr></table></figure></p>
+<p>这里为什么要用<code>tf.truncated_normal()</code>函数呢？<br>答：tensorflow中提供了两个normal函数：</p>
+<ul>
+<li>tf.random_normal(shape, mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None)</li>
+<li>tf.truncated_normal(shape, mean=0.0, stddev=1.0, dtype=tf.float32, seed=None, name=None)</li>
+</ul>
+<p>对比了一下，这两个函数的参数列表完全相同，不同之处我就直接引用文档中的说明，讲解的很清楚，</p>
+<blockquote>
+<p>Outputs random values from a truncated normal distribution.<br>The generated values follow a normal distribution with specified mean and standard deviation, except that values whose magnitude is more than 2 standard deviations from the mean are dropped and re-picked.</p>
+</blockquote>
+<p>也就是说random出来的值的范围都在[mean - 2 <em> standard_deviations, mean + 2 </em> standard_deviations]内。<br>下图可以告诉你这个范围在哪，<br><img src="http://student.zjzk.cn/course_ware/web_xlyjytjx/images/inserpic/p156.jpg" alt=""></p>
+<p>conv2d得到的其实是下图中的$w \cdot x$的部分，<br><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1f4fob0lawuj205c00twec.jpg" alt=""><br>还要加上bias项<code>tf.nn.bias_add(conv, b)</code>，并且通过relu：<code>tf.nn.relu</code>才最终得到卷积层的输出$h$。<br>那究竟卷积层的输出的shape是什么样呢？<br>官方文档中有一段话解释了卷积后得到的输出结果：<br><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1f4fofta3spj20kx03d75x.jpg" alt=""><br>第三部进行了right-multiply之后得到的结果就是<strong>[batch, out_height, out_width, output_channels]</strong>，但是还是不清楚这里的out_height和out_width到底是什么。<br>那就看看wildml中怎么说的吧</p>
+<blockquote>
+<p>“VALID” padding means that we slide the filter over our sentence without padding the edges, performing a narrow convolution that gives us an output of shape [1, sequence_length - filter_size + 1, 1, 1]. </p>
+</blockquote>
+<p>哦，这句话的意思是说out_height和out_width其实和padding的方式有关系，这里选择了”VALID”的方式，也就是不在边缘加padding，得到的out_height=sequence_length - filter_size + 1，out_width=1<br>因此，综合上面的两个解释，我们知道conv2d-加bias-relu之后得到的$h$的shape=<strong>[batch, sequence_length - filter_size + 1, 1, num_filters]</strong></p>
+<p>接下来的工作就是max-pooling了，来看一下tensorflow中给出的函数:<br><code>tf.nn.max_pool(value, ksize, strides, padding, data_format=&#39;NHWC&#39;, name=None)</code><br><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f4for8htfzj20kw01q0th.jpg" alt=""><br>其中最重要的两个参数是value和ksize。<br>value相当于是max pooling层的输入，在整个网络中就是刚才我们得到的$h$，check了一下它俩的shape是一致的，说明可以直接传递到下一层。<br>另一个参数是ksize，官方解释说是input tensor每一维度上的window size。仔细想一下，其实就是想定义多大的范围来进行max-pooling，比如在图像中常见的2*2的小正方形区域对整个h得到feature map进行pooling，但是在nlp中，刚才说到了每一个feature map现在是<strong>[batch, sequence_length - filter_size + 1, 1, num_filters]</strong>维度的，我们想知道每个output_channels（每个channel是一个vector）的最大值，也就是最重要的feature是哪一个，那么就是在第二个维度上设定window=sequence_length - filter_size + 1【这里感觉没解释通，待后续探索】<br>根据ksize的设置，和value的shape，可以得到pooled的shape=<strong>[batch, 1, 1, num_filters]</strong>，<br>这是一个filter_size的结果（比如filter_size = 3），pooled存储的是当前filter_size下每个sentence最重要的num_filters个features，结果append到pooled_outputs列表中存起来，再对下一个filter_size进行相同的操作。</p>
+<p>等到for循环结束时，也就是所有的filter_size全部进行了卷积和max-pooling之后，首先需要把相同filter_size的所有pooled结果concat起来，再将不同的filter_size之间的结果concat起来，最后的到的应该类似于二维数组，[batch, all_pooled_result]<br>all_pooled_result一共有num_filters\（100）*len(filter_sizes)（3）个，比如300个<br>连接的过程需要使用<a href="https://www.tensorflow.org/versions/r0.8/api_docs/python/array_ops.html#concat" target="_blank" rel="external">tf.concat</a>，官方给出的例子很容易理解。<br>最后得到的h_pool_flat也就是[batch, 300]维的tensor。</p>
+<h3 id="6_Dropout">6 Dropout</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment"># Add dropout</span></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"dropout"</span>):</span><br><span class="line">    self.h_drop = tf.nn.dropout(self.h_pool_flat, self.dropout_keep_prob)</span><br></pre></td></tr></table></figure>
+<p>前面在“dropout注意事项”中讲到了，dropout仅对hiddenlayer的输出层进行drop，使得有些结点的值不输出给softmax层。</p>
+<h3 id="7_Output">7 Output</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment"># Final (unnormalized) scores and predictions</span></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"output"</span>):</span><br><span class="line">    W = tf.get_variable(</span><br><span class="line">        <span class="string">"W"</span>,</span><br><span class="line">        shape=[num_filters_total, num_classes],</span><br><span class="line">        initializer=tf.contrib.layers.xavier_initializer())</span><br><span class="line">    b = tf.Variable(tf.constant(<span class="number">0.1</span>, shape=[num_classes]), name=<span class="string">"b"</span>)</span><br><span class="line">    l2_loss += tf.nn.l2_loss(W)</span><br><span class="line">    l2_loss += tf.nn.l2_loss(b)</span><br><span class="line">    self.scores = tf.nn.xw_plus_b(self.h_drop, W, b, name=<span class="string">"scores"</span>)</span><br><span class="line">    self.predictions = tf.argmax(self.scores, <span class="number">1</span>, name=<span class="string">"predictions"</span>)</span><br></pre></td></tr></table></figure>
+<p>输出层其实是个softmax分类器，没什么可讲的，但是要注意l2正则（虽然有paper说l2加不加并没有什么区别）<br>但是我还有一个疑问是为什么对b也要进行正则约束？<br>另外，tf.nn.xw_plus_b()在open api中并没有提供，参考github上的某个<a href="https://github.com/tensorflow/tensorflow/issues/1434" target="_blank" rel="external">issue</a><br>因此可以改为<code>tf.matmul(self.h_drop, W) + b</code>但是不好的地方是无法设置name了。。（用xw_plus_b也不会报错不改也可以）<br>还有一个奇怪的地方是，这一层按道理说应该是一个softmax layer，但是并没有使用到softmax函数，在Yoon的文章中也是直接得到输出的，<br><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f4fq01g0mcj208a01l744.jpg" alt=""><br>因此，我们也按照这种方式写代码，得到所有类别的score，并且选出最大值的那个类别(argmax)<br>y的shape为[batch, num_classes]，因此argmax的时候是选取每行的max，dimention=1<br>因此，最后scores的shape为[batch, 1]</p>
+<h3 id="8_Loss_function">8 Loss function</h3><p>得到了整个网络的输出之后，也就是我们得到了y_prediction，但还需要和真实的y label进行比较，以此来确定预测好坏。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># CalculateMean cross-entropy loss</span></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"loss"</span>):</span><br><span class="line">    losses = tf.nn.softmax_cross_entropy_with_logits(self.scores, self.input_y)</span><br><span class="line">    self.loss = tf.reduce_mean(losses) + l2_reg_lambda * l2_loss</span><br></pre></td></tr></table></figure></p>
+<p>还是使用常规的cross_entropy作为loss function。最后一层是全连接层，为了防止过拟合，最后还要在loss func中加入l2正则项，即l2_loss。<code>l2_reg_lambda</code>来确定惩罚的力度。</p>
+<h3 id="9_Accuracy">9 Accuracy</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Accuracy</span></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(<span class="string">"accuracy"</span>):</span><br><span class="line">    correct_predictions = tf.equal(self.predictions, tf.argmax(self.input_y, <span class="number">1</span>))</span><br><span class="line">    self.accuracy = tf.reduce_mean(tf.cast(correct_predictions, <span class="string">"float"</span>), name=<span class="string">"accuracy"</span>)</span><br></pre></td></tr></table></figure>
+<p><code>tf.equal(x, y)</code>返回的是一个bool tensor，如果xy对应位置的值相等就是true，否则false。得到的tensor是[batch, 1]的。<br><code>tf.cast(x, dtype)</code>将bool tensor转化成float类型的tensor，方便计算<br><code>tf.reduce_mean()</code>本身输入的就是一个float类型的vector（元素要么是0.0，要么是1.0），直接对这样的vector计算mean得到的就是accuracy，不需要指定reduction_indices</p>
+<h2 id="0x02:_Conclusion">0x02: Conclusion</h2><p>后续可能还会对其他部分进行解读，敬请期待。</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/tensorflow/" rel="tag">#tensorflow</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/02/19/二叉树的序列化和反序列化/" rel="next">二叉树的序列化和反序列化</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/06/01/tensorflow之路-解读textCNN/"
+                   data-title="tensorflow之路-解读textCNN" data-url="http://lan2720.github.io/2016/06/01/tensorflow之路-解读textCNN/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="http://www.alchemyapi.com/sites/default/files/deepLearningAI500.png" alt="Lan" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Lan</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">44</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lan2720" target="_blank">Github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/loafer-527" target="_blank">Zhihu</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Ox00:_Motivation"><span class="nav-number">1.</span> <span class="nav-text">Ox00: Motivation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Ox01:_Start!"><span class="nav-number">2.</span> <span class="nav-text">Ox01: Start!</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1_这个class的主要作用是什么？"><span class="nav-number">2.1.</span> <span class="nav-text">1 这个class的主要作用是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2_一些参数"><span class="nav-number">2.2.</span> <span class="nav-text">2 一些参数</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于model"><span class="nav-number">2.2.1.</span> <span class="nav-text">关于model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#关于training"><span class="nav-number">2.2.2.</span> <span class="nav-text">关于training</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3_Dropout注意事项"><span class="nav-number">2.3.</span> <span class="nav-text">3 Dropout注意事项</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4_Embedding_Layer"><span class="nav-number">2.4.</span> <span class="nav-text">4 Embedding Layer</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5_Conv_and_Max-pooling"><span class="nav-number">2.5.</span> <span class="nav-text">5 Conv and Max-pooling</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6_Dropout"><span class="nav-number">2.6.</span> <span class="nav-text">6 Dropout</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7_Output"><span class="nav-number">2.7.</span> <span class="nav-text">7 Output</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8_Loss_function"><span class="nav-number">2.8.</span> <span class="nav-text">8 Loss function</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9_Accuracy"><span class="nav-number">2.9.</span> <span class="nav-text">9 Accuracy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#0x02:_Conclusion"><span class="nav-number">3.</span> <span class="nav-text">0x02: Conclusion</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan2720"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
