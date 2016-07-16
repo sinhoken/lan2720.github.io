@@ -1,0 +1,800 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.1"/>
+
+
+    <meta name="description" content="属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。" />
+
+
+
+  <meta name="keywords" content="rnn,tensorflow," />
+
+
+
+
+
+  <link rel="shorticon icon" type="image/x-icon" href="/img/favicon.ico?v=0.4.5.1" />
+
+
+<meta name="description" content="讲tensorflow在rnn/lstm模型上的应用太少了，自行来个总结。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解读tensorflow之rnn">
+<meta property="og:url" content="http://lan2720.github.io/2016/07/16/解读tensorflow之rnn/index.html">
+<meta property="og:site_name" content="Hakuna Matata">
+<meta property="og:description" content="讲tensorflow在rnn/lstm模型上的应用太少了，自行来个总结。">
+<meta property="og:image" content="http://ww1.sinaimg.cn/large/901f9a6fjw1f5vg7majiyj20fd0bpdgc.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vgrb5urtj208d08ogls.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vhejbskrj20o408wwhj.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vhpjohbjj20au07igm3.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vhmpychkj20np01e75b.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vitpqyyuj20fg0bht98.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vjlafw5wj20lt096dhz.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1f5vk1882kuj20o30cf41r.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1f5vkbuzsrmj20j502g0t6.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vki6gh0yj20oo0a3mzq.jpg">
+<meta property="og:image" content="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vof01xc9j20a10a0gnw.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1f5voi6hw1zj20ow0bkjwk.jpg">
+<meta property="og:image" content="http://ww2.sinaimg.cn/large/901f9a6fjw1f5vol9lyjrj20ob076q5q.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vpg4e77tj20o902e3z1.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vsocbai8j20or06pmzq.jpg">
+<meta property="og:image" content="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vv8vkeifj20p10ffgq7.jpg">
+<meta property="og:updated_time" content="2016-07-16T09:57:28.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解读tensorflow之rnn">
+<meta name="twitter:description" content="讲tensorflow在rnn/lstm模型上的应用太少了，自行来个总结。">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+  <title> 解读tensorflow之rnn | Hakuna Matata </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?9df4ceec6aad0e521753edbb3b445837";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><h1 class="site-meta">
+  <span class="logo-line-before"><i></i></span>
+  <a href="/" class="brand" rel="start">
+      <span class="logo">
+        <i class="icon-next-logo"></i>
+      </span>
+      <span class="site-title">Hakuna Matata</span>
+  </a>
+  <span class="logo-line-after"><i></i></span>
+</h1>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            <i class="menu-item-icon icon-next-home"></i> <br />
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            <i class="menu-item-icon icon-next-about"></i> <br />
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            <i class="menu-item-icon icon-next-archives"></i> <br />
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            <i class="menu-item-icon icon-next-tags"></i> <br />
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-深度学习资源">
+          <a href="/深度学习资源" rel="section">
+            <i class="menu-item-icon icon-next-深度学习资源"></i> <br />
+            深度学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-机器学习资源">
+          <a href="/机器学习资源" rel="section">
+            <i class="menu-item-icon icon-next-机器学习资源"></i> <br />
+            机器学习资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-其他资源">
+          <a href="/其他资源" rel="section">
+            <i class="menu-item-icon icon-next-其他资源"></i> <br />
+            其他资源
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-常用工具">
+          <a href="/常用工具" rel="section">
+            <i class="menu-item-icon icon-next-常用工具"></i> <br />
+            常用工具
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+
+      
+      
+        <h1 class="post-title" itemprop="name headline">
+          
+          
+            
+              解读tensorflow之rnn
+            
+          
+        </h1>
+      
+
+      <div class="post-meta">
+        <span class="post-time">
+          发表于
+          <time itemprop="dateCreated" datetime="2016-07-16T17:55:59+08:00" content="2016-07-16">
+            2016-07-16
+          </time>
+        </span>
+
+        
+
+        
+          
+            <span class="post-comments-count">
+              &nbsp; | &nbsp;
+              <a href="/2016/07/16/解读tensorflow之rnn/#comments" itemprop="discussionUrl">
+                <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/16/解读tensorflow之rnn/" itemprop="commentsCount"></span>
+              </a>
+            </span>
+          
+        
+      </div>
+    </header>
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><h1 id="解读tensorflow的rnn">解读tensorflow的rnn</h1><p>标签（空格分隔）： tensorflow</p>
+<hr>
+<h2 id="前言">前言</h2><p>这两天想搞清楚用tensorflow来实现rnn/lstm如何做，但是google了半天，发现tf在rnn方面的实现代码或者教程都太少了，仅有的几个教程讲的又过于简单。没办法，只能亲自动手一步步研究官方给出的代码了。</p>
+<p>本文研究的代码主体来自官方源码<a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/models/rnn/ptb/ptb_word_lm.py" target="_blank" rel="external">ptb-word-lm</a>。但是，如果你直接运行这个代码，可以看到warning：</p>
+<blockquote>
+<p> WARNING:tensorflow:<tensorflow.python.ops.rnn_cell.basiclstmcell object="" at="" 0x7fcbe4a892d0="">: Using a concatenated state is slower and will soon be deprecated.  Use state_is_tuple=True.</tensorflow.python.ops.rnn_cell.basiclstmcell></p>
+</blockquote>
+<p>于是根据这个warning，找到了一个相关的issue：<a href="https://github.com/tensorflow/tensorflow/issues/2695" target="_blank" rel="external">https://github.com/tensorflow/tensorflow/issues/2695</a><br>回答中有人给出了对应的<a href="https://github.com/jihunchoi/tensorflow/blob/ptb_use_state_tuple/tensorflow/models/rnn/ptb/ptb_word_lm.py" target="_blank" rel="external">修改</a>，加入了<code>state_is_tuple=True</code>，笔者就是基于这段代码学习的。</p>
+<h2 id="代码结构">代码结构</h2><p>tf的代码看多了之后就知道其实官方代码的这个结构并不好：</p>
+<ol>
+<li>graph的构建和训练部分放在了一个文件中，至少也应该分开成model.py和train.py两个文件，model.py中只有一个PTBModel类</li>
+<li>graph的构建部分全部放在了PTBModel类的constructor中</li>
+</ol>
+<p>恰好看到了一篇专门讲如何构建tensorflow模型代码的<a href="http://danijar.com/structuring-your-tensorflow-models/" target="_blank" rel="external">blog</a>，值得学习，来重构自己的代码吧。</p>
+<h2 id="值得学习的地方">值得学习的地方</h2><p>虽说官方给出的代码结构上有点小缺陷，但是毕竟都是大神们写出来的，值得我们学习的地方很多，来总结一下：</p>
+<p><strong>(1)</strong> 设置is_training这个标志<br>这个很有必要，因为training阶段和valid/test阶段参数设置上会有小小的区别，比如test时不进行dropout<br><strong>(2)</strong> 将必要的各类参数都写在config类中独立管理<br>这个的好处就是各类参数的配置工作和model类解耦了，不需要将大量的参数设置写在model中，那样可读性不仅差，还不容易看清究竟设置了哪些超参数</p>
+<h2 id="placeholder">placeholder</h2><p>两个，分别命名为self._input_data和self._target，只是注意一下，由于我们现在要训练的模型是language model，也就是给一个word，预测最有可能的下一个word，因此可以看出来，input和output是同型的。并且，placeholder只存储一个batch的data，input接收的是个word在vocabulary中对应的index【后续会将index转成dense embedding】,每次接收一个seq长度的words，那么，input shape=[batch_size, num_steps]</p>
+<h2 id="定义cell">定义cell</h2><p>在很多用到rnn的paper中我们会看到类似的图：<br><img src="http://ww1.sinaimg.cn/large/901f9a6fjw1f5vg7majiyj20fd0bpdgc.jpg" alt=""></p>
+<p>这其中的每个小长方形就表示一个cell。每个cell中又是一个略复杂的结构，如下图：<br><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vgrb5urtj208d08ogls.jpg" alt=""><br>图中的context就是一个cell结构，可以看到它接受的输入有input(t)，context(t-1)，然后输出output(t)，比如像我们这个任务中，用到多层堆叠的rnn cell的话，也就是当前层的cell的output还要作为下一层cell的输入，因此可推出每个cell的输入和输出的shape是一样。如果输入的shape=(None, n)，加上context(t-1)同时作为输入部分，因此可以知道$W$的shape=(2n, n)。</p>
+<p>说了这么多，其实我只是想表达一个重点，就是</p>
+<blockquote>
+<p> 别小看那一个小小的cell，它并不是只有1个neuron unit，而是n个hidden units</p>
+</blockquote>
+<p>因此，我们注意到tensorflow中定义一个cell（BasicRNNCell/BasicLSTMCell/GRUCell/RNNCell/LSTMCell）结构的时候需要提供的一个参数就是hidden_units_size。</p>
+<p>弄明白这个之后，再看tensorflow中定义cell的代码就无比简单了：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">lstm_cell = tf.nn.rnn_cell.BasicLSTMCell(size, forget_bias=<span class="number">0.0</span>, state_is_tuple=<span class="keyword">True</span>)</span><br><span class="line"><span class="keyword">if</span> is_training <span class="keyword">and</span> config.keep_prob &lt; <span class="number">1</span>:</span><br><span class="line">    lstm_cell = tf.nn.rnn_cell.DropoutWrapper(</span><br><span class="line">        lstm_cell, output_keep_prob=config.keep_prob)</span><br><span class="line">cell = tf.nn.rnn_cell.MultiRNNCell([lstm_cell] * config.num_layers, state_is_tuple=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure></p>
+<p>首先，定义一个最小的cell单元，也就是小长方形，BasicLSTMCell。</p>
+<h3 id="问题1：为什么是BasicLSTMCell">问题1：为什么是BasicLSTMCell</h3><p>你肯定会问，这个类和LSTMCell有什么区别呢？good question，文档给出的解释是这样的：<br><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vhejbskrj20o408wwhj.jpg" alt=""></p>
+<p>划一下重点就是倒数第二句话，意思是说这个类没有实现clipping，projection layer，peep-hole等一些lstm的高级变种，仅作为一个基本的basicline结构存在，如果要使用这些高级variant要用LSTMCell这个类。<br>因为我们现在只是想搭建一个基本的lstm-language model模型，能够训练出一定的结果就行了，因此现阶段BasicLSTMCell够用。这就是为什么这里用的是BasicLSTMCell这个类而不是别的什么。</p>
+<h3 id="问题2：state_is_tuple=True是什么">问题2：state_is_tuple=True是什么</h3><p><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vhpjohbjj20au07igm3.jpg" alt=""><br>(此图偷自<a href="http://arxiv.org/pdf/1409.2329.pdf" target="_blank" rel="external">recurrent neural network regularization</a>)<br>可以看到，每个lstm cell在t时刻都会产生两个内部状态$c_t$和$h_t$，都是在t-1时刻计算要用到的。这两个状态在tensorflow中都要记录，记住这个就好理解了。</p>
+<p>来看官方对这个的解释：<br><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vhmpychkj20np01e75b.jpg" alt=""><br>意思是说，如果state_is_tuple=True，那么上面我们讲到的状态$c_t$和$h_t$就是分开记录，放在一个tuple中，如果这个参数没有设定或设置成False，两个状态就按列连接起来，成为[batch, 2n](n是hidden units个数)返回。官方说这种形式马上就要被deprecated了，所有我们在使用LSTM的时候要加上state_is_tuple=True</p>
+<h3 id="问题3：forget_bias是什么">问题3：forget_bias是什么</h3><p>暂时还没管这个参数的含义</p>
+<h2 id="DropoutWrapper">DropoutWrapper</h2><p>dropout是一种非常efficient的regularization方法，在rnn中如何使用dropout和cnn不同，推荐大家去把<a href="http://arxiv.org/pdf/1409.2329.pdf" target="_blank" rel="external">recurrent neural network regularization</a>看一遍。我在这里仅讲结论，</p>
+<blockquote>
+<p>对于rnn的部分不进行dropout，也就是说从t-1时候的状态传递到t时刻进行计算时，这个中间不进行memory的dropout；仅在同一个t时刻中，多层cell之间传递信息的时候进行dropout</p>
+</blockquote>
+<p><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vitpqyyuj20fg0bht98.jpg" alt=""></p>
+<p>上图中，$x_{t-2}$时刻的输入首先传入第一层cell，这个过程有dropout，但是从$t-2$时刻的第一层cell传到$t-1$,$t$,$t+1$的第一层cell这个中间都不进行dropout。再从$t+1$时候的第一层cell向同一时刻内后续的cell传递时，这之间又有dropout了。</p>
+<p>因此，我们在代码中定义完cell之后，在cell外部包裹上dropout，这个类叫DropoutWrapper，这样我们的cell就有了dropout功能！<br><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vjlafw5wj20lt096dhz.jpg" alt=""><br>可以从官方文档中看到，它有input_keep_prob和output_keep_prob，也就是说裹上这个DropoutWrapper之后，如果我希望是input传入这个cell时dropout掉一部分input信息的话，就设置input_keep_prob，那么传入到cell的就是部分input；如果我希望这个cell的output只部分作为下一层cell的input的话，就定义output_keep_prob。不要太方便。<br>根据Zaremba在paper中的描述，这里应该给cell设置output_keep_prob。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> is_training <span class="keyword">and</span> config.keep_prob &lt; <span class="number">1</span>:</span><br><span class="line">    lstm_cell = tf.nn.rnn_cell.DropoutWrapper(</span><br><span class="line">        lstm_cell, output_keep_prob=config.keep_prob)</span><br></pre></td></tr></table></figure></p>
+<h2 id="Stack_MultiCell">Stack MultiCell</h2><p>现在我们定义了一个lstm cell，这个cell仅是整个图中的一个小长方形，我们希望整个网络能更deep的话，应该stack多个这样的lstm cell，tensorflow给我们提供了MultiRNNCell（注意：multi只有这一个类，并没有MultiLSTMCell之类的），因此堆叠多层只生成这个类即可。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cell = tf.nn.rnn_cell.MultiRNNCell([lstm_cell] * config.num_layers, state_is_tuple=<span class="keyword">True</span>)</span><br></pre></td></tr></table></figure>
+<p>我们还是看看官方文档，<br><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1f5vk1882kuj20o30cf41r.jpg" alt=""><br>我们可以从描述中看出，tensorflow并不是简单的堆叠了多个single cell，而是将这些cell stack之后当成了一个完整的独立的cell，每个小cell的中间状态还是保存下来了，按n_tuple存储，但是输出output只用最后那个cell的输出。</p>
+<p>这样，我们就定义好了每个t时刻的整体cell，接下来只要每个时刻传入不同的输入，再在时间上展开，就能得到上图多个时间上unroll graph。</p>
+<h2 id="initial_states">initial states</h2><p>接下来就需要给我们的multi lstm cell进行状态初始化。怎么做呢？Zaremba已经告诉我们了</p>
+<blockquote>
+<p>We initialize the hidden states to zero. We then use the<br>final hidden states of the current minibatch as the initial hidden state of the subsequent minibatch<br>(successive minibatches sequentially traverse the training set).</p>
+</blockquote>
+<p>也就是初始时全部赋值为0状态。</p>
+<p><img src="http://ww2.sinaimg.cn/large/901f9a6fjw1f5vkbuzsrmj20j502g0t6.jpg" alt=""><br>那么就需要有一个<code>self._initial_state</code>来保存我们生成的全0状态，最后直接调用MultiRNNCell的zero_state()方法即可。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self._initial_state = cell.zero_state(batch_size, tf.float32)</span><br></pre></td></tr></table></figure></p>
+<p>注意：这里传入的是batch_size，我一开始没看懂为什么，那就看文档的解释吧！<br><img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vki6gh0yj20oo0a3mzq.jpg" alt=""><br>state_size是我们在定义MultiRNNCell的时就设置好了的，只是我们的输入input shape=[batch_size, num_steps]，我们刚刚定义好的cell会依次接收num_steps个输入然后产生最后的state（n-tuple，n表示堆叠的层数）但是一个batch内有batch_size这样的seq，因此就需要[batch_size，s]来存储整个batch每个seq的状态。</p>
+<h2 id="embedding_input">embedding input</h2><p>我们预处理了数据之后得到的是一个二维array，每个位置的元素表示这个word在vocabulary中的index。<br>但是传入graph的数据不能讲word用index来表示，这样词和词之间的关系就没法刻画了。我们需要将word用dense vector表示，这也就是广为人知的word embedding。<br>paper中并没有使用预训练的word embedding，所有的embedding都是随机初始化，然后在训练过程中不断更新embedding矩阵的值。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.device(<span class="string">"/cpu:0"</span>):</span><br><span class="line">    embedding = tf.get_variable(<span class="string">"embedding"</span>, [vocab_size, size])</span><br><span class="line">    inputs = tf.nn.embedding_lookup(embedding, self._input_data)</span><br></pre></td></tr></table></figure>
+<p>首先要明确几点：</p>
+<ol>
+<li>既然我们要在训练过程中不断更新embedding矩阵，那么embedding必须是tf.Variable并且<code>trainable=True</code>（default）</li>
+<li>目前tensorflow对于lookup embedding的操作只能再cpu上进行</li>
+<li>embedding矩阵的大小是多少：每个word都需要有对应的embedding vector，总共就是vocab_size那么多个embedding，每个word embed成多少维的vector呢？因为我们input embedding后的结果就直接输入给了第一层cell，刚才我们知道cell的hidden units size，因此这个embedding dim要和hidden units size对应上（这也才能和内部的各种门的W和b完美相乘）。因此，我们就确定下来embedding matrix shape=<strong>[vocab_size, hidden_units_size]</strong></li>
+</ol>
+<p>最后生成真正的inputs节点，也就是从embedding_lookup之后得到的结果，这个tensor的shape=<a href="size表示hidden units size">batch_size, num_stemps, size</a></p>
+<h2 id="input_data_dropout">input data dropout</h2><p>刚才我们定义了每个cell的输出要wrap一个dropout，但是根据paper中讲到的，</p>
+<blockquote>
+<p>We can see that the information is corrupted by the dropout operator exactly L + 1 times</p>
+<p>We use the activations $h_t^L$ to predict $y_t$ , since $L$ is the number of layers<br>in our deep LSTM.</p>
+</blockquote>
+<p>cell的层数一共定义了L层，为什么dropout要进行L+1次呢？就是因为输入这个地方要进行1次dropout。比如，我们设置cell的hidden units size=200的话，input embbeding dim=200维度较高，dropout一部分，防止overfitting。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> is_training <span class="keyword">and</span> config.keep_prob &lt; <span class="number">1</span>:</span><br><span class="line">    inputs = tf.nn.dropout(inputs, config.keep_prob)</span><br></pre></td></tr></table></figure>
+<p> 和上面的DropoutWrapper一样，都是在is_training and config.keep_prob &lt; 1的条件下才进行dropout。<br> 由于这个仅对tensor进行dropout（而非rnn_cell进行wrap），因此调用的是tf.nn.dropout。</p>
+<h2 id="RNN循环起来！">RNN循环起来！</h2><p> 到上面这一步，我们的基本单元multi cell和inputs算是全部准备好啦，接下来就是在time上进行recurrent，得到num_steps每一时刻的output和states。<br> 那么很自然的我们可以猜测output的shape=[batch_size, num_steps, size]，states的shape=[batch_size, n(LSTMStateTuple)]【state是整个seq输入完之后得到的每层的state<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">outputs = []</span><br><span class="line">state = self._initial_state</span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(<span class="string">"RNN"</span>):</span><br><span class="line">    <span class="keyword">for</span> time_step <span class="keyword">in</span> range(num_steps):</span><br><span class="line">        <span class="keyword">if</span> time_step &gt; <span class="number">0</span>: tf.get_variable_scope().reuse_variables()</span><br><span class="line">        (cell_output, state) = cell(inputs[:, time_step, :], state)</span><br><span class="line">        outputs.append(cell_output)</span><br></pre></td></tr></table></figure></p>
+<p>以上这是官方给出的代码，个人觉得不是太好。怎么办，查文档。<br> <img src="http://ww4.sinaimg.cn/large/901f9a6fjw1f5vof01xc9j20a10a0gnw.jpg" alt=""></p>
+<p> 可以看到，有四个函数可以用来构建rnn，我们一个个的讲。<br> （1） dynamic rnn<br> <img src="http://ww2.sinaimg.cn/large/901f9a6fjw1f5voi6hw1zj20ow0bkjwk.jpg" alt=""><br> 这个方法给rnn()很类似，只是它的inputs不是list of tensors，而是一整个tensor，num_steps是inputs的一个维度。这个方法的输出是一个pair，<br> <img src="http://ww2.sinaimg.cn/large/901f9a6fjw1f5vol9lyjrj20ob076q5q.jpg" alt=""><br> 由于我们preprocessing之后得到的input shape=[batch_size, num_steps, size]因此，time_major=False。<br> 最后的到的这个pair的shape正如我们猜测的输出是一样的。</p>
+<p> sequence_length: (optional) An int32/int64 vector sized [batch_size].表示的是batch中每行sequence的长度。</p>
+<p> 调用方法是：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">outputs, state = tf.nn.dynamic_rnn(cell, inputs, sequence_length=..., initial_state=state)</span><br></pre></td></tr></table></figure></p>
+<p>state是final state，如果有n layer，则是final state也有n个元素，对应每一层的state。</p>
+<p> （2）tf.nn.rnn<br> 这个函数和dynamic_rnn的区别就在于，这个需要的inputs是a list of tensor，这个list的长度是num_steps，也就是将每一个时刻的输入切分出来了，tensor的shape=[batch_size, input_size]【这里的input每一个都是word embedding，因此input_size=hidden_units_size】</p>
+<p> 除了输出inputs是list之外，输出稍有差别。<br> <img src="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vpg4e77tj20o902e3z1.jpg" alt=""><br> 可以看到，输出也是一个长度为T(num_steps)的list，每一个output对应一个t时刻的input(batch_size, hidden_units_size)，output shape=[batch_size, hidden_units_size]</p>
+<p> （3）state_saving_rnn<br> 这个方法可以接收一个state saver对象，这是和以上两个方法不同之处，另外其inputs和outputs也都是list of tensors。</p>
+<p> （4）bidirectional_rnn<br> 等研究bi-rnn网络的时候再讲。</p>
+<p> 以上介绍了四种rnn的构建方式，这里选择<code>dynamic_rnn</code>.因为inputs中的第2个维度已经是num_steps了。</p>
+<h2 id="得到output之后传到下一层softmax_layer">得到output之后传到下一层softmax layer</h2><p>既然我们用的是dynamic_rnn，那么outputs shape=[batch_size, num_steps, size]，而接下来需要将output传入到softmax层，softmax层并没有显式地使用tf.nn.softmax函数，而是只是计算了wx+b得到logits（实际上是一样的，softmax函数仅仅只是将logits再rescale到0-1之间）</p>
+<h2 id="计算loss">计算loss</h2><p>得到logits后，用到了nn.seq2seq.sequence_loss_by_example函数来计算“所谓的softmax层”的loss。这个loss是整个batch上累加的loss，需要除上batch_size，得到平均下来的loss，也就是self._cost。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">loss = tf.nn.seq2seq.sequence_loss_by_example(</span><br><span class="line">            [logits],</span><br><span class="line">            [tf.reshape(self._targets, [-<span class="number">1</span>])],</span><br><span class="line">            [tf.ones([batch_size * num_steps])])</span><br><span class="line">self._cost = cost = tf.reduce_sum(loss) / batch_size</span><br><span class="line">self._final_state = state</span><br></pre></td></tr></table></figure></p>
+<h2 id="求导，定义train_op">求导，定义train_op</h2><p> 如果is_training=False，也就是仅valid or test的话，计算出loss这一步也就终止了。之所以要求导，就是train的过程。所以这个地方对<code>is_training</code>进行一个判断。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> is_training:</span><br><span class="line">    <span class="keyword">return</span></span><br></pre></td></tr></table></figure></p>
+<p>如果想在训练过程中调节learning rate的话，生成一个lr的variable，但是trainable=False，也就是不进行求导。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">self._lr = tf.Variable(<span class="number">0.0</span>, trainable=<span class="keyword">False</span>)</span><br></pre></td></tr></table></figure></p>
+<p>gradient在backpropagate过程中，很容易出现vanish&amp;explode现象，尤其是rnn这种back很多个time step的结构。<br>因此都要使用clip来对gradient值进行调节。<br>既然要调节了就不能简单的调用<code>optimizer.minimize(loss)</code>，而是需要显式的计算gradients，然后进行clip，将clip后的gradient进行apply。<br>官方文档说明了这种操作：<br><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vsocbai8j20or06pmzq.jpg" alt=""><br>并给出了一个例子：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Create an optimizer.</span></span><br><span class="line">opt = GradientDescentOptimizer(learning_rate=<span class="number">0.1</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Compute the gradients for a list of variables.</span></span><br><span class="line">grads_and_vars = opt.compute_gradients(loss, &lt;list of variables&gt;)</span><br><span class="line"></span><br><span class="line"><span class="comment"># grads_and_vars is a list of tuples (gradient, variable).  Do whatever you</span></span><br><span class="line"><span class="comment"># need to the 'gradient' part, for example cap them, etc.</span></span><br><span class="line">capped_grads_and_vars = [(MyCapper(gv[<span class="number">0</span>]), gv[<span class="number">1</span>]) <span class="keyword">for</span> gv <span class="keyword">in</span> grads_and_vars]</span><br><span class="line"></span><br><span class="line"><span class="comment"># Ask the optimizer to apply the capped gradients.</span></span><br><span class="line">opt.apply_gradients(capped_grads_and_vars)</span><br></pre></td></tr></table></figure></p>
+<p>模仿这个代码，我们可以写出如下的伪代码：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">optimizer = tf.train.AdamOptimizer(learning_rate=self._lr)</span><br><span class="line"></span><br><span class="line"><span class="comment"># gradients: return A list of sum(dy/dx) for each x in xs.</span></span><br><span class="line">grads = optimizer.gradients(self._cost, &lt;list of variables&gt;)</span><br><span class="line">clipped_grads = tf.clip_by_global_norm(grads, config.max_grad_norm)</span><br><span class="line"></span><br><span class="line"><span class="comment"># accept: List of (gradient, variable) pairs, so zip() is needed</span></span><br><span class="line">self._train_op = optimizer.apply_gradients(zip(grads, &lt;list of variables&gt;))</span><br></pre></td></tr></table></figure>
+<p>可以看到，此时就差一个&lt;list of variables&gt;不知道了，也就是需要对哪些variables进行求导。<br>答案是：trainable variables<br>因此，我们得到<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tvars = tf.trainable_variables()</span><br></pre></td></tr></table></figure></p>
+<p>用tvars带入上面的代码中即可。</p>
+<h2 id="how_to_change_Variable_value">how to change Variable value</h2><p>使用<code>tf.assign(ref, value)</code>函数。ref应该是个variable node，这个assign是个operation，因此需要在sess.run()中进行才能生效。这样之后再调用ref的值就发现改变成新值了。<br>在这个模型中用于改变learning rate这个variable的值。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">assign_lr</span><span class="params">(self, session, lr_value)</span>:</span></span><br><span class="line">    session.run(tf.assign(self.lr, lr_value))</span><br></pre></td></tr></table></figure></p>
+<h2 id="run_epoch()">run_epoch()</h2><h3 id="Tensor-eval()">Tensor.eval()</h3><p><img src="http://ww3.sinaimg.cn/large/901f9a6fjw1f5vv8vkeifj20p10ffgq7.jpg" alt=""><br>比如定义了一个tensor x,<code>x.eval(feed_dict={xxx})</code>就可以得到x的值，而不用sess.run(x, feed_dict={xxx})。返回值是一个numpy array。</p>
+<h3 id="遗留问题">遗留问题</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">state = m.initial_state.eval()</span><br><span class="line"><span class="keyword">for</span> step, (x, y) <span class="keyword">in</span> enumerate(reader.ptb_iterator(data, m.batch_size,</span><br><span class="line">                                                m.num_steps)):</span><br><span class="line">cost, state, _ = session.run([m.cost, m.final_state, eval_op],</span><br><span class="line">                             &#123;m.input_data: x,</span><br><span class="line">                              m.targets: y,</span><br><span class="line">                              m.initial_state: state&#125;)</span><br></pre></td></tr></table></figure>
+<p>为什么feed_dict中还需要传入initial_statel？</p>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/rnn/" rel="tag">#rnn</a>
+          
+            <a href="/tags/tensorflow/" rel="tag">#tensorflow</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/01/tensorflow之路-如何处理原始文本数据/" rel="next">tensorflow之路-如何处理原始文本数据</a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/07/16/解读tensorflow之rnn/"
+                   data-title="解读tensorflow之rnn" data-url="http://lan2720.github.io/2016/07/16/解读tensorflow之rnn/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="http://www.alchemyapi.com/sites/default/files/deepLearningAI500.png" alt="Lan" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">Lan</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">属性GEEK, 冷静思考
+专注DeepLearning/NLP/CV
+从菜鸟做起，先行动，再谈梦想。</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">46</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/lan2720" target="_blank">Github</a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/loafer-527" target="_blank">Zhihu</a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="http://creativecommons.org/licenses/by-nc-sa/4.0" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#解读tensorflow的rnn"><span class="nav-number">1.</span> <span class="nav-text">解读tensorflow的rnn</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码结构"><span class="nav-number">1.2.</span> <span class="nav-text">代码结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#值得学习的地方"><span class="nav-number">1.3.</span> <span class="nav-text">值得学习的地方</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#placeholder"><span class="nav-number">1.4.</span> <span class="nav-text">placeholder</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义cell"><span class="nav-number">1.5.</span> <span class="nav-text">定义cell</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#问题1：为什么是BasicLSTMCell"><span class="nav-number">1.5.1.</span> <span class="nav-text">问题1：为什么是BasicLSTMCell</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题2：state_is_tuple=True是什么"><span class="nav-number">1.5.2.</span> <span class="nav-text">问题2：state_is_tuple=True是什么</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#问题3：forget_bias是什么"><span class="nav-number">1.5.3.</span> <span class="nav-text">问题3：forget_bias是什么</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DropoutWrapper"><span class="nav-number">1.6.</span> <span class="nav-text">DropoutWrapper</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Stack_MultiCell"><span class="nav-number">1.7.</span> <span class="nav-text">Stack MultiCell</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#initial_states"><span class="nav-number">1.8.</span> <span class="nav-text">initial states</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#embedding_input"><span class="nav-number">1.9.</span> <span class="nav-text">embedding input</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#input_data_dropout"><span class="nav-number">1.10.</span> <span class="nav-text">input data dropout</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RNN循环起来！"><span class="nav-number">1.11.</span> <span class="nav-text">RNN循环起来！</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#得到output之后传到下一层softmax_layer"><span class="nav-number">1.12.</span> <span class="nav-text">得到output之后传到下一层softmax layer</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#计算loss"><span class="nav-number">1.13.</span> <span class="nav-text">计算loss</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#求导，定义train_op"><span class="nav-number">1.14.</span> <span class="nav-text">求导，定义train_op</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#how_to_change_Variable_value"><span class="nav-number">1.15.</span> <span class="nav-text">how to change Variable value</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#run_epoch()"><span class="nav-number">1.16.</span> <span class="nav-text">run_epoch()</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Tensor-eval()"><span class="nav-number">1.16.1.</span> <span class="nav-text">Tensor.eval()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遗留问题"><span class="nav-number">1.16.2.</span> <span class="nav-text">遗留问题</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy; &nbsp;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lan</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"lan2720"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+     
+  	<script src="/js/ua-parser.min.js"></script>
+  	<script src="/js/hook-duoshuo.js"></script>
+  
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.1"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.1"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.1" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.1"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.1" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+    });
+  </script>
+
+  
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+  });
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
